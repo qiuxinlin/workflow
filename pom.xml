@@ -22,12 +22,9 @@
 
 	<modules>
 		<module>spring-boot-starter-dubbo</module>
-		<module>demo</module>
 		<module>base</module>
 		<module>activitiProvider</module>
 		<module>activitiConsumer</module>
-		<module>activitiRest</module>
-		<module>activiti-rest2</module>
 	</modules>
 
 	<dependencyManagement>
