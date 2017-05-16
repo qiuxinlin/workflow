@@ -1,0 +1,6 @@
+com\scxys\activiti\rest\service\api\history\HistoricVariableInstanceBaseResource$1.class
+com\scxys\activiti\rest\service\api\runtime\process\BaseProcessInstanceResource$1.class
+com\scxys\activiti\rest\service\api\runtime\task\TaskBaseResource$1.class
+com\scxys\activiti\rest\service\api\runtime\process\ExecutionBaseResource$1.class
+com\scxys\activiti\rest\service\api\history\HistoricProcessInstanceBaseResource$1.class
+com\scxys\activiti\rest\service\api\history\HistoricTaskInstanceBaseResource$1.class

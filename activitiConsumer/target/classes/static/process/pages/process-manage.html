@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../css/zTreeStyle/zTreeStyle.css" type="text/css"/>
+    <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row top-wrap">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                业务流程管理平台
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
+                <div class="zTreeDemoBackground left">
+                    <ul id="treeDemo" class="ztree"></ul>
+                </div>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+                <div class="search-wrap">
+                    <form class="form-inline">
+                        <div class="form-group form-group-wrap">
+                            <label class="label-text" for="startDate">开始时间</label>
+                            <input type="date" class="form-control" id="startDate"/>
+                        </div>
+                        <div class="form-group form-group-wrap">
+                            <label class="label-text" for="endDate">结束时间</label>
+                            <input type="date" class="form-control" id="endDate"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">查询</button>
+                    </form>
+                </div>
+                <div class="table-wrap">
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>序号</th><th>流程实例</th><th>开始时间</th><th>完成时间</th><th>当前环节</th><th>当前办理人</th><th>流程状态</th><th>督办情况</th><th>运行明细</th>
+                        </thead>
+                        <tbody>
+                             <tr>
+                                <td>1</td><td>55021</td><td>2017-05-09 16:12:32</td><td>2017-05-09 16:12:32</td><td>设备异常及缺陷填报</td><td>kermit</td><td>已完成</td><td><div class="state-complete"></div></td><td><a href="process-detail.html">查看</a></td>
+                            </tr>
+                            <tr>
+                                <td>2</td><td>55021</td><td>2017-05-09 16:12:32</td><td>2017-05-09 16:12:32</td><td>确认缺陷等级</td><td>kermit</td><td>进行中</td><td><div class="state-in"></div></td><td><a href="process-detail.html">查看</a></td>
+                            </tr>
+                            <tr>
+                                <td>3</td><td>55034</td><td>2017-05-09 16:12:32</td><td>2017-05-09 16:12:32</td><td>缺陷通报</td><td>kermit</td><td>未完成</td><td><div class="state-uncomplete"></div></td><td><a href="process-detail.html">查看</a></td>
+                            </tr>
+                            <tr>
+                                <td>4</td><td>55021</td><td>2017-05-09 17:57:45</td><td>2017-05-09 16:12:32</td><td>缺陷处理技术方案管理流程</td><td>kermit</td><td>已完成</td><td><div class="state-complete"></div></td><td><a href="process-detail.html">查看</a></td>
+                            </tr>
+                            <tr>
+                                <td>5</td><td>55021</td><td>2017-05-09 17:57:45</td><td>2017-05-09 16:12:32</td><td>运行处理</td><td>kermit</td><td>进行中</td><td><div class="state-in"></div></td><td><a href="process-detail.html">查看</a></td>
+                            </tr>
+                            <tr>
+                                <td>6</td><td>55034</td><td>2017-05-09 17:57:45</td><td>2017-05-09 16:12:32</td><td>异常处理验收</td><td>kermit</td><td>未完成</td><td><div class="state-uncomplete"></div></td><td><a href="process-detail.html">查看</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="../js/ztree/jquery.ztree.core.min.js"></script>
+<script type="text/javascript" src="../js/html5.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/mutiselect/bootstrap-select.js"></script>
+<script type="text/javascript" src="../js/srollbar/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="../js/srollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<script type="text/javascript">
+
+
+    $(function () {
+        var setting = {};
+
+        var zNodes = [
+            {
+                name: "设备管理流程", open: true,
+                children: [
+                    {
+                        name: "设备维护流程",
+                        children: [
+                            {name: "设备异常及缺陷流程"},
+                            {name: "检查设备运行流程"},
+                            {name: "设备保修流程"},
+                            {name: "设备更换流程"}
+                        ]
+                    },
+                    {
+                        name: "设备采购流程",
+                        children: [
+                            {name: "费用报销流程"},
+                            {name: "采购审议流程"}
+                           
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "总经办流程",
+                children: [
+                    {
+                        name: "行政管理流程", open: true,
+                        children: [
+                            {name: "名片申请"},
+                            {name: "印章借出申请"},
+                            {name: "社保申请"},
+                            {name: "资质借出申请"}
+                        ]
+                    },
+                    {
+                        name: "人力资源流程",
+                        children: [
+                            {name: "出差申请"},
+                            {name: "请假申请"},
+                            {name: "加班申请"},
+                            {name: "外出登记申请"}
+                        ]
+                    }/* ,
+                    {
+                        name: "父节点23 - 折叠",
+                        children: [
+                            {name: "叶子节点231"},
+                            {name: "叶子节点232"},
+                            {name: "叶子节点233"},
+                            {name: "叶子节点234"}
+                        ]
+                    } */
+                ]
+            }/* ,
+            {name: "父节点3 - 没有子节点", isParent: true} */
+
+        ];
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+    })
+</script>
+</html>

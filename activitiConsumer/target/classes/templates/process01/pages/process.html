@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <link rel="stylesheet" href="../css/scrollbar/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="../css/pagination/pagination.css">
+    <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/mutiselect/bootstrap-select.css">
+    <link rel="stylesheet" href="../css/plugins/datagrid.css">
+</head>
+<style type="text/css">
+    div.zTreeDemoBackground {width:250px;height:362px;text-align:left;}
+    ul.ztree {margin-top: 10px;border: 1px solid #dcdcdc;background: #e4efde;width:220px;height:510px;overflow-y:auto;overflow-x:auto;}
+    ul.nav {margin-top: 10px;}
+</style>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 col-sm-2 col-xs-2">
+                <div class="zTreeDemoBackground left">
+                    <ul id="treeDemo" class="ztree"></ul>
+                </div>
+            </div>
+            <div class="col-md-10 col-sm-10 col-xs-10">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#">Home</a></li>
+                    <li role="presentation"><a href="#">Profile</a></li>
+                    <li role="presentation"><a href="#">Messages</a></li>
+                </ul>
+                <div class="datagrid-container">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="../js/ztree/jquery.ztree.core.min.js"></script>
+<script type="text/javascript" src="../js/html5.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/mutiselect/bootstrap-select.js"></script>
+<script type="text/javascript" src="../js/srollbar/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="../js/srollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript" src="../js/pagination/jquery.pagination.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../js/plugins/DataGrid.js"></script>
+<SCRIPT type="text/javascript">
+
+
+    $(document).ready(function(){
+
+    });
+
+
+    $(function () {
+        var setting = {	};
+
+        var zNodes =[
+            { name:"父节点1 - 展开", open:true,
+                children: [
+                    { name:"父节点11 - 折叠",
+                        children: [
+                            { name:"叶子节点111"},
+                            { name:"叶子节点112"},
+                            { name:"叶子节点113"},
+                            { name:"叶子节点114"}
+                        ]},
+                    { name:"父节点12 - 折叠",
+                        children: [
+                            { name:"叶子节点121"},
+                            { name:"叶子节点122"},
+                            { name:"叶子节点123"},
+                            { name:"叶子节点124"}
+                        ]},
+                    { name:"父节点13 - 没有子节点", isParent:true}
+                ]},
+            { name:"父节点2 - 折叠",
+                children: [
+                    { name:"父节点21 - 展开", open:true,
+                        children: [
+                            { name:"叶子节点211"},
+                            { name:"叶子节点212"},
+                            { name:"叶子节点213"},
+                            { name:"叶子节点214"}
+                        ]},
+                    { name:"父节点22 - 折叠",
+                        children: [
+                            { name:"叶子节点221"},
+                            { name:"叶子节点222"},
+                            { name:"叶子节点223"},
+                            { name:"叶子节点224"}
+                        ]},
+                    { name:"父节点23 - 折叠",
+                        children: [
+                            { name:"叶子节点231"},
+                            { name:"叶子节点232"},
+                            { name:"叶子节点233"},
+                            { name:"叶子节点234"}
+                        ]}
+                ]},
+            { name:"父节点3 - 没有子节点", isParent:true}
+
+        ];
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+
+        $('.datagrid-container').datagrid({
+        }, {
+            /*
+             * function description : 获取表格title
+             * */
+            getgridtitle : function (callback) {
+                $.ajax({
+                    method: "GET",
+                    url: "../data/datagrid/griddata-set.json",
+                    dataType: 'json',
+                    success: function (data) {
+                        callback(data);
+                    }
+                });
+            },
+            /*
+             * function description : 获取分页数据
+             * */
+            getgriddata : function (pageIndex, pagesize, callback) {
+//                        console.log('enter getgriddata------------');
+                $.ajax({
+                    method: "GET",
+                    url: "../data/datagrid/griddata-page-" + pageIndex + ".json",
+                    data : {'pageIndex' : pageIndex, 'pagesize' : pagesize},
+                    dataType: 'json',
+                    success: function (data) {
+                        callback(data);
+                    }
+                });
+            },
+            /*
+             * function description : 行编辑保存
+             * rowIndex : 当前编辑行的index
+             * rowData : 编辑行数据,Json格式
+             * callback : 修改成功后回调函数
+             * */
+            editsave : function (rowIndex, rowData, callback) {
+//                        console.log('enter row save after edit row data----------');
+                $.ajax({
+                    method: "POST",
+                    url: "../data/datagrid/griddata-page-0.json",
+                    data : rowData,
+                    dataType: 'json',
+                    success: function (data) {
+                        callback(rowIndex, rowData);
+                    }
+                });
+            },
+            /*
+             * function description : 列排序
+             * sortCol : 排序的字段
+             * sortType : 排序方式-升序/降序
+             * currentPage : 当前页
+             * pageSize : 每页显示条数
+             * callback(sortCol, sortType, data)  : 排序后回调函数
+             * */
+            sortgrid : function (sortCol, sortType, currentPage, pageSize, callback) {
+                $.ajax({
+                    method: "POST",
+                    url: "../data/datagrid/griddata-large-sort.json",
+                    data : {'sortcol' : sortCol, 'sorttype' : sortType, 'page' : currentPage, 'pagesize' : pageSize},
+                    dataType: 'json',
+                    success: function (data) {
+                        callback(sortCol, sortType, data.tbody);
+                    }
+                });
+            }
+
+        });
+    });
+</SCRIPT>
+</html>

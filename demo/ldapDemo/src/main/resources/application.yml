@@ -1,0 +1,8 @@
+spring:
+  ldap:
+    urls: ldap://localhost:389
+    username: cn=Manager,dc=qiuxinlin,dc=com
+    password: secret
+    base: dc=qiuxinlin,dc=com
+server:
+  port: 9990

@@ -1,0 +1,35 @@
+{
+  "options" : [
+    {
+      "optionvalue" : "1",
+      "optiontext" : "小学"
+    },{
+      "optionvalue" : "2",
+      "optiontext" : "初中"
+    },{
+      "optionvalue" : "3",
+      "optiontext" : "中专"
+    },{
+      "optionvalue" : "4",
+      "optiontext" : "高中"
+    },{
+      "optionvalue" : "5",
+      "optiontext" : "职高"
+    },{
+      "optionvalue" : "6",
+      "optiontext" : "专科"
+    },{
+      "optionvalue" : "7",
+      "optiontext" : "本科"
+    },{
+      "optionvalue" : "8",
+      "optiontext" : "硕士"
+    },{
+      "optionvalue" : "9",
+      "optiontext" : "博士"
+    },{
+      "optionvalue" : "10",
+      "optiontext" : "博士后"
+    }
+  ]
+}

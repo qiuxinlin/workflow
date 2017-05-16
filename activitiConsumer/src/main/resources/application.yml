@@ -1,0 +1,36 @@
+spring:
+  thymeleaf:
+    encoding: utf-8
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    content-type: text/html
+    cache: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/activitispringboot?characterEncoding=UTF-8
+    username: root
+    password: admin
+    driverClassName: com.mysql.jdbc.Driver
+  dubbo:
+    application:
+      name: activiConsumer
+    registry:
+      address: zookeeper://127.0.0.1:2181
+      timeout: 5000
+    scan: com.scxys
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: mysql
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  http:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 500MB
+  activiti:
+    check-process-definitions: false
+server:
+  port: 9907
