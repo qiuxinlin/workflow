@@ -67,8 +67,9 @@ public class DeploymentCollectionResource {
   @Autowired
   protected RepositoryService repositoryService;
   @RequestMapping(value="/repository/deployments", method = RequestMethod.GET, produces = "application/json")
-  public DataResponse getDeployments(@RequestParam Map<String,String> allRequestParams, HttpServletRequest request) {
-    DeploymentQuery deploymentQuery = repositoryService.createDeploymentQuery();
+  public DataResponse getDeployments(@RequestParam Map<String,String> allRequestParams, HttpServletRequest request,HttpServletResponse responses) {
+	  responses.setHeader("Access-Control-Allow-Origin", "*");
+	  DeploymentQuery deploymentQuery = repositoryService.createDeploymentQuery();
     
     // Apply filters
     if (allRequestParams.containsKey("name")) {
