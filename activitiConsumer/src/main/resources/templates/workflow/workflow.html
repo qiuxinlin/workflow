@@ -154,8 +154,8 @@
 								align="center" th:text="${processdef.deploymentId}"></div></td>
 						<td height="20" bgcolor="#FFFFFF"><div align="center"
 								class="STYLE21">
-								<a target="_blank"
-									th:href="'/workflowController/viewImage?deploymentId='+${processdef.deploymentId}+'&amp;imageName='+${processdef.diagramResourceName}">查看流程图</a>
+								<a 
+									th:href="'../bpmn-js/index-async.html?deploymentId='+${processdef.deploymentId}">查看流程图</a>
 							</div></td>
 					</tr>
 				</table></td>

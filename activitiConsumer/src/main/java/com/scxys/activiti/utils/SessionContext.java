@@ -1,5 +1,7 @@
 package com.scxys.activiti.utils;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import javax.servlet.http.HttpSession;
 
 import com.scxys.bean.Employee;
@@ -7,6 +9,7 @@ import com.scxys.bean.Employee;
 public class SessionContext {
 
 	public static final String GLOBLE_USER_SESSION = "globle_user";
+	public static String applyUserId=null;
 	
 	public static void setUser(Employee user,HttpSession httpSession){
 		if(user!=null){

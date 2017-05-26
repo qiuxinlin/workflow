@@ -29,6 +29,7 @@ public class EmployController {
 		System.out.println(employee.getName());
 		//将查询的对象（惟一）放置到Session中
 		SessionContext.setUser(employee,httpSession);
+		SessionContext.applyUserId=employee.getName();
 		return "main";
 	}
 	/**

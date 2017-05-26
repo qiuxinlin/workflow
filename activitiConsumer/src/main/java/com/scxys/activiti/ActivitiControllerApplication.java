@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @SpringBootApplication
 @Controller
-@EntityScan("com.scxys.bean")//创建实体对应的数据库
+@EntityScan({"com.scxys.bean","com.scxys.activiti.bean"})//创建实体对应的数据库
 public class ActivitiControllerApplication {
     public static void main(String[] args){
         SpringApplication.run(ActivitiControllerApplication.class, args);
