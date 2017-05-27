@@ -15,4 +15,5 @@ target/
 .project
 .springBeans
 .classpath
-/.settings/
+*/.settings/
+**/.settings/
