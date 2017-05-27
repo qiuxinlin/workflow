@@ -7,14 +7,24 @@
     <exclusiveGateway id="exclusivegateway1" name="是否缺陷"></exclusiveGateway>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="可以确认缺陷等级"></exclusiveGateway>
-    <sequenceFlow id="flow3" name="是" sourceRef="exclusivegateway1" targetRef="exclusivegateway2"></sequenceFlow>
-    <userTask id="usertask2" name="安排处理" activiti:assignee="${applyUserId}"></userTask>
-    <sequenceFlow id="flow4" name="否" sourceRef="exclusivegateway1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow3" name="是" sourceRef="exclusivegateway1" targetRef="exclusivegateway2">
+      <documentation>{result==yes}</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask2" name="安排处理"></userTask>
+    <sequenceFlow id="flow4" name="否" sourceRef="exclusivegateway1" targetRef="usertask2">
+      <documentation>{result==no}</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='no'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask3" name="确认缺陷等级" activiti:assignee="${applyUserId}"></userTask>
-    <sequenceFlow id="flow5" name="否" sourceRef="exclusivegateway2" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow5" name="否" sourceRef="exclusivegateway2" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='no'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask4" name="确认缺陷等级" activiti:assignee="${applyUserId}"></userTask>
-    <sequenceFlow id="flow6" name="是" sourceRef="exclusivegateway2" targetRef="usertask4"></sequenceFlow>
-    <userTask id="usertask5" name="运行处理" activiti:assignee="${applyUserId}"></userTask>
+    <sequenceFlow id="flow6" name="是" sourceRef="exclusivegateway2" targetRef="usertask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask5" name="运行处理"></userTask>
     <sequenceFlow id="flow7" sourceRef="usertask2" targetRef="usertask5"></sequenceFlow>
     <userTask id="usertask6" name="异常处理验收" activiti:assignee="${applyUserId}"></userTask>
     <sequenceFlow id="flow8" sourceRef="usertask5" targetRef="usertask6"></sequenceFlow>
@@ -24,27 +34,41 @@
     <exclusiveGateway id="exclusivegateway3" name="是否消除"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask6" targetRef="exclusivegateway3"></sequenceFlow>
     <endEvent id="endevent1" name="结束"></endEvent>
-    <sequenceFlow id="flow12" name="是" sourceRef="exclusivegateway3" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow12" name="是" sourceRef="exclusivegateway3" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='yes'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask8" name="缺陷记录" activiti:assignee="${applyUserId}"></userTask>
-    <sequenceFlow id="flow13" name="否" sourceRef="exclusivegateway3" targetRef="usertask8"></sequenceFlow>
+    <sequenceFlow id="flow13" name="否" sourceRef="exclusivegateway3" targetRef="usertask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='no'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="usertask8" targetRef="usertask7"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="是否需要做技术方案"></exclusiveGateway>
     <sequenceFlow id="flow15" sourceRef="usertask7" targetRef="exclusivegateway4"></sequenceFlow>
     <userTask id="usertask9" name="两票管理流程" activiti:assignee="${applyUserId}"></userTask>
-    <sequenceFlow id="flow16" name="否" sourceRef="exclusivegateway4" targetRef="usertask9"></sequenceFlow>
+    <sequenceFlow id="flow16" name="否" sourceRef="exclusivegateway4" targetRef="usertask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='no'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask10" name="缺陷处理技术方案管理流程" activiti:assignee="${applyUserId}"></userTask>
-    <sequenceFlow id="flow17" name="是" sourceRef="exclusivegateway4" targetRef="usertask10"></sequenceFlow>
+    <sequenceFlow id="flow17" name="是" sourceRef="exclusivegateway4" targetRef="usertask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='yes'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="usertask10" targetRef="usertask9"></sequenceFlow>
     <userTask id="usertask11" name="缺陷检查确认" activiti:assignee="${applyUserId}"></userTask>
     <sequenceFlow id="flow19" sourceRef="usertask9" targetRef="usertask11"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="消缺方式"></exclusiveGateway>
     <sequenceFlow id="flow20" sourceRef="usertask11" targetRef="exclusivegateway5"></sequenceFlow>
     <userTask id="usertask12" name="下达异常运行通知单" activiti:assignee="${applyUserId}"></userTask>
-    <sequenceFlow id="flow21" sourceRef="exclusivegateway5" targetRef="usertask12"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="exclusivegateway5" targetRef="usertask12">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='defult'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask13" name="等待" activiti:assignee="${applyUserId}"></userTask>
-    <sequenceFlow id="flow22" name="等待处理" sourceRef="exclusivegateway5" targetRef="usertask13"></sequenceFlow>
+    <sequenceFlow id="flow22" name="等待处理" sourceRef="exclusivegateway5" targetRef="usertask13">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='no'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask14" name="创建维修工单" activiti:assignee="${applyUserId}"></userTask>
-    <sequenceFlow id="flow23" name="立即处理" sourceRef="exclusivegateway5" targetRef="usertask14"></sequenceFlow>
+    <sequenceFlow id="flow23" name="立即处理" sourceRef="exclusivegateway5" targetRef="usertask14">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='yes'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask15" name="两票管理流程" activiti:assignee="${applyUserId}"></userTask>
     <sequenceFlow id="flow24" sourceRef="usertask13" targetRef="usertask15"></sequenceFlow>
     <sequenceFlow id="flow25" sourceRef="usertask15" targetRef="usertask14"></sequenceFlow>
@@ -53,24 +77,40 @@
     <sequenceFlow id="flow27" sourceRef="usertask16" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="消缺情况"></exclusiveGateway>
     <sequenceFlow id="flow28" sourceRef="usertask14" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow29" name="等待" sourceRef="exclusivegateway6" targetRef="usertask13"></sequenceFlow>
-    <sequenceFlow id="flow30" name="转移" sourceRef="exclusivegateway6" targetRef="usertask12"></sequenceFlow>
+    <sequenceFlow id="flow29" name="等待" sourceRef="exclusivegateway6" targetRef="usertask13">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='no'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow30" name="转移" sourceRef="exclusivegateway6" targetRef="usertask12">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result==' '}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask17" name="缺陷升级" activiti:assignee="${applyUserId}"></userTask>
-    <sequenceFlow id="flow31" name="缺陷升级" sourceRef="exclusivegateway6" targetRef="usertask17"></sequenceFlow>
+    <sequenceFlow id="flow31" name="缺陷升级" sourceRef="exclusivegateway6" targetRef="usertask17">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='yes'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="usertask17" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway7" name="是否移交观察"></exclusiveGateway>
-    <sequenceFlow id="flow34" sourceRef="exclusivegateway6" targetRef="exclusivegateway7"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="exclusivegateway6" targetRef="exclusivegateway7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='defult'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask18" name="检查人员确认消缺" activiti:assignee="${applyUserId}"></userTask>
-    <sequenceFlow id="flow35" name="否" sourceRef="exclusivegateway7" targetRef="usertask18"></sequenceFlow>
+    <sequenceFlow id="flow35" name="否" sourceRef="exclusivegateway7" targetRef="usertask18">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='no'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask19" name="运维人员消缺验收" activiti:assignee="${applyUserId}"></userTask>
     <sequenceFlow id="flow36" sourceRef="usertask18" targetRef="usertask19"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="usertask19" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask20" name="移交运行观察" activiti:assignee="${applyUserId}"></userTask>
-    <sequenceFlow id="flow38" name="是" sourceRef="exclusivegateway7" targetRef="usertask20"></sequenceFlow>
+    <sequenceFlow id="flow38" name="是" sourceRef="exclusivegateway7" targetRef="usertask20">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='yes'}]]></conditionExpression>
+    </sequenceFlow>
     <exclusiveGateway id="exclusivegateway8" name="是否需要重新处理"></exclusiveGateway>
     <sequenceFlow id="flow39" sourceRef="usertask20" targetRef="exclusivegateway8"></sequenceFlow>
-    <sequenceFlow id="flow40" name="是" sourceRef="exclusivegateway8" targetRef="usertask17"></sequenceFlow>
-    <sequenceFlow id="flow41" name="否" sourceRef="exclusivegateway8" targetRef="usertask18"></sequenceFlow>
+    <sequenceFlow id="flow40" name="是" sourceRef="exclusivegateway8" targetRef="usertask17">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow41" name="否" sourceRef="exclusivegateway8" targetRef="usertask18">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='no'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_DeviceException">
     <bpmndi:BPMNPlane bpmnElement="DeviceException" id="BPMNPlane_DeviceException">

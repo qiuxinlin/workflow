@@ -85,7 +85,7 @@
 										th:href="'/leaveBillController/input?id='+${deviceException.id }">修改</a>
 										<a
 										th:href="'/leaveBillController/delete?id='+${deviceException.id }">删除</a>
-										<a href="/deviceExceptionController/start">申请</a>
+										<a th:href="'/deviceExceptionController/start/'+${deviceException.id }">申请</a>
 									 <a
 										th:href="'/workflowController/viewHisComment?id='+${deviceException.id }">查看审核记录</a>
 								</div></td>
