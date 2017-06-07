@@ -14,14 +14,9 @@ import com.scxys.activiti.interceptor.TestInterceptor;
  */
 @SpringBootApplication
 @EntityScan({"com.scxys.bean","org.activiti"})
-public class ActivitiApplication extends WebMvcConfigurerAdapter {
+public class ActivitiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ActivitiApplication.class, args);
-    }
-    
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-    	registry.addInterceptor(new TestInterceptor());
     }
 }
