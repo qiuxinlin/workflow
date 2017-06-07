@@ -27,8 +27,8 @@ html, body, #canvas {
 	stroke: rgba(66, 180, 21, 0.7) !important; /* color elements as red */
 }
 </style>
-
 <title>流程图</title>
+
 </head>
 <body>
 	<!-- element to draw bpmn diagram in -->
@@ -59,5 +59,39 @@ html, body, #canvas {
   		//alert(urlData.deploymentId);
   		importAjax("http://localhost:9907/deviceExceptionController/findResource/"+urlData.deploymentId);
   </script>
+  <script type="text/javascript">
+	$(document).ready(function()
+	  	{
+			/* var dom=document.getElementsByTagName("g");
+			alert(dom.length); */
+			//
+			/* $("g").click(function(){
+				alert("aaaa");
+			}); */
+			//
+			/* $("[data-element-id='usertask1']").click(function(){
+				alert("usertask1");
+			}); */
+			//
+			var length=$("g.djs-element").length;
+			var arr=new Array(length);
+			arr=$("g.djs-element");
+			for(var i=0;i<arr.length;i++){
+				var temp=arr[i].attributes[1].value;
+				$("[data-element-id='"+temp+"']").attr("id",temp);
+				$("[data-element-id='"+temp+"']").click(function(){
+					//alert($(this).attr("id"));
+					$.ajax({
+						   type: "GET",
+						   async:false,
+						   url: "http://localhost:9904/history/historic-task-instances/80011",
+						   success: function(data){
+							   alert(data);
+						   }
+						});
+				});
+			}
+		});
+</script>
 </body>
 </html>

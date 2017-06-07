@@ -51,7 +51,14 @@
   // load external diagram file via AJAX and import it
 //  $.get('http://localhost:9907/deviceExceptionController/findResource/62513', importXML, 'text');
   function importAjax(url){
-	  $.get(url, importXML, 'text');
+	  //$.get(url, importXML, 'text');
+	  $.ajax({
+		   type: "GET",
+		   async:false,// 设置为同步请求
+		   url: url,
+		   //data: {ParentID: pid},
+		   success: importXML
+		});
   }
 //  return importAjax;
 
