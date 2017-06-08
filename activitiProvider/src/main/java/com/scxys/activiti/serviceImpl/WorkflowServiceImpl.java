@@ -361,7 +361,15 @@ public class WorkflowServiceImpl implements WorkflowService {
 					.singleResult();
 		return pd;
 	}
-	
+	@Override
+	public String findTaskName(String taskId) {
+		//使用任务ID，查询任务对象
+		Task task = taskService.createTaskQuery()//
+					.taskId(taskId)//使用任务ID查询
+					.singleResult();
+		String taskName=task.getTaskDefinitionKey();
+		return taskName;
+	}
 	/**
 	 * 二：查看当前活动，获取当期活动对应的坐标x,y,width,height，将4个值存放到Map<String,Object>中
 		 map集合的key：表示坐标x,y,width,height

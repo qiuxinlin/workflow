@@ -4,7 +4,7 @@ spring:
       name: activiProvider
     registry:
       address: zookeeper://127.0.0.1:2181
-      timeout: 5000
+      timeout: 1200000
     protocol:
       name: dubbo
       port: 20882

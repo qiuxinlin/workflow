@@ -15,6 +15,7 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -63,8 +64,6 @@ public class DeviceExceptionController {
 		// 修改
 		if (id != null) {
 			DeviceException dException = deviceExceptionDao.findOne(id);
-			// 3：将请假单信息放置到栈顶，页面使用struts2的标签，支持表单回显
-			// ValueContext.putValueStack(bill);
 			model.addAttribute("dException", dException);
 			return "deviceException/input";
 		}
@@ -101,8 +100,12 @@ public class DeviceExceptionController {
 	@RequestMapping(value = "findResource/{deploymentId}", method = RequestMethod.GET, produces = "text/xml")
 	public String findResource(@PathVariable("deploymentId") String deploymentId, HttpServletResponse response)
 			throws IOException {
-		Deployment deployment = repositoryService.createDeploymentQuery().deploymentId(deploymentId).singleResult();
-		String resourceName = deployment.getName() + ".bpmn20.xml";
+		//Deployment deployment = repositoryService.createDeploymentQuery().deploymentId(deploymentId).singleResult();
+		ProcessDefinition processDefinition=repositoryService.
+										createProcessDefinitionQuery().
+										deploymentId(deploymentId).singleResult();
+		String resourceName=processDefinition.getResourceName();
+		//String resourceName = deployment.getName() + ".bpmn20.xml";
 		// 获取资源文件表（act_ge_bytearray）中资源图片输入流InputStream
 		InputStream inputStream = repositoryService.getResourceAsStream(deploymentId, resourceName);
 		// 从response对象获取输出流

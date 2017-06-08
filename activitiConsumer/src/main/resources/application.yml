@@ -16,7 +16,7 @@ spring:
       name: activiConsumer
     registry:
       address: zookeeper://127.0.0.1:2181
-      timeout: 5000
+      timeout: 1200000
     scan: com.scxys
   jpa:
     hibernate:

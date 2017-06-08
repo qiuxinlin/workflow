@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -80,10 +81,6 @@ public class WorkflowController {
 	}
 	@RequestMapping(value="getDeployments",method=RequestMethod.GET,produces = "application/json")
 	@ResponseBody
-	/*@JsonSerialize(contentUsing=JsonSerializer.None.class)
-	//@JsonIgnoreProperties(ignoreUnknown=true)
-	@JsonIgnoreProperties({"resources"})*/
-	
 	public List<DeploymentEntity> getDeployments() {
 		// 查询部署对象信息，对应表（act_re_deployment）
 		List<Deployment> depList = workflowService.findDeploymentList();
@@ -235,13 +232,13 @@ public class WorkflowController {
 	 * 查看当前流程图（查看当前活动节点，并使用红色的框标注）
 	 */
 	@RequestMapping("viewCurrentImage")
-	public String viewCurrentImage(Model model,WorkflowBean workflowBean) {
+	public String viewCurrentImage(Model model,WorkflowBean workflowBean,RedirectAttributes attr) {
 		// 任务ID
 		String taskId = workflowBean.getTaskId();
-		/** 一：查看流程图 */
+		//一：查看流程图 
 		// 1：获取任务ID，获取任务对象，使用任务对象获取流程定义ID，查询流程定义对象
 		ProcessDefinition pd = workflowService.findProcessDefinitionByTaskId(taskId);
-		/** 二：查看当前活动，获取当期活动对应的坐标x,y,width,height，将4个值存放到Map<String,Object>中 */
+		// 二：查看当前活动，获取当期活动对应的坐标x,y,width,height，将4个值存放到Map<String,Object>中 
 		Map<String, Object> map = workflowService.findCoordingByTask(taskId);
 		// ValueContext.putValueContext("acs", map);
 		model.addAttribute("acs", map);
@@ -249,7 +246,13 @@ public class WorkflowController {
 		String imageName=pd.getDiagramResourceName();
 		model.addAttribute("deploymentId", deploymentId);
 		model.addAttribute("imageName", imageName);
-		return "workflow/image";
+		
+		//---------分隔符----------
+		String taskName=workflowService.findTaskName(taskId);
+		System.out.println("--------------------taskname="+taskName);
+		model.addAttribute("taskName", taskName);
+		attr.addAttribute("taskName", taskName);
+		return "redirect:../bpmn-js/index-async.html?deploymentId="+deploymentId;
 	}
 
 	// 查看历史的批注信息

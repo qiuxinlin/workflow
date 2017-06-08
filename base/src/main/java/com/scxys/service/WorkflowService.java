@@ -81,5 +81,6 @@ public interface WorkflowService {
 	List<Comment> findCommentByLeaveBillId(Long id);
 	ProcessDefinition findProcessDefinitionByTaskId(String taskId);
 	Map<String, Object> findCoordingByTask(String taskId);
+	String findTaskName(String taskId);
 }
  

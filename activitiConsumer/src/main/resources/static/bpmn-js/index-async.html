@@ -44,35 +44,31 @@ html, body, #canvas {
 
 	<!-- application -->
 	<script src="index-async.js"></script>
+	<input type="hidden" id="taskName" name="taskName" th:value="${taskName}" />
+	<script type="text/javascript">
+		function getUrl(){
+			var hrew = window.location.href;
+	  		hrew = hrew.substr(hrew.indexOf("?")+1);
+	  		var hrews = hrew.split("&");
+	  		var urlData = {};
+	  		for(var i =0 ; i<hrews.length ;i++){
+	      		var hrew = hrews[i];
+	      		var indx = hrew.indexOf("=");
+	      		var key = hrew.substr(0,indx);
+	      		var value = hrew.substr(indx+1);
+	      		urlData[key] = value;
+	  		}
+	  		return urlData;
+		}
+	</script>
 	<script>
-  		var hrew = window.location.href;
-  		hrew = hrew.substr(hrew.indexOf("?")+1);
-  		var hrews = hrew.split("&");
-  		var urlData = {};
-  		for(var i =0 ; i<hrews.length ;i++){
-      		var hrew = hrews[i];
-      		var indx = hrew.indexOf("=");
-      		var key = hrew.substr(0,indx);
-      		var value = hrew.substr(indx+1);
-      		urlData[key] = value;
-  		}
-  		//alert(urlData.deploymentId);
-  		importAjax("http://localhost:9907/deviceExceptionController/findResource/"+urlData.deploymentId);
+  		var deploymentId=getUrl().deploymentId;
+  		importAjax("http://localhost:9907/deviceExceptionController/findResource/"+deploymentId);
   </script>
   <script type="text/javascript">
 	$(document).ready(function()
 	  	{
-			/* var dom=document.getElementsByTagName("g");
-			alert(dom.length); */
-			//
-			/* $("g").click(function(){
-				alert("aaaa");
-			}); */
-			//
-			/* $("[data-element-id='usertask1']").click(function(){
-				alert("usertask1");
-			}); */
-			//
+			//添加点击事件
 			var length=$("g.djs-element").length;
 			var arr=new Array(length);
 			arr=$("g.djs-element");
@@ -91,6 +87,9 @@ html, body, #canvas {
 						});
 				});
 			}
+			//将正在运行的任务变成红色
+			var taskName=getUrl().taskName;
+			$('#'+taskName).attr("stroke","red");
 		});
 </script>
 </body>
