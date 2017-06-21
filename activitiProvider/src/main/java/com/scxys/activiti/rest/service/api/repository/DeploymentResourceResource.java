@@ -20,13 +20,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
-import org.activiti.rest.common.application.ContentTypeResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.scxys.activiti.rest.common.application.ContentTypeResolver;
 import com.scxys.activiti.rest.service.api.RestResponseFactory;
 
 

@@ -71,11 +71,11 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- activiti rest start-->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-common-rest</artifactId>
 			<version>5.22.0</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-simple-workflow</artifactId>

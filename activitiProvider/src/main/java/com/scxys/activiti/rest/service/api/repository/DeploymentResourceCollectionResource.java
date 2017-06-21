@@ -41,7 +41,7 @@ public class DeploymentResourceCollectionResource {
   protected RestResponseFactory restResponseFactory;
   
   @Autowired
-  protected DefaultContentTypeResolver contentTypeResolver;
+  protected ContentTypeResolver contentTypeResolver;
   
   @Autowired
   protected RepositoryService repositoryService;
@@ -56,6 +56,6 @@ public class DeploymentResourceCollectionResource {
     
     List<String> resourceList = repositoryService.getDeploymentResourceNames(deploymentId);
     
-    return restResponseFactory.createDeploymentResourceResponseList(deploymentId, resourceList, (ContentTypeResolver) contentTypeResolver);
+    return restResponseFactory.createDeploymentResourceResponseList(deploymentId, resourceList, contentTypeResolver);
   }
 }

@@ -13,7 +13,7 @@
 
 package com.scxys.activiti.rest.service.api.history;
 
-import org.activiti.rest.common.api.PaginateRequest;
+import com.scxys.activiti.rest.common.api.PaginateRequest;
 
 
 

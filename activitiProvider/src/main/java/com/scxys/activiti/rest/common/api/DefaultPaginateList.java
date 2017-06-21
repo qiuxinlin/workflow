@@ -15,8 +15,6 @@ package com.scxys.activiti.rest.common.api;
 
 import java.util.List;
 
-import org.activiti.rest.common.api.AbstractPaginateList;
-
 /**
  * @author Tijs Rademakers
  */

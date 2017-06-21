@@ -24,9 +24,9 @@ import org.activiti.engine.impl.ProcessInstanceQueryProperty;
 import org.activiti.engine.query.QueryProperty;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
-import org.activiti.rest.common.api.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.scxys.activiti.rest.common.api.DataResponse;
 import com.scxys.activiti.rest.service.api.RestResponseFactory;
 import com.scxys.activiti.rest.service.api.engine.variable.QueryVariable;
 import com.scxys.activiti.rest.service.api.engine.variable.QueryVariable.QueryVariableOperation;

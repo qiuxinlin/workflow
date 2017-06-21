@@ -19,9 +19,9 @@ import java.util.List;
 
 import org.activiti.engine.task.DelegationState;
 import org.activiti.engine.task.Task;
-import org.activiti.rest.common.util.DateToStringSerializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.scxys.activiti.rest.common.util.DateToStringSerializer;
 import com.scxys.activiti.rest.service.api.engine.variable.RestVariable;
 
 /**

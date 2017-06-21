@@ -15,8 +15,7 @@ package com.scxys.activiti.rest.service.api.runtime.process;
 
 import java.util.List;
 
-import org.activiti.rest.common.api.AbstractPaginateList;
-
+import com.scxys.activiti.rest.common.api.AbstractPaginateList;
 import com.scxys.activiti.rest.service.api.RestResponseFactory;
 
 /**

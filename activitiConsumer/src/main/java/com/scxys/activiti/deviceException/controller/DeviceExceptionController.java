@@ -14,6 +14,7 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.cmd.StartProcessInstanceByMessageCmd;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
@@ -82,11 +83,19 @@ public class DeviceExceptionController {
 		String key = DeviceException.class.getSimpleName();
 		System.out.println("--------------" + key);
 		Map<String, Object> variables = new HashMap<String, Object>();
-		variables.put("applyUserId", SessionContext.applyUserId);// 表示惟一用户
-		runtimeService.startProcessInstanceByKey(key, businessId, variables);
+		variables.put("applyUserId", SessionContext.applyUserId);
+		runtimeService.startProcessInstanceByKey(/*key*//*"leave"*/"testassignee", businessId, variables);
 		return "redirect:/deviceExceptionController/listTask";
 	}
 
+	@RequestMapping(value="startByMessage/{messageName}")
+	public String startByMessage(@PathVariable("messageName") String messageName) {
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("applyUserId", SessionContext.applyUserId);
+		runtimeService.startProcessInstanceByMessage(messageName, variables);
+		return "redirect:/deviceExceptionController/listTask";
+	}
+	
 	@RequestMapping("listTask")
 	public String listTask(Model model) {
 		List<Task> list = taskService.createTaskQuery()//

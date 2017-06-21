@@ -28,19 +28,17 @@ import org.activiti.engine.query.QueryProperty;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.DeploymentQuery;
-import org.activiti.rest.common.api.DataResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.scxys.activiti.rest.common.api.DataResponse;
 import com.scxys.activiti.rest.service.api.RestResponseFactory;
 
 /**
@@ -67,8 +65,7 @@ public class DeploymentCollectionResource {
   @Autowired
   protected RepositoryService repositoryService;
   @RequestMapping(value="/repository/deployments", method = RequestMethod.GET, produces = "application/json")
-  public DataResponse getDeployments(@RequestParam Map<String,String> allRequestParams, HttpServletRequest request,HttpServletResponse responses) {
-	  responses.setHeader("Access-Control-Allow-Origin", "*");
+  public DataResponse getDeployments(@RequestParam Map<String,String> allRequestParams, HttpServletRequest request) {
 	  DeploymentQuery deploymentQuery = repositoryService.createDeploymentQuery();
     
     // Apply filters

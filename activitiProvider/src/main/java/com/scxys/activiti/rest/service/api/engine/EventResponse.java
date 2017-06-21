@@ -16,10 +16,9 @@ package com.scxys.activiti.rest.service.api.engine;
 import java.util.Date;
 import java.util.List;
 
-import org.activiti.rest.common.util.DateToStringSerializer;
-
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
+import com.scxys.activiti.rest.common.util.DateToStringSerializer;
 
 
 /**

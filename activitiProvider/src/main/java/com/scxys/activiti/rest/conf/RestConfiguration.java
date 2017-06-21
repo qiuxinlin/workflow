@@ -1,10 +1,10 @@
 package com.scxys.activiti.rest.conf;
 
-import org.activiti.rest.common.application.ContentTypeResolver;
-import org.activiti.rest.common.application.DefaultContentTypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.scxys.activiti.rest.common.application.ContentTypeResolver;
+import com.scxys.activiti.rest.common.application.DefaultContentTypeResolver;
 import com.scxys.activiti.rest.service.api.RestResponseFactory;
 
 /**

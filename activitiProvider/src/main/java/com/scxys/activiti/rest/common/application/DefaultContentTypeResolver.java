@@ -13,7 +13,6 @@
 
 package com.scxys.activiti.rest.common.application;
 
-import org.activiti.rest.common.application.ContentTypeResolver;
 import org.springframework.stereotype.Component;
 
 /**

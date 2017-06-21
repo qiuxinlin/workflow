@@ -16,10 +16,9 @@ package com.scxys.activiti.rest.service.api.runtime.task;
 import java.util.Date;
 import java.util.List;
 
-import org.activiti.rest.common.api.PaginateRequest;
-
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.scxys.activiti.rest.common.api.PaginateRequest;
 import com.scxys.activiti.rest.service.api.engine.variable.QueryVariable;
 
 

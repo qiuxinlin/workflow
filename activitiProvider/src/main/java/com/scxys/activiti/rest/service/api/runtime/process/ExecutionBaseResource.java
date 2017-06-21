@@ -24,13 +24,13 @@ import org.activiti.engine.impl.ExecutionQueryProperty;
 import org.activiti.engine.query.QueryProperty;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ExecutionQuery;
-import org.activiti.rest.common.api.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.scxys.activiti.rest.common.api.DataResponse;
 import com.scxys.activiti.rest.service.api.RestResponseFactory;
 import com.scxys.activiti.rest.service.api.engine.variable.QueryVariable;
-import com.scxys.activiti.rest.service.api.engine.variable.RestVariable;
 import com.scxys.activiti.rest.service.api.engine.variable.QueryVariable.QueryVariableOperation;
+import com.scxys.activiti.rest.service.api.engine.variable.RestVariable;
 
 /**
  * @author Frederik Heremans

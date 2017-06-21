@@ -17,9 +17,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.activiti.rest.common.util.DateToStringSerializer;
-
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.scxys.activiti.rest.common.util.DateToStringSerializer;
 import com.scxys.activiti.rest.service.api.engine.variable.RestVariable;
 
 /**

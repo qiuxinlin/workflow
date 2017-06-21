@@ -22,9 +22,9 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.impl.HistoricTaskInstanceQueryProperty;
 import org.activiti.engine.query.QueryProperty;
-import org.activiti.rest.common.api.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.scxys.activiti.rest.common.api.DataResponse;
 import com.scxys.activiti.rest.service.api.RestResponseFactory;
 import com.scxys.activiti.rest.service.api.engine.variable.QueryVariable;
 

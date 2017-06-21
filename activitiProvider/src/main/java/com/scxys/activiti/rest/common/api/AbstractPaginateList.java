@@ -20,10 +20,6 @@ import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.impl.AbstractQuery;
 import org.activiti.engine.query.Query;
 import org.activiti.engine.query.QueryProperty;
-import org.activiti.rest.common.api.DataResponse;
-import org.activiti.rest.common.api.PaginateRequest;
-import org.activiti.rest.common.api.RequestUtil;
-
 /**
  * @author Tijs Rademakers
  */

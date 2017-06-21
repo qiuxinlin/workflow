@@ -12,8 +12,6 @@
  */
 package com.scxys.activiti.rest.common.api;
 
-import org.activiti.rest.common.api.AbstractPaginateList;
-
 /**
  * Interface representing a paginated request object, use when paging is needed without using URL-parameters.
  * 

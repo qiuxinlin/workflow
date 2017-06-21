@@ -23,9 +23,10 @@ import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
-import org.activiti.rest.common.application.ContentTypeResolver;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.scxys.activiti.rest.common.application.ContentTypeResolver;
 
 /**
  * @author Frederik Heremans
