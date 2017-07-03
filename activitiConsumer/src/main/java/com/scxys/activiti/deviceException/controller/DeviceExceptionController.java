@@ -28,9 +28,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.scxys.activiti.bean.DeviceException;
+import com.scxys.activiti.bean.WorkflowBean;
 import com.scxys.activiti.deviceException.dao.DeviceExceptionDao;
 import com.scxys.activiti.utils.SessionContext;
-import com.scxys.bean.WorkflowBean;
 
 /**
  * @author 作者:qiuxinlin

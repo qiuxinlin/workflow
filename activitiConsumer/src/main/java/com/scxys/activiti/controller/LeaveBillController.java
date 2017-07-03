@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.annotation.SessionScope;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.scxys.activiti.bean.Employee;
+import com.scxys.activiti.bean.LeaveBill;
+import com.scxys.activiti.service.LeaveBillService;
 import com.scxys.activiti.utils.SessionContext;
-import com.scxys.bean.Employee;
-import com.scxys.bean.LeaveBill;
-import com.scxys.service.LeaveBillService;
 
 @Controller
 @RequestMapping("/leaveBillController/")

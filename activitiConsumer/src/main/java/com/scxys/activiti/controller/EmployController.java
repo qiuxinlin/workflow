@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.scxys.activiti.bean.Employee;
+import com.scxys.activiti.service.EmployeeService;
 import com.scxys.activiti.utils.SessionContext;
-import com.scxys.bean.Employee;
-import com.scxys.service.EmployeeService;
 
 /** 
 * @author 作者: qiuxinlin

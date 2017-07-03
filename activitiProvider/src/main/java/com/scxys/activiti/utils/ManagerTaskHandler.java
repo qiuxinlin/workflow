@@ -4,7 +4,7 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.scxys.service.EmployeeService;
+import com.scxys.activiti.service.EmployeeService;
 
 /**
  * 员工经理任务分配

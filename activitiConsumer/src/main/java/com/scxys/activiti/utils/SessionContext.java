@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 
 import javax.servlet.http.HttpSession;
 
-import com.scxys.bean.Employee;
+import com.scxys.activiti.bean.Employee;
 
 public class SessionContext {
 

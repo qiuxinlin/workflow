@@ -13,7 +13,7 @@ import com.scxys.activiti.interceptor.JsonpCallbackFilter;
  * Created by pengyingzhi on 2017/3/20.
  */
 @SpringBootApplication
-@EntityScan({"com.scxys.bean","org.activiti"})
+@EntityScan({"org.activiti","com.scxys"})
 public class ActivitiApplication {
 
     public static void main(String[] args) {

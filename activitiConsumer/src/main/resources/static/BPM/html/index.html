@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>权限管理</title>
+    <link rel="stylesheet" href="../js/ele/index.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+业务流程管理平台
+</header>
+
+<div class="maim-wrapper">
+    <div id="tree" class="tree-wrapper">
+            <el-tree
+                    :data="data2"
+                    node-key="id"
+                    ref="tree"
+                    highlight-current
+                    :expand-on-click-node="false"
+                    @node-click="getKey"
+                    :props="defaultProps">
+            </el-tree>
+        </div>
+    <div class="right-wrapper">
+        <div class="iframe-box">
+            <iframe src="/bpmn-js/properties-panel/index.html"></iframe>
+        </div>
+        <div class="tabs-box">
+            <div id="tabs" class="tabs-box-left">
+                <template>
+                    <el-tabs v-model="activeName"  @tab-click="handleClick">
+                        <el-tab-pane label="用户管理" name="first">
+                            <el-form :model="form1" :inline="true" :model="formInline" class="demo-form-inline">
+                                <el-form-item   label="组织编号" :label-width="formLabelWidth">
+                                    <el-input v-model="form1.code"  auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item   label="组织名称" :label-width="formLabelWidth">
+                                    <el-input v-model="form1.name" auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item   label="组织负责人" :label-width="formLabelWidth">
+                                    <el-input v-model="form1.principal"  auto-complete="off"></el-input>
+                                </el-form-item>
+
+                                <el-form-item   label="创建时间" :label-width="formLabelWidth">
+                                    <el-date-picker
+                                            format="yyyy-MM-dd"
+                                            v-model="form1.createDate"
+                                            type="date"
+                                            placeholder="选择日期"
+                                            width="195"
+                                            @change="form1CreateDate">
+                                    </el-date-picker>
+                                </el-form-item>
+                                <div class="btn-box">
+                                    <el-form-item  :label-width="formLabelWidth">
+                                        <el-button type="primary" @click="save1"> 保 存 </el-button>
+                                        <el-button type="" > 取 消 </el-button>
+                                    </el-form-item>
+                                </div>
+
+
+                            </el-form>
+                        </el-tab-pane>
+                        <el-tab-pane label="配置管理" name="second">
+                            <el-form :model="form2" :inline="true" :model="formInline" class="demo-form-inline">
+                                <el-form-item   label="组织编号" :label-width="formLabelWidth">
+                                    <el-input v-model="form1.code"  auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item   label="组织名称" :label-width="formLabelWidth">
+                                    <el-input v-model="form1.name" auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item   label="组织负责人" :label-width="formLabelWidth">
+                                    <el-input v-model="form1.principal"  auto-complete="off"></el-input>
+                                </el-form-item>
+
+                                <el-form-item   label="创建时间" :label-width="formLabelWidth">
+                                    <el-date-picker
+                                            format="yyyy-MM-dd"
+                                            v-model="form1.createDate"
+                                            type="date"
+                                            placeholder="选择日期"
+                                            width="195"
+                                            @change="form1CreateDate">
+                                    </el-date-picker>
+                                </el-form-item>
+                                <div class="btn-box">
+                                    <el-form-item  :label-width="formLabelWidth">
+                                        <el-button type="primary" @click="save2"> 保 存 </el-button>
+                                        <el-button type="" > 取 消 </el-button>
+                                    </el-form-item>
+                                </div>
+
+
+                            </el-form>
+                        </el-tab-pane>
+                        <el-tab-pane label="角色管理" name="third">
+                            <el-form :model="form3" :inline="true" :model="formInline" class="demo-form-inline">
+                                <el-form-item   label="组织编号" :label-width="formLabelWidth">
+                                    <el-input v-model="form1.code"  auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item   label="组织名称" :label-width="formLabelWidth">
+                                    <el-input v-model="form1.name" auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item   label="组织负责人" :label-width="formLabelWidth">
+                                    <el-input v-model="form1.principal"  auto-complete="off"></el-input>
+                                </el-form-item>
+
+                                <el-form-item   label="创建时间" :label-width="formLabelWidth">
+                                    <el-date-picker
+                                            format="yyyy-MM-dd"
+                                            v-model="form1.createDate"
+                                            type="date"
+                                            placeholder="选择日期"
+                                            width="195"
+                                            @change="form1CreateDate">
+                                    </el-date-picker>
+                                </el-form-item>
+                                <div class="btn-box">
+                                    <el-form-item  :label-width="formLabelWidth">
+                                        <el-button type="primary" @click="save3"> 保 存 </el-button>
+                                        <el-button type="" > 取 消 </el-button>
+                                    </el-form-item>
+                                </div>
+
+
+                            </el-form>
+                        </el-tab-pane>
+                        <el-tab-pane label="权限管理" name="fourth">
+                            <el-form :model="form4" :inline="true" :model="formInline" class="demo-form-inline">
+                                <el-form-item   label="组织编号" :label-width="formLabelWidth">
+                                    <el-input v-model="form1.code"  auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item   label="组织名称" :label-width="formLabelWidth">
+                                    <el-input v-model="form1.name" auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item   label="组织负责人" :label-width="formLabelWidth">
+                                    <el-input v-model="form1.principal"  auto-complete="off"></el-input>
+                                </el-form-item>
+
+                                <el-form-item   label="创建时间" :label-width="formLabelWidth">
+                                    <el-date-picker
+                                            format="yyyy-MM-dd"
+                                            v-model="form1.createDate"
+                                            type="date"
+                                            placeholder="选择日期"
+                                            width="195"
+                                            @change="form1CreateDate">
+                                    </el-date-picker>
+                                </el-form-item>
+                                <div class="btn-box">
+                                    <el-form-item  :label-width="formLabelWidth">
+                                        <el-button type="primary" @click="save4"> 保 存 </el-button>
+                                        <el-button type="" > 取 消 </el-button>
+                                    </el-form-item>
+                                </div>
+
+
+                            </el-form>
+                        </el-tab-pane>
+                    </el-tabs>
+                </template>
+            </div >
+            <div class="tabs-box-right">
+                <div class="tabs-box-right-head">
+                    基本信息
+                </div>
+                <table class="basc-info">
+                    <tr>
+                        <td>ID</td>
+                        <td>122</td>
+                    </tr>
+                    <tr>
+                        <td>姓名</td>
+                        <td>张三</td>
+                    </tr>
+                    <tr>
+                        <td>部门</td>
+                        <td>技术部</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- 先引入 Vue -->
+<script src="../js/ele/vue.js"></script>
+<script src="../js/ele/vue-resource.js"></script>
+<script src="../js/ele/vue-router.js"></script>
+<!-- 引入组件库 -->
+<script src="../js/ele/index.js"></script>
+<script src="../js/jquery.min.js"></script>
+
+<script>
+    $('.right-wrapper').height($(window).height()-90);
+    $(window).resize(function () {
+        $('.right-wrapper').height($(window).height()-90);
+    })
+
+//    树形
+    var tree = new Vue({
+        el: '#tree',
+        data: {
+            data2: [{
+                id: 1,
+                label: '公司',
+                children: [{
+                    id: 4,
+                    label: '人事流程',
+                    children: [{
+                        id: 9,
+                        label: '请假流程'
+                    }, {
+                        id: 10,
+                        label: '外出申请'
+                    }]
+                }]
+            }, {
+                id: 2,
+                label: '一级 2',
+                children: [{
+                    id: 5,
+                    label: '二级 2-1'
+                }, {
+                    id: 6,
+                    label: '二级 2-2'
+                }]
+            },{
+                id: 3,
+                label: '一级 3',
+                children: [{
+                    id: 7,
+                    label: '二级 3-1'
+                }, {
+                    id: 8,
+                    label: '二级 3-2'
+                }]
+            }],
+            defaultProps: {
+                children: 'children',
+                label: 'label'
+            }
+
+        },
+        methods: {
+            getCheckedNodes:function() {
+                console.log(this.$refs.tree.getCheckedNodes());
+            },
+            getCheckedKeys:function() {
+                console.log(this.$refs.tree.getCheckedKeys());
+            },
+            setCheckedNodes:function() {
+                this.$refs.tree.setCheckedNodes([{
+                    id: 5,
+                    label: '二级 2-1'
+                }, {
+                    id: 9,
+                    label: '三级 1-1-1'
+                }]);
+            },
+            getKey:function (data,node) {
+                console.log(node);
+            },
+            setCheckedKeys:function() {
+                this.$refs.tree.setCheckedKeys([3]);
+            },
+            resetChecked:function() {
+                this.$refs.tree.setCheckedKeys([]);
+            }
+
+        }
+    })
+//页签
+    var tabs = new Vue({
+          el:'#tabs',
+        data:{
+            activeName: 'first',
+            form1: {
+                code: "",
+                name: "",
+                principal: "",
+                createDate: ""
+            },
+            form2: {
+                code: "",
+                name: "",
+                principal: "",
+                createDate: ""
+            },
+            form3: {
+                code: "",
+                name: "",
+                principal: "",
+                createDate: ""
+            },
+            form4: {
+                code: "",
+                name: "",
+                principal: "",
+                createDate: ""
+            },
+            formLabelWidth: '260px',
+        },
+        methods: {
+            handleClick:function(tab, event) {
+                console.log(tab.name);
+            },
+            form1CreateDate:function (val) {
+                this.form1.createDate = val;
+                console.log(this.form1)
+            },
+            save1:function () {
+                this.$confirm('确认保存吗？','系统提示',{type:'warning'}).then(function () {
+                    console.log(2)
+                }).catch(function () {
+                    console.log('取消')
+                })
+            },
+            form2CreateDate:function (val) {
+                this.form2.createDate = val;
+                console.log(this.form2)
+            },
+            save2:function () {
+                this.$confirm('确认保存吗？','系统提示',{type:'warning'}).then(function () {
+                    console.log(2)
+                }).catch(function () {
+                    console.log('取消')
+                })
+            },
+            form3CreateDate:function (val) {
+                this.form3.createDate = val;
+                console.log(this.form3)
+            },
+            save3:function () {
+                this.$confirm('确认保存吗？','系统提示',{type:'warning'}).then(function () {
+                    console.log(2)
+                }).catch(function () {
+                    console.log('取消')
+                })
+            },
+            form4CreateDate:function (val) {
+                this.form4.createDate = val;
+                console.log(this.form4)
+            },
+            save4:function () {
+                this.$confirm('确认保存吗？','系统提示',{type:'warning'}).then(function () {
+                    console.log(2)
+                }).catch(function () {
+                    console.log('取消')
+                })
+            }
+        }
+    })
+//    页签表单
+
+</script>
+</body>
+</html>

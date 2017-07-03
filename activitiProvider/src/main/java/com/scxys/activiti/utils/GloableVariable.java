@@ -5,7 +5,7 @@ package com.scxys.activiti.utils;
 * @description 说明:
 */
 
-import com.scxys.bean.Employee;
+import com.scxys.activiti.bean.Employee;
 
 public class GloableVariable {
 

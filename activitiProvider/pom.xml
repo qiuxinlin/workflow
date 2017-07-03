@@ -24,7 +24,7 @@
 
 		<dependency>
 			<groupId>com.example</groupId>
-			<artifactId>base</artifactId>
+			<artifactId>activitiBase</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
