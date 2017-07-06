@@ -9,7 +9,7 @@ import org.springframework.web.filter.CorsFilter;
 /** 
 * @author 作者:qiuxinlin 
 * @version 创建时间:2017年6月7日 上午10:03:48 
-* @description 说明:
+* @description 说明:跨域请求
 */
 @Configuration
 public class CorsConfig {

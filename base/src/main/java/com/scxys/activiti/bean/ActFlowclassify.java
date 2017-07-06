@@ -11,11 +11,11 @@ import javax.persistence.Table;
 /** 
 * @author 作者:qiuxinlin 
 * @version 创建时间:2017年7月3日 下午1:40:41 
-* @description 说明:
+* @description 说明:分类
 */
 @Entity
 @Table(name="act_flowclassify")
-public class Flowclassify implements Serializable{
+public class ActFlowclassify implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -29,9 +29,9 @@ public class Flowclassify implements Serializable{
 	@Column
 	private String parentCode;//上级编码
 	@Column
-	private String FullPath;//分类全路径
+	private String fullPath;//分类全路径
 	@Column
-	private String Describtion;//分类描述
+	private String describtion;//分类描述
 	public Long getId() {
 		return id;
 	}
@@ -57,18 +57,17 @@ public class Flowclassify implements Serializable{
 		this.parentCode = parentCode;
 	}
 	public String getFullPath() {
-		return FullPath;
+		return fullPath;
 	}
 	public void setFullPath(String fullPath) {
-		FullPath = fullPath;
+		this.fullPath = fullPath;
 	}
 	public String getDescribtion() {
-		return Describtion;
+		return describtion;
 	}
 	public void setDescribtion(String describtion) {
-		Describtion = describtion;
+		this.describtion = describtion;
 	}
-	
 	
 }
  
