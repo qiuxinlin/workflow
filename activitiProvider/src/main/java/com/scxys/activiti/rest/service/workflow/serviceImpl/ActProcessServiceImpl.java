@@ -42,22 +42,6 @@ public class ActProcessServiceImpl implements ActProcessService{
 	}
 
 	@Override
-	public List<ActProcess> findAll() {
-		List<ActProcess> list=processDao.findAll();
-		return list;
-	}
-
-	@Override
-	public void deleteProcessById(long id) {
-		processDao.delete(id);
-	}
-
-	@Override
-	public void updateProcessById(long id) {
-		
-	}
-
-	@Override
 	public List<Map> findTreeByPid(String pid) {
 		NamedParameterJdbcTemplate jbdcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		Map param = new HashMap<>();
@@ -70,6 +54,16 @@ public class ActProcessServiceImpl implements ActProcessService{
 	@Override
 	public ActProcess findProcessByCode(String processCode) {
 		return processDao.findProcessByCode(processCode);
+	}
+
+	@Override
+	public void updateProcess(ActProcess actProcess) {
+		processDao.save(actProcess);
+	}
+
+	@Override
+	public void deleteProcessByCode(String processCode) {
+		processDao.deleteByProcessCode(processCode);
 	}
 
 }

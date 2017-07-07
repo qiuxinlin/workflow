@@ -37,14 +37,29 @@ public class ActProcessCtl {
 		actProcessService.addProcess(actProcess);
 	}
 
+	@RequestMapping(value = "/actProcess", method = RequestMethod.PUT, produces = "application/json")
+	public void updateProcess(@RequestBody ActProcess actProcess, HttpServletRequest request,
+			HttpServletResponse response) {
+		actProcessService.updateProcess(actProcess);
+	}
+	
 	@RequestMapping(value = "/actProcess", method = RequestMethod.GET, produces = "application/json")
-	public List<Map> getProcess(String pid) {
+	public List<Map> getProcessTree(String pid) {
 		return actProcessService.findTreeByPid(pid);
 	}
 	
 	@RequestMapping(value = "/actProcess/{processCode}", method = RequestMethod.GET, produces = "application/json")
-	public ActProcess getProcessById(@PathVariable("processCode") String processCode) {
-		ActProcess aa=actProcessService.findProcessByCode(processCode);
+	public ActProcess getProcessByCode(@PathVariable("processCode") String processCode) {
 		return actProcessService.findProcessByCode(processCode);
+	}
+	
+	@RequestMapping(value = "/actProcess/{processCode}", method = RequestMethod.DELETE)
+	public String deleteProcessByCode(@PathVariable("processCode") String processCode) {
+		actProcessService.deleteProcessByCode(processCode);
+		ActProcess actProcess=actProcessService.findProcessByCode(processCode);
+		if(actProcess==null) {
+			return "删除成功";
+		}
+		return "删除失败";
 	}
 }

@@ -13,10 +13,9 @@ import com.scxys.activiti.bean.ActProcess;
 public interface ActProcessService {
 
 	void addProcess(ActProcess actProcess);
-	List<ActProcess> findAll();
+	void updateProcess(ActProcess actProcess);
 	ActProcess findProcessByCode(String processCode);
-	void deleteProcessById(long id);
-	void updateProcessById(long id);
+	void deleteProcessByCode(String processCode);
 	List<Map> findTreeByPid(String pid);
 }
  

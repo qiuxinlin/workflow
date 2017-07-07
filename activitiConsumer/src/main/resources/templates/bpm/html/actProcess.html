@@ -35,7 +35,6 @@
         </div>
         <div class="tool" id="tool">
             <el-button type="primary" @click="add">新增</el-button>
-            <el-button size="">修改</el-button>
             <el-button @click="del" size="">删除</el-button>
         </div>
         <div class="content-wrapper relative">
@@ -51,7 +50,7 @@
                             @node-click="getKey"
                             :props="defaultProps">
                     </el-tree>
-                </div>
+            </div>
             <div class="" id="tabs">
                 <div class="from-box">
                     <template class="">
@@ -67,24 +66,21 @@
                                     <el-form-item   label="流程图ID：" :label-width="formLabelWidth">
                                         <el-input v-model="form1.deploymentId"  auto-complete="off"></el-input>
                                     </el-form-item>
-                                    
-                                        <el-form-item   label="流程描述：" :label-width="formLabelWidth">
-                                            <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 4}" v-model="form1.describtion"  auto-complete="off"></el-input>
-                                        </el-form-item>
-                                    
-                                    
-                                        <el-form-item   label="流程分类：" :label-width="formLabelWidth">
-                                            <el-input type="textarea" autosize v-model="form1.flowClassify"  auto-complete="off"></el-input>
-                                        </el-form-item>
-                                    
+                                    <el-form-item   label="流程描述：" :label-width="formLabelWidth">
+                                        <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 4}" v-model="form1.describtion"  auto-complete="off"></el-input>
+                                    </el-form-item>
+                                    <el-form-item   label="流程分类：" :label-width="formLabelWidth">
+                                        <el-input type="textarea" autosize v-model="form1.flowClassify"  auto-complete="off"></el-input>
+                                    </el-form-item>
+                                    <el-form-item   label="上级编码：" :label-width="formLabelWidth">
+                						<el-input v-model="form1.parentCode"  auto-complete="off"></el-input>
+            						</el-form-item>
                                     <div class="btn-box">
                                         <el-form-item  :label-width="formLabelWidth">
                                             <el-button type="primary" @click="save1"> 保 存 </el-button>
                                             <el-button type="" > 取 消 </el-button>
                                         </el-form-item>
                                     </div>
-
-
                                 </el-form>
                             </el-tab-pane>
                             <el-tab-pane label="流程建模" name="second">
@@ -99,23 +95,21 @@
                                         <el-input v-model="form2.id"  auto-complete="off"></el-input>
                                     </el-form-item>
                                     
-                                        <el-form-item   label="流程描述：" :label-width="formLabelWidth">
-                                            <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 4}" v-model="form2.describe"  auto-complete="off"></el-input>
-                                        </el-form-item>
-                                   
-                                    
-                                        <el-form-item   label="流程分类：" :label-width="formLabelWidth">
-                                            <el-input type="textarea" autosize v-model="form2.classify"  auto-complete="off"></el-input>
-                                        </el-form-item>
-                                    
+                                    <el-form-item   label="流程描述：" :label-width="formLabelWidth">
+                                        <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 4}" v-model="form2.describe"  auto-complete="off"></el-input>
+                                    </el-form-item>
+                                    <el-form-item   label="流程分类：" :label-width="formLabelWidth">
+                                        <el-input type="textarea" autosize v-model="form2.classify"  auto-complete="off"></el-input>
+                                    </el-form-item>
+                                    <el-form-item   label="上级编码：" :label-width="formLabe2Width">
+                						<el-input v-model="form2.parentCode"  auto-complete="off"></el-input>
+            						</el-form-item>
                                     <div class="btn-box">
                                         <el-form-item  :label-width="formLabelWidth">
                                             <el-button type="primary" @click="save1"> 保 存 </el-button>
                                             <el-button type="" > 取 消 </el-button>
                                         </el-form-item>
                                     </div>
-
-
                                 </el-form>
                             </el-tab-pane>
                         </el-tabs>
@@ -140,19 +134,22 @@
     <el-dialog title="新增" :visible.sync="addFormVisible">
         <el-form :model="addForm" :inline="true" class="demo-form-inline">
             <el-form-item   label="流程编号：" :label-width="formLabe2Width">
-                <el-input v-model="addForm.code"  auto-complete="off"></el-input>
+                <el-input v-model="addForm.processCode"  auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item   label="流程名称：" :label-width="formLabe2Width">
-                <el-input v-model="addForm.name" auto-complete="off"></el-input>
+                <el-input v-model="addForm.processName" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item   label="流程图ID：" :label-width="formLabe2Width">
-                <el-input v-model="addForm.id"  auto-complete="off"></el-input>
+                <el-input v-model="addForm.deploymentId"  auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item   label="流程描述：" :label-width="formLabelWidth">
-                <el-input type="textarea" autosize v-model="addForm.describe"  auto-complete="off"></el-input>
+                <el-input type="textarea" autosize v-model="addForm.describtion"  auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item   label="流程分类：" :label-width="formLabelWidth">
-                <el-input type="textarea" autosize v-model="addForm.classify"  auto-complete="off"></el-input>
+                <el-input type="textarea" autosize v-model="addForm.flowClassify"  auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item   label="上级编码：" :label-width="formLabe2Width">
+                <el-input v-model="addForm.parentCode"  auto-complete="off"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -190,23 +187,35 @@
             formLabelWidth: '180px',
             addFormVisible: false,
             addForm: {
-                code: "12",
-                name: "",
-                id: "",
-                describe: "",
-                classify: ""
+            	processCode: "",
+            	processName: "",
+            	deploymentId: "",
+            	flowClassify: "",
+            	describtion: "",
+            	parentCode: ""
             },
             formLabe2Width: '180px'
         },
         methods: {
-
 //          提交新增
             addSubmitForm:function () {
                 var that =this
                 this.$confirm('确认提交吗？', '提示', {
                     type: 'warning'
                 }).then(function () {
-                    console.log(dialog.addForm)
+                    console.log(dialog.addForm);
+                    that.$http.post("http://localhost:9907/actProcess",dialog.addForm).then(function(data){
+                		this.$message({
+                            message: data.data,
+                            type: 'warning'
+                        });
+                		window.location.reload();
+                    },function(response){
+                        console.info(response);
+                        if(response){
+                           
+                        }
+                    });
                     dialog.addFormVisible = false;
                 })
             },
@@ -224,17 +233,30 @@
             },
             del:function () {
                 var that =this;
-                if(this.delData!==''){
-                    this.$confirm('确认删除id为'+this.delData+'的元素吗？', '提示', {
+                var delData=this.delData;
+                if(this.delData!=''&&this.delData!=undefined){
+                    this.$confirm('确认删除编号为'+this.delData+'的流程吗？', '提示', {
                         type: 'warning'
                     }).then(function () {
                         //删除 do something
+                        that.$http.delete("http://localhost:9907/actProcess/"+delData).then(function(data){
+                    		this.$message({
+                                message: data.data,
+                                type: 'warning'
+                            });
+                    	window.location.reload();
+                        },function(response){
+                            console.info(response);
+                            if(response){
+                               
+                            }
+                        });
                     }).catch(function () {
                         //取消
                     })
                 }else {
                     this.$message({
-                        message: '请选择需要删除的内容！',
+                        message: '请选择需要删除的流程！',
                         type: 'warning'
                     });
                 }
@@ -271,6 +293,7 @@
             	//debugger;
             	   this.$http.get("http://localhost:9907/actProcess/"+data.id).then(function(data){
             		   tabs.form1 = data.data;
+            		   tool.delData = data.data.processCode;
                 },function(response){
                     console.info(response);
                     if(response){
@@ -318,18 +341,21 @@
             activeName: 'first',
             formLabelWidth:'180px',
             form1: {
+            	id: "",
             	processCode: "",
             	processName: "",
             	deploymentId: "",
                 describtion: "",
-                flowClassify: ""
+                flowClassify: "",
+                parentCode: ""
             },
             form2: {
                 code: "2312",
                 name: "",
                 id: "",
                 describe: "",
-                classify: ""
+                classify: "",
+                parentCode: ""
             },
         },
         methods:{
@@ -337,11 +363,17 @@
                 console.log(tab, event);
             },
             save1:function () {
-                this.$message({
-                    showClose: true,
-                    type: 'warning',
-                    duration:1000000,
-                    message: '您有4个文件需要进行会签！'
+            	this.$http.put("http://localhost:9907/actProcess",tabs.form1).then(function(data){
+            		this.$message({
+                        message: data.data,
+                        type: 'warning'
+                    });
+            		window.location.reload();
+                },function(response){
+                    console.info(response);
+                    if(response){
+                       
+                    }
                 });
             }
         }

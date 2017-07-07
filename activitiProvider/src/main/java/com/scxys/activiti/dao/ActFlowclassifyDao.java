@@ -26,8 +26,6 @@ public interface ActFlowclassifyDao extends JpaRepository<ActFlowclassify, Long>
 	public List<ActFlowclassify> findChildren(String parent_code);
 	@Query(value="select * from act_flowclassify where classify_code=?1",nativeQuery=true)
 	public ActFlowclassify findByCode(String classifyCode);
-	@Query(value="DELETE FROM act_flowclassify WHERE classify_code=?1",nativeQuery=true)
-	public void deleteByCode(String classifyCode);
 	void deleteByClassifyCode(String classifyCode);
 }
  
