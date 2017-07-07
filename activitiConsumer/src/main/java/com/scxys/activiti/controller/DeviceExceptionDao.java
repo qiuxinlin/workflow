@@ -1,4 +1,4 @@
-package com.scxys.activiti.deviceException.dao;
+package com.scxys.activiti.controller;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
