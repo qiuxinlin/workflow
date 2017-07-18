@@ -19,3 +19,5 @@ target/
 **/.settings/
 .bpmn/
 **/.bpmn/**
+.iml
+.idea/
