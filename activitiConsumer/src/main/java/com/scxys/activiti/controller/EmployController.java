@@ -26,7 +26,7 @@ public class EmployController {
 	@RequestMapping(value="login/",method = RequestMethod.GET)
 	public String login(Model model,HttpSession httpSession,String name){
 		Employee employee=employeeService.findByName(name);
-		System.out.println(employee.getName());
+		System.out.println("======"+employee.getName());
 		//将查询的对象（惟一）放置到Session中
 		SessionContext.setUser(employee,httpSession);
 		SessionContext.applyUserId=employee.getName();

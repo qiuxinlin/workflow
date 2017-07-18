@@ -1238,7 +1238,7 @@ ProcessDiagramCanvas.prototype = {
 		
 		// shape
 		var shape = this.g.rect(x, y, width, height, TASK_CORNER_ROUND);
-		var attr = {"stroke-width": this.strokeWidth, stroke: TASK_STROKE_COLOR, fill: this.getPaint()};
+		var attr = {"stroke-width": this.strokeWidth, stroke: TASK_STROKE_COLOR, fill: Color.Green};//this.getPaint()
 		shape.attr(attr);
 		//shape.attr({fill: "90-"+this.getPaint()+"-" + Color.get(250, 250, 244)});
 		

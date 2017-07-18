@@ -60,6 +60,25 @@ public class WorkflowController {
 	LeaveBillService leaveBillService;
 	@Autowired
 	WorkflowLoadServiceImpl updownLoadService;
+	/**
+	 * 
+	 * @author 作者: qiuxinlin
+	 * @version 创建时间:2017年7月11日 下午3:16:23 
+	 * @description 说明:全任务委托
+	 */
+	public String delegateTasks(String afterDate,String beforeDate,String assignee,String delegateUser) {
+		if(afterDate.equals("")||afterDate==null) {
+			return "请选择开始时间";
+		}
+		if(beforeDate.equals("")||beforeDate==null) {
+			return "请选择结束时间";
+		}
+		if(delegateUser.equals("")||delegateUser==null) {
+			return "请选择委托人";
+		}
+		workflowService.delegateTasks(afterDate, beforeDate, assignee, delegateUser);
+		return "委托成功";
+	}
 
 	/**
 	 * 部署管理首页显示

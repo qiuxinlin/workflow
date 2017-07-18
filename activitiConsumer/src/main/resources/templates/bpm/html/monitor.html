@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>运行监控</title>
+    <link rel="stylesheet" href="/bpm/js/ele/index.css">
+    <link rel="stylesheet" href="/bpm/css/style.css">
+</head>
+<body>
+<header>
+    <img src="/bpm/images/logo.png" alt="">
+    <span class="com-name">业务流程管理平台</span>
+</header>
+<div>
+    <div class="side" id="side">
+        <div id="menu" class="menu">
+            <el-menu default-active="2" unique-opened class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+                <el-submenu index="1">
+                    <template slot="title"><i class="el-icon-menu"></i>基础管理</template>
+                    <el-menu-item index="1-1">组织管理</el-menu-item>
+                    <el-menu-item index="1-2">用户管理</el-menu-item>
+                </el-submenu>
+                <el-submenu index="2">
+                    <template slot="title"><i class="el-icon-setting"></i>权限管理</template>
+                    <el-menu-item index="2-1">模块管理</el-menu-item>
+                    <el-menu-item index="2-2">角色管理</el-menu-item>
+                </el-submenu>
+            </el-menu>
+
+        </div>
+    </div>
+    <div class="main-wrapper " >
+        <div class="nav-bar">
+            <span class="position-info">您现在的位置：<a>公文管理</a> &gt; <span class="current-position">公文会签</span></span>
+        </div>
+        <div class="content-wrapper" style="top: 45px;">
+            <div id="tab" class="run-detail relative">
+                <el-tabs v-model="activeName">
+                    <el-tab-pane label="按流程" name="first">
+
+                        <div  class="tree-wrapper">
+                            <el-tree
+                                    :data="data2"
+                                    node-key="id"
+                                    ref="tree"
+                                    highlight-current
+                                    :expand-on-click-node="false"
+                                    @node-click="getKey"
+                                    :props="defaultProps">
+                            </el-tree>
+                        </div>
+                        <div class="table-box" style="margin-left: 200px">
+                            <div class="form-box">
+                                <el-form :inline="true" :model="detailForm" class="demo-form-inline">
+                                    <el-form-item label="开始时间：" :label-width="formLabelWidth">
+                                        <el-date-picker
+                                                v-model="detailForm.startTime"
+                                                type="date"
+                                                placeholder="选择日期"
+                                        >
+                                        </el-date-picker>
+                                    </el-form-item>
+                                    <el-form-item label="结束时间：" :label-width="formLabelWidth">
+                                        <el-date-picker
+                                                v-model="detailForm.endTime"
+                                                type="date"
+                                                placeholder="选择日期"
+                                        >
+                                        </el-date-picker>
+                                    </el-form-item>
+                                    <el-form-item label=" " :label-width="formLabel2Width">
+                                        <el-button type="primary" @click="query">查询</el-button>
+                                    </el-form-item>
+
+                                </el-form>
+                            </div>
+                            <div class="center">
+                                <el-table
+                                        :data="processInstances"
+                                        border
+                                        height="600"
+                                        @selection-change="">
+                                    <el-table-column
+                                            type="index"
+                                            width="80"
+                                            label="序号">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="id"
+                                            label="流程实例ID"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="processDefinitionId"
+                                            label="流程定义ID">
+                                    </el-table-column>
+
+                                    <el-table-column
+                                            prop="startTime"
+                                            label="开始时间"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="endTime"
+                                            label="结束时间"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="durationInMillis"
+                                            label="办理时长"
+                                            :formatter="durationInMillisFormatter"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="startActivityId"
+                                            label="启动节点"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="endActivityId"
+                                            label="结束节点"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="完成情况">
+                                    	<template scope="scope">
+                                            <span v-if="scope.row.endActivityId==null">未完成</span>
+                                            <span v-else>完成</span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="操作"
+                                            width="120">
+                                        <template scope="scope">
+                                            <el-button @click="cancelEntrust(scope.row)" type="text" >运行明细</el-button>
+                                        </template>
+                                    </el-table-column>
+
+                                </el-table>
+                            </div>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="按部门" name="second">
+                        <div  class="tree-wrapper">
+                            <el-tree
+                                    :data="data2"
+                                    node-key="id"
+                                    ref="tree"
+                                    highlight-current
+                                    :expand-on-click-node="false"
+                                    @node-click="getKey"
+                                    :props="defaultProps">
+                            </el-tree>
+                        </div>
+                        <div class="table-box" style="margin-left: 200px">
+                            <div class="form-box">
+                                <el-form :inline="true" :model="detailForm2" class="demo-form-inline">
+                                    <el-form-item label="开始时间：" :label-width="formLabelWidth">
+                                        <el-date-picker
+                                                v-model="detailForm2.startTime"
+                                                type="date"
+                                                placeholder="选择日期"
+                                        >
+                                        </el-date-picker>
+                                    </el-form-item>
+                                    <el-form-item label="结束时间：" :label-width="formLabelWidth">
+                                        <el-date-picker
+                                                v-model="detailForm2.endTime"
+                                                type="date"
+                                                placeholder="选择日期">
+                                        </el-date-picker>
+                                    </el-form-item>
+                                    <el-form-item label=" " :label-width="formLabel2Width">
+                                        <el-button type="primary" @click="query">查询</el-button>
+                                    </el-form-item>
+
+                                </el-form>
+                            </div>
+                            <div class="center">
+                                <el-table
+                                        :data="processInstances"
+                                        border
+                                        height="600"
+                                        @selection-change="">
+                                    <el-table-column
+                                            type="index"
+                                            width="80"
+                                            label="序号">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="task"
+                                            label="任务环节"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="startTime"
+                                            label="开始时间">
+                                    </el-table-column>
+
+                                    <el-table-column
+                                            prop="endTime"
+                                            label="完成时间"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="transacter"
+                                            label="办理人"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="transactTimes"
+                                            label="办理时长"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="status"
+                                            label="状态"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="操作"
+                                            width="120">
+                                        <template scope="scope">
+                                            <a href="#">运行明细</a>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="按办理人" name="third">
+                        <div class="tree-wrapper">
+                            <el-tree
+                                    :data="data2"
+                                    node-key="id"
+                                    ref="tree"
+                                    highlight-current
+                                    :expand-on-click-node="false"
+                                    @node-click="getKey"
+                                    :props="defaultProps">
+                            </el-tree>
+                        </div>
+                        <div class="table-box" style="margin-left: 200px">
+                            <div class="form-box">
+                                <el-form :inline="true" :model="detailForm3" class="demo-form-inline">
+                                    <el-form-item label="开始时间：" :label-width="formLabelWidth">
+                                        <el-date-picker
+                                                v-model="detailForm3.startTime"
+                                                type="date"
+                                                placeholder="选择日期"
+                                        >
+                                        </el-date-picker>
+                                    </el-form-item>
+                                    <el-form-item label="结束时间：" :label-width="formLabelWidth">
+                                        <el-date-picker
+                                                v-model="detailForm3.endTime"
+                                                type="date"
+                                                placeholder="选择日期"
+                                        >
+                                        </el-date-picker>
+                                    </el-form-item>
+                                    <el-form-item label=" " :label-width="formLabel2Width">
+                                        <el-button type="primary" @click="query">查询</el-button>
+                                    </el-form-item>
+
+                                </el-form>
+                            </div>
+                            <div class="center">
+                                <el-table
+                                        :data="processInstances"
+                                        border
+                                        height="600"
+                                        @selection-change="">
+                                    <el-table-column
+                                            type="index"
+                                            width="80"
+                                            label="序号">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="task"
+                                            label="任务环节"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="startTime"
+                                            label="开始时间">
+                                    </el-table-column>
+
+                                    <el-table-column
+                                            prop="endTime"
+                                            label="完成时间"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="transacter"
+                                            label="办理人"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="transactTimes"
+                                            label="办理时长"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="status"
+                                            label="状态"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="操作"
+                                            width="120">
+                                        <template scope="scope">
+                                            <a href="#">运行明细</a>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </div>
+                    </el-tab-pane>
+
+                </el-tabs>
+            </div>
+        </div>
+        <div class="foot-biu">
+             四川新迎顺信息技术股份有限公司
+        </div>
+    </div>
+</div>
+
+<!-- 先引入 Vue -->
+<script src="/bpm/js/ele/vue.js"></script>
+<script src="/bpm/js/ele/vue-resource.js"></script>
+<script src="/bpm/js/ele/vue-router.js"></script>
+<!-- 引入组件库 -->
+<script src="/bpm/js/ele/index.js"></script>
+<script src="/bpm/js/jquery.min.js"></script>
+<script src="/bpm/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<script>
+//
+    var menu = new Vue({
+        el:'#menu',
+        methods: {
+            handleOpen:function(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose:function(key, keyPath) {
+                console.log(key, keyPath);
+            }
+        }
+    });
+
+    var tab = new Vue({
+        el:'#tab',
+        data:{
+            activeName: 'first',
+            formLabelWidth:'85px',
+            formLabel2Width:'30px',
+            detailForm:{
+                startTime:'',
+                endTime:''
+            },
+            detailForm2:{
+                startTime:'',
+                endTime:''
+            },
+            detailForm3:{
+                startTime:'',
+                endTime:''
+            },
+            data2: [
+                {
+                    id: 1,
+                    label: '一级 1',
+                    children: [{
+                        id: 4,
+                        label: '二级 1-1',
+                        children: [{
+                            id: 9,
+                            label: '三级 1-1-1'
+                        }, {
+                            id: 10,
+                            label: '三级 1-1-2'
+                        }]
+                    }]
+                }, {
+                    id: 2,
+                    label: '一级 2',
+                    children: [{
+                        id: 5,
+                        label: '二级 2-1'
+                    }, {
+                        id: 6,
+                        label: '二级 2-2'
+                    }]
+                },{
+                    id: 2,
+                    label: '一级 2',
+                    children: [{
+                        id: 5,
+                        label: '二级 2-1'
+                    }, {
+                        id: 6,
+                        label: '二级 2-2'
+                    }]
+                },{
+                    id: 2,
+                    label: '一级 2',
+                    children: [{
+                        id: 5,
+                        label: '二级 2-1'
+                    }, {
+                        id: 6,
+                        label: '二级 2-2'
+                    }]
+                },{
+                    id: 2,
+                    label: '一级 2',
+                    children: [{
+                        id: 5,
+                        label: '二级 2-1'
+                    }, {
+                        id: 6,
+                        label: '二级 2-2'
+                    }]
+                },{
+                    id: 2,
+                    label: '一级 2',
+                    children: [{
+                        id: 5,
+                        label: '二级 2-1'
+                    }, {
+                        id: 6,
+                        label: '二级 2-2'
+                    }]
+                },{
+                    id: 2,
+                    label: '一级 2',
+                    children: [{
+                        id: 5,
+                        label: '二级 2-1'
+                    }, {
+                        id: 6,
+                        label: '二级 2-2'
+                    }]
+                },{
+                    id: 2,
+                    label: '一级 2',
+                    children: [{
+                        id: 5,
+                        label: '二级 2-1'
+                    }, {
+                        id: 6,
+                        label: '二级 2-2'
+                    }]
+                }, {
+                    id: 3,
+                    label: '一级 3',
+                    children: [{
+                        id: 7,
+                        label: '二级 3-1'
+                    }, {
+                        id: 8,
+                        label: '二级 3-2'
+                    }]
+                }],
+            defaultProps: {
+                children: 'children',
+                label: 'label'
+            },
+            processInstances:[]
+        },
+        created:function(){
+            this.getProcessInstances();
+        },
+        methods:{
+        	//获取流程实例表
+        	getProcessInstances:function(){
+                this.$http.get("http://localhost:9904/history/historic-process-instances").then(function(data){
+                	tab.processInstances=data.data.data;
+                },function(response){
+                    console.info(response);
+                    if(response){
+                    }
+                })
+            },
+            handleClick:function(tab, event) {
+                console.log(tab, event);
+            },
+            save1:function () {
+                this.$message({
+                    showClose: true,
+                    type: 'warning',
+                    duration:1000000,
+                    message: '您有4个文件需要进行会签！'
+                });
+            },
+            query:function () {//查询
+
+            },
+            getCheckedNodes:function() {
+                console.log(this.$refs.tree.getCheckedNodes());
+            },
+            getCheckedKeys:function() {
+                console.log(this.$refs.tree.getCheckedKeys());
+            },
+            setCheckedNodes:function() {
+                this.$refs.tree.setCheckedNodes([{
+                    id: 5,
+                    label: '二级 2-1'
+                }, {
+                    id: 9,
+                    label: '三级 1-1-1'
+                }]);
+            },
+            getKey:function (data,node) {
+                tool.delData = data.id
+            },
+            setCheckedKeys:function() {
+                console.log(this.$refs.tree.getCheckedKeys());
+            },
+            resetChecked:function() {
+                this.$refs.tree.setCheckedKeys([]);
+            },
+            durationInMillisFormatter:function(data,row){
+            	return (data.durationInMillis/3600).toFixed(0)+"小时";
+            },
+            cancelEntrust:function(data){
+            	window.location.href="http://localhost:9907/runDetail?processInstanceId="+data.id+"&processDefinitionId="+data.processDefinitionId;
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

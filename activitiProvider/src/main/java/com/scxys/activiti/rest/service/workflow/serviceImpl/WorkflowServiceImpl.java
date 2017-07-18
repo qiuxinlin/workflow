@@ -4,11 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipInputStream;
-import javax.servlet.http.HttpSession;
+
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
@@ -18,7 +19,6 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.impl.identity.Authentication;
-import org.activiti.engine.impl.persistence.entity.DeploymentEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
@@ -27,12 +27,9 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import com.alibaba.dubbo.config.annotation.Service;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.scxys.activiti.bean.Employee;
 import com.scxys.activiti.bean.LeaveBill;
 import com.scxys.activiti.bean.WorkflowBean;
@@ -68,6 +65,18 @@ public class WorkflowServiceImpl implements WorkflowService {
 	EmployeeService employeeService;
 	
 	@Override
+	public void delegateTasks(String afterDate,String beforeDate,String assignee,String delegateUser) {
+		// TODO Auto-generated method stub
+		Date after=new Date();
+		Date before=new Date();
+		List<Task> taskList=taskService.createTaskQuery().taskCreatedAfter(after).taskCreatedBefore(before)
+					.taskAssignee(assignee).list();
+		for(Task task:taskList) {
+			taskService.delegateTask(task.getId(), delegateUser);
+		}
+	}
+
+	@Override
 	public void deploymentProcessDefinition(File file, String filename) {
 		try {
 			//2：将File类型的文件转化成ZipInputStream流
@@ -80,8 +89,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 			e.printStackTrace();
 		}
 	}
-	@JsonSerialize(contentUsing=JsonSerializer.None.class)
-	@JsonIgnoreProperties(ignoreUnknown=true)
+	
 	@Override
 	public List<Deployment> findDeploymentList() {
 		List<Deployment> list = repositoryService.createDeploymentQuery()//创建部署对象查询

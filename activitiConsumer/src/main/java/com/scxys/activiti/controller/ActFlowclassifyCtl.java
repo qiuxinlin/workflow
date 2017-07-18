@@ -8,11 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -48,7 +44,8 @@ public class ActFlowclassifyCtl {
 		List<Map<String, Object>> listMap=getChildrens(root);
 		return listMap;
 	}
-	
+
+	@DeleteMapping
 	@RequestMapping(value="/actFlowclassify/{classifyCode}", method=RequestMethod.DELETE)
 	public String deleteFlowclassifyByCode(@PathVariable("classifyCode") String classifyCode) {
 		flowclassifyService.deleteFlowclassifyByCode(classifyCode);

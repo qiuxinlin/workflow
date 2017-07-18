@@ -41,6 +41,9 @@ header .com-name{
     left: 0;
     min-height: 650px;
 }
+.main-group{
+    min-height: 780px;
+}
 .foot-biu{
     position: absolute;
     bottom: 0;
@@ -69,6 +72,9 @@ header .com-name{
     left: 15px;
     overflow: auto;
 }
+.group-content-wrapper{
+    top:50px;
+}
 .position-info {
     float: left;
     display: block;
@@ -95,6 +101,18 @@ header .com-name{
     border: 1px solid #DFE6EC;
     border-radius: 5px;
     width: 180px;
+    overflow: auto;
+    background: #fff;
+}
+.group-table-wrapper{
+    position: absolute;
+    top:0;
+    left: 200px;
+    bottom: 50px;
+    min-height: 500px;
+    border: 1px solid #DFE6EC;
+    border-radius: 5px;
+    width: 300px;
     overflow: auto;
     background: #fff;
 }
@@ -132,7 +150,7 @@ header .com-name{
 .el-date-editor--daterange.el-input{
     width: 193px;
 }
-.el-tabs__content{
+#tabs .el-tabs__content{
     padding: 20px 50px;
 }
 /*菜单*/
@@ -205,22 +223,24 @@ header .com-name{
     border-radius:5px;
     background: #fff;
 }
-/*页签*/
-#tabs{
-    margin-left: 200px;
-
+.tabs-lay #tool{
+    margin-top: 0;
 }
-#tabs .el-tabs__content{
+/*页签*/
+.tabs-lay{
+    margin-left: 520px;
+}
+.tabs-lay .el-tabs__content{
     border: 1px solid #ddd;
     padding: 25px 5px;
     background: #fff;
     border-radius: 5px;
     min-height: 250px;
 }
-#tabs .el-tabs__content .el-form{
+.tabs-lay .el-tabs__content .el-form{
     max-width: 1200px;
 }
-#tabs .el-tabs__content .btn-box{
+.tabs-lay .el-tabs__content .btn-box{
     display: block;
     margin-top: 20px;
     text-align: center;
@@ -277,4 +297,48 @@ header .com-name{
 }
 #form .btn-box{
     text-align: center;
+}
+/*用户分组*/
+.group-table-wrapper .el-tabs__content{
+    padding: 5px 15px;
+}
+.group-content-wrapper .from-box{
+    border: 1px solid #ddd;
+    padding: 25px 5px;
+    background: #fff;
+    border-radius: 5px;
+    min-height: 250px;
+    margin-top: 20px;
+}
+.center{
+    text-align: center;
+}
+.center .el-table th{
+    text-align: center;
+}
+.group-content-wrapper .from-box .btn-box{
+    margin-top: 30px;
+    text-align: center;
+}
+.group-table{
+    margin: 10px 20px;
+}
+.group-table-wrapper .page-box{
+    margin-top: 20px;
+    text-align: center;
+}
+.group-d .el-dialog__body{
+    max-height: 330px;
+    overflow: auto;
+}
+/*任务委托*/
+.run-detail .table-box{
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    padding: 20px;
+
+}
+.run-detail table a{
+    color: #20a0ff;
+    text-decoration: none;
 }
