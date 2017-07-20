@@ -3,6 +3,8 @@ package com.scxys.activiti.rest.service.workflow.serviceImpl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -66,9 +68,15 @@ public class WorkflowServiceImpl implements WorkflowService {
 	
 	@Override
 	public void delegateTasks(String afterDate,String beforeDate,String assignee,String delegateUser) {
-		// TODO Auto-generated method stub
-		Date after=new Date();
-		Date before=new Date();
+		DateFormat dateFormat=DateFormat.getDateInstance();
+		Date after= null;
+		Date before= null;
+		try {
+			after = dateFormat.parse(afterDate);
+			before = dateFormat.parse(beforeDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		List<Task> taskList=taskService.createTaskQuery().taskCreatedAfter(after).taskCreatedBefore(before)
 					.taskAssignee(assignee).list();
 		for(Task task:taskList) {

@@ -1,14 +1,13 @@
 package com.scxys.activiti.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.scxys.activiti.bean.ActDelegation;
 import com.scxys.activiti.bean.ActFlowclassify;
@@ -33,6 +32,17 @@ public class ActDelegationCtl {
 	public List<ActDelegation> findAll(){
 		List<ActDelegation> list=delegationService.findAll();
 		return list;
+	}
+	@RequestMapping(value = "/actDelegationDel",method = RequestMethod.POST)
+	public String delete(@RequestParam("selectStr") String selectStr){
+		String[] array=selectStr.split("-");
+		if(array.length>0){
+			for(int i=0;i<array.length;i++){
+				delegationService.deleteById(Long.parseLong(array[i]));
+			}
+			return "删除成功";
+		}
+		return "删除失败";
 	}
 }
  

@@ -98,11 +98,13 @@
                                     <el-table-column
                                             prop="startTime"
                                             label="开始时间"
+                                            :formatter="dateFormatStartTime"
                                     >
                                     </el-table-column>
                                     <el-table-column
                                             prop="endTime"
                                             label="结束时间"
+                                            :formatter="dateFormatEndTime"
                                     >
                                     </el-table-column>
                                     <el-table-column
@@ -335,8 +337,12 @@
 <script src="/bpm/js/ele/index.js"></script>
 <script src="/bpm/js/jquery.min.js"></script>
 <script src="/bpm/js/jquery.mCustomScrollbar.concat.min.js"></script>
-
+<script src="/bpm/js/date.js"></script>
 <script>
+    //日期格式化
+    function formatDates(time){
+        return formatDate(new Date(time),'yyyy-MM-dd hh:mm');
+    };
 //
     var menu = new Vue({
         el:'#menu',
@@ -474,6 +480,18 @@
             this.getProcessInstances();
         },
         methods:{
+            //格式化开始时间
+            dateFormatStartTime:function(data,row){
+                if(data.startTime!=null){
+                    return formatDates(data.startTime);
+                }
+            },
+            //格式化结束时间
+            dateFormatEndTime:function(data,row){
+                if(data.endTime!=null){
+                    return formatDates(data.endTime);
+                }
+            },
         	//获取流程实例表
         	getProcessInstances:function(){
                 this.$http.get("http://localhost:9904/history/historic-process-instances").then(function(data){
@@ -522,8 +540,11 @@
             resetChecked:function() {
                 this.$refs.tree.setCheckedKeys([]);
             },
+            //毫秒转化为分钟
             durationInMillisFormatter:function(data,row){
-            	return (data.durationInMillis/3600).toFixed(0)+"小时";
+        	    if(data.durationInMillis!=null){
+                    return (data.durationInMillis/60000).toFixed(0)+"分钟";
+                }
             },
             cancelEntrust:function(data){
             	window.location.href="http://localhost:9907/runDetail?processInstanceId="+data.id+"&processDefinitionId="+data.processDefinitionId;

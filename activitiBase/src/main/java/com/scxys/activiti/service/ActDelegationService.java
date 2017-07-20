@@ -15,5 +15,6 @@ public interface ActDelegationService {
 	List<ActDelegation> findByOwner(String owner);
 	void add(ActDelegation delegation);
 	void deleteById(long id);
+	void  updateStatus(long id);
 }
  

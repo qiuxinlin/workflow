@@ -84,6 +84,7 @@
                                     <el-table-column
                                             prop="createTime"
                                             label="委托时间"
+                                            :formatter="dateFormat"
                                     >
                                     </el-table-column>
                                     <el-table-column
@@ -128,7 +129,7 @@
                                 <el-table
                                         :data="delegationList"
                                         border
-                                        @selection-change="">
+                                        @selection-change="selected">
                                     <el-table-column
                                         type="selection"
                                         width="60"
@@ -141,18 +142,27 @@
                                             label="序号">
                                     </el-table-column>
                                     <el-table-column
+                                            type="hidden"
+                                            prop="id"
+                                            label="ID"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
                                             prop="delegationDate"
                                             label="委托时间"
+                                            :formatter="dateFormatDelegationDate"
                                     >
                                     </el-table-column>
                                     <el-table-column
                                             prop="startDate"
-                                            label="开始时间">
+                                            label="开始时间"
+                                            :formatter="dateFormatStartDate">
                                     </el-table-column>
 
                                     <el-table-column
                                             prop="endDate"
                                             label="结束时间"
+                                            :formatter="dateFormatEndDate"
                                     >
                                     </el-table-column>
                                     <el-table-column
@@ -183,7 +193,7 @@
                                             width="160"
                                             fixed="right">
                                         <template scope="scope">
-                                            <span v-if="scope.row.status==0"><el-button @click="entrustTask(scope.row)" type="text" size="small">任务委托</el-button></span>
+                                            <span v-if="scope.row.status==0"><el-button @click="entrustTasks(scope.row)" type="text" size="small">任务委托</el-button></span>
                                             <span v-else><el-button @click="cancelEntrust(scope.row)" type="text" size="small">取消委托</el-button></span>&nbsp;&nbsp;&nbsp;
                                             <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
                                         </template>
@@ -197,10 +207,10 @@
                             <div class="form-box">
                                 <el-form :inline="true" :model="queryForm" class="demo-form-inline">
                                     <el-form-item label="委托人：" :label-width="formLabelWidth">
-                                    <el-input v-model="queryForm.consignor" placeholder=""></el-input>
+                                    <el-input v-model="queryForm.owner" placeholder=""></el-input>
                                 </el-form-item>
                                     <el-form-item label="委托方式：" :label-width="formLabelWidth">
-                                        <el-radio-group v-model="queryForm.consignorWay">
+                                        <el-radio-group v-model="queryForm.way">
                                             <el-radio label="单任务"></el-radio>
                                             <el-radio label="全委托"></el-radio>
                                         </el-radio-group>
@@ -227,7 +237,7 @@
                             </div>
                             <div class="center" style="margin-top: 20px">
                                 <el-table
-                                        :data="taskList"
+                                        :data="delegationQueryList"
                                         border
                                         @selection-change="">
                                     <el-table-column
@@ -236,47 +246,35 @@
                                             label="序号">
                                     </el-table-column>
                                     <el-table-column
-                                            prop="task"
-                                            label="任务环节"
+                                            prop="id"
+                                            label="任务ID"
                                     >
                                     </el-table-column>
                                     <el-table-column
-                                            prop="startTime"
-                                            label="开始时间">
+                                            prop="processDefinitionId"
+                                            label="流程名称"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="name"
+                                            label="任务名称">
                                     </el-table-column>
 
                                     <el-table-column
-                                            prop="endTime"
-                                            label="完成时间"
+                                            prop="startTime"
+                                            label="委托时间"
+                                            :formatter="dateFormatQuery"
                                     >
                                     </el-table-column>
                                     <el-table-column
-                                            prop="transacter"
+                                            prop="owner"
+                                            label="委托人"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="assignee"
                                             label="办理人"
                                     >
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="transactTimes"
-                                            label="办理时长"
-                                    >
-                                    </el-table-column>
-                                    <el-table-column
-                                            label="状态"
-                                    >
-                                        <template scope="scope">
-                                            <span v-if="scope.row.status==0">未委托</span>
-                                            <span v-else>已委托</span>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column
-                                            label="操作"
-                                            width="120"
-                                            fixed="right"
-                                    >
-                                        <template scope="scope">
-                                            <span v-if="scope.row.status==0"><el-button @click="entrustTask(scope.row)" type="text" size="small">任务委托</el-button></span>
-                                            <span v-else><el-button @click="cancelEntrust(scope.row)" type="text" size="small">取消委托</el-button></span>
-                                        </template>
                                     </el-table-column>
                                 </el-table>
                             </div>
@@ -350,8 +348,18 @@
 <script src="/bpm/js/ele/index.js"></script>
 <script src="/bpm/js/jquery.min.js"></script>
 <script src="/bpm/js/jquery.mCustomScrollbar.concat.min.js"></script>
-
+<script src="/bpm/js/date.js"></script>
 <script>
+    function formatDates(time){
+        return formatDate(new Date(time),'yyyy-MM-dd hh:mm');
+    };
+    function formatDatesTwo(time){
+        return formatDate(new Date(time),'yyyy-MM-dd');
+    };
+    //多选结果
+    var selectArray=new Array();
+    //多选结果转换为字符串
+    var selectStr=null;
 //
     var menu = new Vue({
         el:'#menu',
@@ -375,19 +383,57 @@
               name:''
             },
             queryForm:{
-                consignor:'',
-                consignorWay:'',
+                owner:'',
+                way:'',
                 startTime:'',
                 endTime:''
             },
             taskList:[],
-            delegationList:[]
+            delegationList:[],
+            delegationQueryList:[]
         },
         created:function(){
             this.getTask();
             this.getDelegation();
         },
         methods:{
+            //选择
+            selected:function (data) {
+                for(var i=0;i<data.length;i++){
+                    selectArray[i]=data[i].id;
+                }
+                selectStr=selectArray.join("-");
+            },
+            //格式化委托查询中的委托时间
+            dateFormatQuery:function(data,row){
+                if(data.startTime!=null){
+                    return formatDates(data.startTime);
+                }
+            },
+            //格式化开始时间
+            dateFormatStartDate:function(data,row){
+                if(data.startDate!=null){
+                    return formatDatesTwo(data.startDate);
+                }
+            },
+            //格式化结束时间
+            dateFormatEndDate:function(data,row){
+                if(data.endDate!=null){
+                    return formatDatesTwo(data.endDate);
+                }
+            },
+            //格式化委托时间
+            dateFormatDelegationDate:function(data,row){
+                if(data.delegationDate!=null){
+                    return formatDatesTwo(data.delegationDate);
+                }
+            },
+            //格式化开始时间
+            dateFormat:function(data,row){
+                if(data.createTime!=null){
+                    return formatDates(data.createTime);
+                }
+            },
             handleClick:function(tab, event) {
                 console.log(tab, event);
             },
@@ -403,13 +449,66 @@
                 dialog.addFormVisible = true;
             },
             del:function () {//删除
-
+                var that=this;
+                if(selectArray.length>0){
+                    this.$confirm('确认删除？', '提示', {
+                        type: 'warning'
+                    }).then(function () {
+                        that.$http.post("http://localhost:9907/actDelegationDel",{"selectStr":selectStr},{
+                            emulateJSON:true
+                        }).then(function(data){
+                            this.$message({
+                                message: data.data,
+                                type: 'warning'
+                            });
+                            window.location.reload();
+                        },function(response){
+                            console.info(response);
+                            if(response){
+                            }
+                        })
+                    }).catch(function () {
+                        //取消
+                    })
+                }else {
+                    this.$message({
+                        message: '请选择需要删除的内容！',
+                        type: 'warning'
+                    });
+                }
             },
             edit:function () {//编辑
 
             },
             query:function () {//查询
+                this.$http.post("http://localhost:9904/query/historic-task-instances",{"taskOwner":tab.queryForm.owner,
+                    "taskCreatedAfter":tab.queryForm.startTime,"taskCreatedBefore":tab.queryForm.endTime}).then(function(data){
+                    tab.delegationQueryList=data.data.data;
+                },function(response){
+                    console.info(response);
+                    if(response){
+                    }
+                })
+            },
+            //全任务委托
+            entrustTasks:function (row) {
+                var that =this;
+                this.$confirm('确定委托吗？','提示',{type:'warning'}).then(function () {
+                    that.$http.get("http://localhost:9907/delegateTasks",{"id":row.id,"startDate":row.startDate,"endDate":row.endDate,"owner":row.owner,"assignee":row.assignee}).then(function(data){
+                        this.$message({
+                            message: data.data,
+                            type: 'warning'
+                        });
+                        window.location.reload();
+                    },function(response){
+                        console.info(response);
+                        if(response){
 
+                        }
+                    });
+                }).catch(function () {
+
+                })
             },
             //委托
             entrustTask:function (row) {
@@ -428,11 +527,11 @@
                     },function(response){
                         console.info(response);
                         if(response){
-                           
+
                         }
                     });
                 }).catch(function () {
-                    
+
                 })
             },
 			//取消委托
@@ -448,11 +547,11 @@
                     },function(response){
                         console.info(response);
                         if(response){
-                           
+
                         }
                     });
                 }).catch(function () {
-                    
+
                 })
             },
             //获取待办任务
@@ -655,7 +754,7 @@ var dialog = new Vue({
                     },function(response){
                         console.info(response);
                         if(response){
-                           
+
                         }
                     });
                 dialog.addFormVisible = false;

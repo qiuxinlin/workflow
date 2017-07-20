@@ -34,13 +34,18 @@ public class ActDelegationServiceImpl implements ActDelegationService{
 	@Override
 	public void add(ActDelegation delegation) {
 
-		delegationDao.saveAndFlush(delegation);
+		delegationDao.save(delegation);
 	}
 
 	@Override
 	public void deleteById(long id) {
-		// TODO Auto-generated method stub
-		
+		delegationDao.delete(id);
+	}
+	@Override
+	public void  updateStatus(long id){
+		ActDelegation actDelegation=delegationDao.findOne(id);
+		actDelegation.setStatus(1);
+		delegationDao.saveAndFlush(actDelegation);
 	}
 
 }
