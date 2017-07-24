@@ -29,7 +29,6 @@ public class ActivitiControllerApplication {
 
 	@RequestMapping(value = "/bpm", method = RequestMethod.GET)
 	public String bpm() {
-		System.out.println("----------");
 		return "bpm/html/actFlowclassify";
 	}
 
