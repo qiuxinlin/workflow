@@ -7,10 +7,10 @@ spring:
     cache: false
     mode: LEGACYHTML5
   datasource:
-    url: jdbc:mysql://192.168.3.71:3306/activiti?characterEncoding=UTF-8
-    username: root
-    password: root
-    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:oracle:thin:@192.168.3.71:1521:orcl
+    username: c##activiti
+    password: activiti
+    driverClassName: oracle.jdbc.driver.OracleDriver
   dubbo:
     application:
       name: activiConsumer
