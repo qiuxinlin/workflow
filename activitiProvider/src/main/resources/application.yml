@@ -15,10 +15,10 @@ spring:
     database: mysql
     show-sql: true
   datasource:
-    url: jdbc:mysql://192.168.3.71:3306/activiti?characterEncoding=UTF-8
-    username: root
-    password: root
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:oracle:thin:@192.168.3.71:1521:orcl
+    username: c##neoinfo
+    password: neoinfo
+    driver-class-name: oracle.jdbc.driver.OracleDriver
   activiti:
     check-process-definitions: false
 
