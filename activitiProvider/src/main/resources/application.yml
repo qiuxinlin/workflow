@@ -15,9 +15,9 @@ spring:
     database: mysql
     show-sql: true
   datasource:
-    url: jdbc:mysql://localhost:3306/activitispringboot?characterEncoding=UTF-8
+    url: jdbc:mysql://192.168.3.71:3306/activiti?characterEncoding=UTF-8
     username: root
-    password: admin
+    password:
     driver-class-name: com.mysql.jdbc.Driver
   activiti:
     check-process-definitions: false
