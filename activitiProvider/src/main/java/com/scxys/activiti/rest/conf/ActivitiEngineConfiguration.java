@@ -32,15 +32,15 @@ import com.scxys.activiti.rest.form.MonthFormType;
 import com.scxys.activiti.rest.form.ProcessDefinitionFormType;
 import com.scxys.activiti.rest.form.UserFormType;
 
-@Configuration
+//@Configuration
 public class ActivitiEngineConfiguration {
 
   private final Logger log = LoggerFactory.getLogger(ActivitiEngineConfiguration.class);
   
-  @Autowired
+  //@Autowired
   protected Environment environment;
   
-  @Bean
+  //@Bean
   public DataSource dataSource() { 
     SimpleDriverDataSource ds = new SimpleDriverDataSource();
     

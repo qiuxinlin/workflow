@@ -2,11 +2,7 @@ package com.scxys.activiti.bean;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /** 
 * @author 作者:qiuxinlin 
@@ -20,7 +16,8 @@ public class ActFlowclassify implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name = "seq_act_flowclassify",sequenceName = "seq_act_flowclassify",allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq_act_flowclassify")
 	private Long id;//主键ID
 	@Column
 	private String classifyCode;//分类编码

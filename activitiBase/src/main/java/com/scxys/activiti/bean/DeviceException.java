@@ -3,11 +3,7 @@ package com.scxys.activiti.bean;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /** 
 * @author 作者:qiuxinlin 
@@ -20,7 +16,7 @@ public class DeviceException implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;//主键ID
 	@Column
 	private String dname;//设备名称

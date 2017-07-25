@@ -1,11 +1,7 @@
 package com.scxys.activiti.bean;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /** 
 * @author 作者:qiuxinlin 
@@ -18,78 +14,97 @@ public class ActDelegation implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name = "seq_act_delegation",sequenceName = "seq_act_delegation",allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq_act_delegation")
+	@Column(name = "id_")
 	private long id;
-	@Column
+	@Column(name = "owner_")
 	private String owner;
-	@Column
+	@Column(name = "assignee_")
 	private String assignee;
-	@Column
+	@Column(name = "delegationDate_")
 	private String delegationDate;
-	@Column
+	@Column(name = "startDate_")
 	private String startDate;
-	@Column
+	@Column(name = "endDate_")
 	private String endDate;
-	@Column
+	@Column(name = "comment_")
 	private String comment;
-	@Column
+	@Column(name = "author_")
 	private String author;
-	@Column
+	@Column(name = "status_")
 	private int status=0;
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getOwner() {
 		return owner;
 	}
+
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
+
 	public String getAssignee() {
 		return assignee;
 	}
+
 	public void setAssignee(String assignee) {
 		this.assignee = assignee;
 	}
+
 	public String getDelegationDate() {
 		return delegationDate;
 	}
+
 	public void setDelegationDate(String delegationDate) {
 		this.delegationDate = delegationDate;
 	}
+
 	public String getStartDate() {
 		return startDate;
 	}
+
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
+
 	public String getEndDate() {
 		return endDate;
 	}
+
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
+
 	public String getComment() {
 		return comment;
 	}
+
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+
 	public String getAuthor() {
 		return author;
 	}
+
 	public void setAuthor(String author) {
 		this.author = author;
 	}
+
 	public int getStatus() {
 		return status;
 	}
+
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
 }
  

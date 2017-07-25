@@ -130,7 +130,7 @@
 <script>
 	var parameter=getQueryString("processInstanceId");
 	var processDefinitionId=getQueryString("processDefinitionId");
-	$("iframe").attr("src","../diagram-viewer/index.html?processDefinitionId="+processDefinitionId);
+	$("iframe").attr("src","../diagram-viewer/index.html?processDefinitionId="+processDefinitionId+"&processInstanceId="+parameter);
     var menu = new Vue({
         el:'#menu',
         methods: {

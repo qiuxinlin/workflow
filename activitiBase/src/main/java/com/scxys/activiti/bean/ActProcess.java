@@ -1,11 +1,7 @@
 package com.scxys.activiti.bean;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /** 
 * @author 作者:qiuxinlin 
@@ -19,7 +15,8 @@ public class ActProcess implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name = "seq_act_process",sequenceName = "seq_act_process",allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq_act_process")
 	private Long id;//主键ID
 	@Column
 	private String processCode;

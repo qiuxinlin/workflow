@@ -60,10 +60,10 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>oracle</groupId>
 			<artifactId>ojdbc14</artifactId>
