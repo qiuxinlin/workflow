@@ -25,13 +25,13 @@ public class LeaveBillServiceImpl implements LeaveBillService{
 	
 	/**保存请假单*/
 	@Override
-	public void saveLeaveBill(LeaveBill leaveBill,Employee employee) {
+	public void saveLeaveBill(LeaveBill leaveBill) {
 		//获取请假单ID
 		Long id = leaveBill.getId();
 		/**新增保存*/
 		if(id==null){
 			//1：从Session中获取当前用户对象，将LeaveBill对象中user与Session中获取的用户对象进行关联
-			leaveBill.setUser(employee);//建立管理关系
+			//leaveBill.setUser(employee);//建立管理关系
 			//2：保存请假单表，添加一条数据
 			leaveBillDao.save(leaveBill);
 		}

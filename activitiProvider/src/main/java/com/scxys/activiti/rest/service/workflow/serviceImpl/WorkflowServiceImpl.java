@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipInputStream;
 
+import com.scxys.activiti.service.LeaveBillService;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
@@ -85,6 +86,34 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 
 	@Override
+	public Object findBusinessByTaskId(String taskId) {
+		Task task = taskService.createTaskQuery()//
+				.taskId(taskId)//使用任务ID查询
+				.singleResult();
+		ProcessInstance pi=null;
+		if (task!=null){
+			 pi = runtimeService.createProcessInstanceQuery()//
+					.processInstanceId(task.getProcessInstanceId())//使用流程实例ID查询
+					.singleResult();
+		}else {
+			return "未查到任务";
+		}
+
+		if (pi!=null){
+			String buniness_key = pi.getBusinessKey();
+			if(buniness_key.equals("")||buniness_key==null){
+				return "流程没有关联业务表";
+			}
+			return leaveBillDao.findOne(Long.parseLong(buniness_key));
+		}
+		return "未查到流程实例";
+	}
+
+
+
+
+
+	@Override
 	public void deploymentProcessDefinition(File file, String filename) {
 		try {
 			//2：将File类型的文件转化成ZipInputStream流
@@ -133,7 +162,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		Long id = workflowBean.getId();
 		LeaveBill leaveBill = leaveBillDao.findOne(id);
 		//2：更新请假单的请假状态从0变成1（初始录入-->审核中）
-		leaveBill.setState(1);
+		leaveBill.setState("1");
 		//3：使用当前对象获取到流程定义的key（对象的名称就是流程定义的key）
 		String key = leaveBill.getClass().getSimpleName();
 		/**
@@ -303,7 +332,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		if(pi==null){
 			//更新请假单表的状态从1变成2（审核中-->审核完成）
 			LeaveBill bill = leaveBillDao.findOne(id);
-			bill.setState(2);
+			bill.setState("2");
 		}
 	}
 	

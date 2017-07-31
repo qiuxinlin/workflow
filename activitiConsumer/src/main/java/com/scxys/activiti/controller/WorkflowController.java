@@ -1,6 +1,7 @@
 package com.scxys.activiti.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.neoinfo.pojo.CommRes;
 import com.scxys.activiti.bean.Employee;
 import com.scxys.activiti.bean.LeaveBill;
 import com.scxys.activiti.bean.WorkflowBean;
@@ -68,7 +69,20 @@ public class WorkflowController {
         delegationService.updateStatus(delegationId);
         return "委托成功";
     }
-
+    /**
+     * @Author: qiuxinlin
+     * @Dercription: 通过任务ID获取对应的业务表单
+     * @Date: 2017/7/28
+     */
+    @RequestMapping(value="/business/{taskId}", method=RequestMethod.GET)
+    public CommRes findBusinessByTaskId(@PathVariable String taskId){
+        LeaveBill leaveBill=(LeaveBill) workflowService.findBusinessByTaskId(taskId);
+        if(leaveBill!=null){
+            return CommRes.success(leaveBill);
+        }else{
+            return CommRes.errorRes("400","未查到业务表单");
+        }
+    }
     /**
      * 部署管理首页显示
      *

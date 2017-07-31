@@ -11,26 +11,29 @@ import javax.persistence.*;
 @Entity
 @Table(name="leavebill")
 public class LeaveBill implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "seq_act_leaveBill",sequenceName = "seq_act_leaveBill",allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq_act_leaveBill")
+	@Column(name = "id_")
 	private Long id;//主键ID
-	@Column
-	private Integer days;// 请假天数
-	@Column
+	@Column(name = "days_")
+	private String days;// 请假天数
+	@Column(name = "content_")
 	private String content;// 请假内容
-	@Column
-	private Date leaveDate = new Date();// 请假时间
-	@Column
+	@Column(name = "leaveDate_")
+	private String leaveDate;// 请假时间
+	@Column(name = "remark_")
 	private String remark;// 备注
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private Employee user;// 请假人
-	
-	private Integer state=0;// 请假单状态 0初始录入,1.开始审批,2为审批完成
+	@Column(name = "endDate_")
+	private String endDate;
+	@Column(name = "type_")
+	private String type;
+	@Column(name="user_")
+	private String user;// 请假人
+	@Column(name="state_")
+	private String state;// 请假单状态 0初始录入,1.开始审批,2为审批完成
 
 	public Long getId() {
 		return id;
@@ -40,11 +43,11 @@ public class LeaveBill implements Serializable{
 		this.id = id;
 	}
 
-	public Integer getDays() {
+	public String getDays() {
 		return days;
 	}
 
-	public void setDays(Integer days) {
+	public void setDays(String days) {
 		this.days = days;
 	}
 
@@ -56,11 +59,11 @@ public class LeaveBill implements Serializable{
 		this.content = content;
 	}
 
-	public Date getLeaveDate() {
+	public String getLeaveDate() {
 		return leaveDate;
 	}
 
-	public void setLeaveDate(Date leaveDate) {
+	public void setLeaveDate(String leaveDate) {
 		this.leaveDate = leaveDate;
 	}
 
@@ -72,21 +75,35 @@ public class LeaveBill implements Serializable{
 		this.remark = remark;
 	}
 
-	public Employee getUser() {
+	public String getUser() {
 		return user;
 	}
 
-	public void setUser(Employee user) {
+	public void setUser(String user) {
 		this.user = user;
 	}
 
-	public Integer getState() {
+	public String getState() {
 		return state;
 	}
 
-	public void setState(Integer state) {
+	public void setState(String state) {
 		this.state = state;
 	}
-	
-	
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }

@@ -117,6 +117,12 @@
 			<artifactId>spring-security-web</artifactId>
 		</dependency> -->
 		<!--  activiti rest end -->
+		<!--统一返回-->
+		<dependency>
+			<groupId>com.neoinfo</groupId>
+			<artifactId>greatplat-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

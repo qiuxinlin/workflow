@@ -2,81 +2,61 @@ package com.scxys.activiti.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpSession;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.annotation.SessionScope;
+
+import ch.qos.logback.core.net.SyslogOutputStream;
+import com.neoinfo.pojo.CommRes;
+import org.activiti.engine.RuntimeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.scxys.activiti.bean.Employee;
 import com.scxys.activiti.bean.LeaveBill;
 import com.scxys.activiti.service.LeaveBillService;
-import com.scxys.activiti.utils.SessionContext;
 
-@Controller
+@RestController
 @RequestMapping("/leaveBillController/")
 public class LeaveBillController {
 
 	@Reference(version = "1.0.0")
 	LeaveBillService leaveBillService;
-	
-	/**
-	 * 请假管理首页显示
-	 */
-	@RequestMapping("home")
-	public String home(Model model){
+	@Autowired
+	RuntimeService runtimeService;
+
+	@RequestMapping(value = "leaveBill",method = RequestMethod.GET)
+	public CommRes<List<LeaveBill>> findAll(){
 		//1：查询所有的请假信息（对应a_leavebill），返回List<LeaveBill>
-		List<LeaveBill> list = leaveBillService.findLeaveBillList(); 
-		model.addAttribute("list", list);
-		return "leaveBill/list";
-	}
-	
-	/**
-	 * 添加请假申请
-	 * @return
-	 */
-	@RequestMapping("input")
-	public String input(Model model,LeaveBill leaveBill){
-		//1：获取请假单ID
-		Long id = leaveBill.getId();
-		//修改
-		if(id!=null){
-			//2：使用请假单ID，查询请假单信息，
-			LeaveBill bill = leaveBillService.findLeaveBillById(id);
-			//3：将请假单信息放置到栈顶，页面使用struts2的标签，支持表单回显
-			//ValueContext.putValueStack(bill);
-			model.addAttribute("bill", bill);
-			return "leaveBill/input";
+		List<LeaveBill> list = leaveBillService.findLeaveBillList();
+		if(list.size()==0){
+			return  CommRes.errorRes("200","未查到相关信息");
 		}
-		//新增
-		return "leaveBill/input";
+		return CommRes.success(list);
 	}
-	
-	/**
-	 * 保存/更新，请假申请
-	 * 
-	 */
-	@RequestMapping("save")
-	public String save(LeaveBill leaveBill,HttpSession httpSession) {
-		//执行保存
-		Employee employee=SessionContext.get(httpSession);
-		System.out.println(employee.getName());
-		leaveBillService.saveLeaveBill(leaveBill,employee);
-		return "redirect:/leaveBillController/home";
+
+	@RequestMapping(value = "leaveBill/{id}",method =RequestMethod.GET)
+	public CommRes findById(@PathVariable("id") Long id){
+		LeaveBill bill = leaveBillService.findLeaveBillById(id);
+		if (bill==null){
+			return CommRes.errorRes("200","未查到相关信息");
+		}
+		return CommRes.success(bill);
 	}
-	
-	/**
-	 * 删除，请假申请
-	 * 
-	 */
-	@RequestMapping("delete")
-	public String delete(LeaveBill leaveBill){
-		//1：获取请假单ID
-		Long id = leaveBill.getId();
-		//执行删除
+
+	@RequestMapping(value = "leaveBill",method = RequestMethod.POST,produces = "application/json")
+	public CommRes save(@RequestBody LeaveBill leaveBill, HttpSession httpSession) {
+		if(leaveBill.getEndDate()==null){
+			return CommRes.errorRes("400","请假结束日期不能为空");
+		}
+		if (leaveBill.getUser()==null||leaveBill.getUser().equals("")){
+			return  CommRes.errorRes("400","请假人不能为空");
+		}
+		leaveBillService.saveLeaveBill(leaveBill);
+		return CommRes.successRes();
+	}
+
+	@RequestMapping(value = "leaveBill",method = RequestMethod.DELETE)
+	public CommRes<Object> delete(Long id){
 		leaveBillService.deleteLeaveBillById(id);
-		return "redirect:/leaveBillController/home";
+		return CommRes.successRes();
 	}
 	
 }

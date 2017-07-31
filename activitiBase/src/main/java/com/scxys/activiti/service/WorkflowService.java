@@ -23,7 +23,6 @@ import com.scxys.activiti.bean.WorkflowBean;
  * @description 说明:
  */
 public interface WorkflowService {
-
 	/**
 	 * 
 	 * @author 作者: qiuxinlin
@@ -80,6 +79,14 @@ public interface WorkflowService {
 	  * @description 说明:全任务委托
 	  */
 	 void delegateTasks(String afterDate,String beforeDate,String assignee,String delegateUser);
+	 /**
+	  * @Author: qiuxinlin
+	  * @Dercription: 通过任务ID获取对应的业务表单
+	  * @Date: 2017/7/28
+	  */
+	 Object findBusinessByTaskId(String taskId);
+
+
 	String findTaskFormKeyByTaskId(String taskId);
 	LeaveBill findLeaveBillByTaskId(String taskId);
 	List<String> findOutComeListByTaskId(String taskId);

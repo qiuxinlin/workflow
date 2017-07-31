@@ -15,7 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * @Author: qiuxinlin
+ * @Dercription: springboot 集成Diagram Viewer追踪流程图
+ * @Date: 2017/7/27
+ */
 public class JsonpCallbackFilter implements Filter {
 
     private static Logger log = LoggerFactory.getLogger(JsonpCallbackFilter.class);

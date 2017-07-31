@@ -60,7 +60,12 @@
             <artifactId>nekohtml</artifactId>
             <version>1.9.22</version>
         </dependency>
-		
+		<!--统一返回-->
+		<dependency>
+			<groupId>com.neoinfo</groupId>
+			<artifactId>greatplat-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

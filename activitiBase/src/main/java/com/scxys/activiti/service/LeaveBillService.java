@@ -11,7 +11,7 @@ public interface LeaveBillService {
 
 	List<LeaveBill> findLeaveBillList();
 
-	void saveLeaveBill(LeaveBill leaveBill,Employee employee);
+	void saveLeaveBill(LeaveBill leaveBill);
 
 	LeaveBill findLeaveBillById(Long id);
 
