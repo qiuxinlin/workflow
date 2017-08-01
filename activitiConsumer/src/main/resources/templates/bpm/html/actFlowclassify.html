@@ -83,9 +83,6 @@
 	<!--新增弹框-->
     <el-dialog title="新增" :visible.sync="addFormVisible">
         <el-form :model="addForm" :inline="true" class="demo-form-inline">
-            <el-form-item   label="分类编号：" :label-width="formLabe2Width">
-                <el-input v-model="addForm.classifyCode"  auto-complete="off"></el-input>
-            </el-form-item>
             <el-form-item   label="分类名称：" :label-width="formLabe2Width">
                 <el-input v-model="addForm.classifyName" auto-complete="off"></el-input>
             </el-form-item>
@@ -94,9 +91,6 @@
             </el-form-item>
             <el-form-item   label="分类描述：" :label-width="formLabelWidth">
                 <el-input type="textarea" autosize v-model="addForm.describtion"  auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item   label="全路径：" :label-width="formLabelWidth">
-                <el-input type="textarea" autosize v-model="addForm.fullPath"  auto-complete="off"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -133,7 +127,6 @@
             formLabelWidth: '180px',
             addFormVisible: false,
             addForm: {
-            	classifyCode: "",
             	classifyName: "",
                 parentCode: "",
                 describtion: "",
@@ -244,6 +237,7 @@
             getKey:function (data,node) {
                 console.log(data);
                 form.form1 = data;
+                dialog.addForm.parentCode=data.classifyCode;
                 tool.delData = data.classifyCode;
             },
             setCheckedKeys:function() {

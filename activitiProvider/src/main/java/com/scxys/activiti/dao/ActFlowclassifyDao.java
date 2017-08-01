@@ -21,11 +21,13 @@ import com.scxys.activiti.bean.ActFlowclassify;
 public interface ActFlowclassifyDao extends JpaRepository<ActFlowclassify, Long>{
 
 	@Query(value="select * from act_flowclassify where classify_code=0",nativeQuery=true)
-	public List<ActFlowclassify> findRoot();
+	List<ActFlowclassify> findRoot();
 	@Query(value="select * from act_flowclassify where parent_code=?1",nativeQuery=true)
-	public List<ActFlowclassify> findChildren(String parent_code);
+	List<ActFlowclassify> findChildren(String parent_code);
 	@Query(value="select * from act_flowclassify where classify_code=?1",nativeQuery=true)
-	public ActFlowclassify findByCode(String classifyCode);
+	ActFlowclassify findByCode(String classifyCode);
 	void deleteByClassifyCode(String classifyCode);
+	@Query(value = "select classify_code from act_flowclassify where parent_code=?1",nativeQuery = true)
+	List findChildrensCode(String currentId);
 }
  

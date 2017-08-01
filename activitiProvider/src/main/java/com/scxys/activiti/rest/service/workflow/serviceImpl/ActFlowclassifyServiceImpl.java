@@ -1,5 +1,7 @@
 package com.scxys.activiti.rest.service.workflow.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +27,11 @@ public class ActFlowclassifyServiceImpl implements ActFlowclassifyService{
 		return list;
 	}
 
-	
 	@Override
 	public List<ActFlowclassify> findAll() {
 		List<ActFlowclassify> list=flowclassifyDao.findAll();
 		return list;
 	}
-
 
 	@Override
 	public List<ActFlowclassify> findChildrens(String parent_code) {
@@ -54,12 +54,58 @@ public class ActFlowclassifyServiceImpl implements ActFlowclassifyService{
 		flowclassifyDao.save(actFlowclassify);
 	}
 
-
 	@Override
 	public ActFlowclassify findByCode(String classifyCode) {
 		return flowclassifyDao.findByCode(classifyCode);
 	}
 
-	
+	@Override
+	public String getNextClassifyCode(String currentId){
+		List<String> codeList=flowclassifyDao.findChildrensCode(currentId);
+		if (codeList.size()==0){
+			if(("0").equals(currentId)){
+				return "01";
+			}
+			return currentId+"01";
+		}
+		String temp;
+		for(int i=0;i<codeList.size()-1;i++){
+			if(Integer.parseInt(codeList.get(i))>Integer.parseInt(codeList.get(i+1))){
+				temp=codeList.get(i);
+				codeList.set(i,codeList.get(i+1));
+				codeList.set(i+1,temp);
+			}
+		}
+		int resultInt=Integer.parseInt(codeList.get(codeList.size()-1))+1;
+		String resultString=null;
+		if (resultInt<10){
+			resultString="0"+resultInt;
+		}else {
+			resultString=String.valueOf(resultInt);
+		}
+		if (("0").equals(currentId)){
+			return  resultString;
+		}
+		return currentId+resultString;
+	}
+
+	@Override
+	public String getFullPath(String parentCode,String currentClassifyName){
+		List<String> list =new ArrayList<>();
+		while (("-1").equals(parentCode)==false){
+			ActFlowclassify flowclassify=flowclassifyDao.findByCode(parentCode);
+			if(flowclassify!=null){
+				list.add(flowclassify.getClassifyName());
+			}
+			parentCode=flowclassify.getParentCode();
+		}
+		Collections.reverse(list);
+		list.add(currentClassifyName);
+		String result="";
+		for(String str:list){
+			result+=str+"/";
+		}
+		return result;
+	}
 }
  

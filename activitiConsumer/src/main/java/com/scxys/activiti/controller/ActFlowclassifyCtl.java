@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.neoinfo.pojo.CommRes;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 
@@ -27,8 +28,19 @@ public class ActFlowclassifyCtl {
 	ActFlowclassifyService flowclassifyService;
 	
 	@RequestMapping(value="/actFlowclassify", method = RequestMethod.POST, produces = "application/json")
-	public void addFlowclassify(@RequestBody ActFlowclassify flowclassify, HttpServletRequest request, HttpServletResponse response){
+	public CommRes addFlowclassify(@RequestBody ActFlowclassify flowclassify, HttpServletRequest request, HttpServletResponse response){
+		if(flowclassify.getParentCode().equals("")||flowclassify.getParentCode()==null){
+			return CommRes.errorRes("400","上级编码为空");
+		}
+		String classfyCode=flowclassifyService.getNextClassifyCode(flowclassify.getParentCode());
+		flowclassify.setClassifyCode(classfyCode);
+		if(("").equals(flowclassify.getClassifyName())||flowclassify.getClassifyName()==null){
+			return CommRes.errorRes("400","分类名称为空");
+		}
+		String fullPath=flowclassifyService.getFullPath(flowclassify.getParentCode(),flowclassify.getClassifyName());
+		flowclassify.setFullPath(fullPath);
 		flowclassifyService.addFlowclassify(flowclassify);
+		return CommRes.successRes();
 	}
 	
 	@RequestMapping(value="/actFlowclassify", method = RequestMethod.PUT, produces = "application/json")

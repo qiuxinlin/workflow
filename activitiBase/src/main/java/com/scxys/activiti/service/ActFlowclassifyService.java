@@ -19,5 +19,17 @@ public interface ActFlowclassifyService {
 	ActFlowclassify findByCode(String classifyCode);
 	void deleteFlowclassifyByCode(String classifyCode);
 	void updateFlowclassify(ActFlowclassify actFlowclassify);
+	/**
+	 * @Author: qiuxinlin
+	 * @Dercription: 获取下一个分类的编码
+	 * @Date: 2017/7/31
+	 */
+	String getNextClassifyCode(String currentId);
+	/**
+	 * @Author: qiuxinlin
+	 * @Dercription: 添加分类时自动生成全路径
+	 * @Date: 2017/7/31
+	 */
+	String getFullPath(String parentCode,String currentClassifyName);
 }
  
