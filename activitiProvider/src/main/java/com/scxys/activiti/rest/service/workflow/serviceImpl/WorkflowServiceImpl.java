@@ -78,8 +78,14 @@ public class WorkflowServiceImpl implements WorkflowService {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		List<Task> taskList=taskService.createTaskQuery().taskCreatedAfter(after).taskCreatedBefore(before)
+		List<Task> taskList=null;
+		if(("").equals(assignee)){
+			taskList=taskService.createTaskQuery().taskCreatedAfter(after).taskCreatedBefore(before)
+					.list();
+		}else {
+			taskList=taskService.createTaskQuery().taskCreatedAfter(after).taskCreatedBefore(before)
 					.taskAssignee(assignee).list();
+		}
 		for(Task task:taskList) {
 			taskService.delegateTask(task.getId(), delegateUser);
 		}
