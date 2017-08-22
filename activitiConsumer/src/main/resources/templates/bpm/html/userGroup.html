@@ -347,7 +347,7 @@
 
 //          提交新增
             addSubmitForm:function () {
-                var that =this
+                var that =this;
                 this.$confirm('确认选择吗？', '提示', {
                     type: 'warning'
                 }).then(function () {
@@ -538,7 +538,7 @@
                     }).then(function () {
                         //删除 do something
 
-                        that.form1={
+                        that.form1 = {
                             code: "",
                             name: "",
                             id: "",
@@ -585,7 +585,7 @@
                 },function(response){
                     console.info(response);
                     if(response){
-                       
+
                     }
                 })
                 //tabs.form1 = Object.assign({},val);

@@ -53,6 +53,11 @@ public class ActivitiControllerApplication {
 	public String runDetail() {
 		return "bpm/html/run-detail";
 	}
+
+	@RequestMapping(value = "/sortManager",method = RequestMethod.GET)
+	public String sortManager(){
+		return "businessProcessManager/sortManager";
+	}
 	/**
 	 * @Author: qiuxinlin
 	 * @Dercription: 集成Diagram Viewer追踪流程图

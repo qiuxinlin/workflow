@@ -94,7 +94,6 @@
                                     <el-form-item   label="流程图ID：" :label-width="formLabelWidth">
                                         <el-input v-model="form2.id"  auto-complete="off"></el-input>
                                     </el-form-item>
-                                    
                                     <el-form-item   label="流程描述：" :label-width="formLabelWidth">
                                         <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 4}" v-model="form2.describe"  auto-complete="off"></el-input>
                                     </el-form-item>
@@ -213,7 +212,7 @@
                     },function(response){
                         console.info(response);
                         if(response){
-                           
+
                         }
                     });
                     dialog.addFormVisible = false;
@@ -248,7 +247,7 @@
                         },function(response){
                             console.info(response);
                             if(response){
-                               
+
                             }
                         });
                     }).catch(function () {
@@ -297,7 +296,7 @@
                 },function(response){
                     console.info(response);
                     if(response){
-                       
+
                     }
                 })
                 console.log(data);
@@ -320,7 +319,7 @@
                 },function(response){
                     console.info(response);
                     if(response){
-                       
+
                     }
                 })
             }
@@ -372,7 +371,7 @@
                 },function(response){
                     console.info(response);
                     if(response){
-                       
+
                     }
                 });
             }
