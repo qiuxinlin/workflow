@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分类管理</title>
+    <link rel="stylesheet" href="/businessProcessManager/js/ele/index.css">
+    <link rel="stylesheet" href="/businessProcessManager/css/style.css">
+</head>
+<body>
+<header>
+    <img src="/businessProcessManager/images/logo.png" alt="">
+    <span class="com-name">业务流程管理平台</span>
+</header>
+<div>
+    <div class="side" id="side">
+        <div id="menu" class="menu">
+            <el-menu default-active="2" unique-opened class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+                <el-submenu index="1">
+                    <template slot="title"><i class="el-icon-menu"></i>业务流程管理</template>
+                    <a href="bpmn-js/properties-panel/index.html"><el-menu-item index="1-2">流程设计器</el-menu-item></a>
+                    <a href="businessProcessManager/html/process.html"><el-menu-item index="1-1">流程管理</el-menu-item></a>
+                    <a href="/sortManager"><el-menu-item index="1-2">分类管理</el-menu-item></a>
+                    <a href="businessProcessManager/html/monitor.html"><el-menu-item index="1-3">运行监控</el-menu-item></a>
+                    <a href="businessProcessManager/html/task-entrust.html"><el-menu-item index="1-4">任务委托</el-menu-item></a>
+                    <a href="businessProcessManager/html/user-group.html"><el-menu-item index="1-5">用户分组</el-menu-item></a>
+                    <a href="businessProcessManager/html/dataAllocation.html"><el-menu-item index="1-6">数据配置</el-menu-item></a>
+                    <a href="businessProcessManager/html/exampleAllocation.html"><el-menu-item index="1-7">实例配置</el-menu-item></a>
+                </el-submenu>
+                <el-submenu index="1">
+                    <template slot="title"><i class="el-icon-menu"></i>表单管理</template>
+                    <a href="#"><el-menu-item index="1-2">表单设计器</el-menu-item></a>
+                    <a href="#"><el-menu-item index="1-2">表单列表</el-menu-item></a>
+                    <a href="#"><el-menu-item index="1-2">表管理</el-menu-item></a>
+                </el-submenu>
+            </el-menu>
+
+        </div>
+    </div>
+    <div class="main-wrapper">
+        <div class="nav-bar">
+            <span class="position-info">您现在的位置：<a>公文管理</a> &gt; <span class="current-position">公文会签</span></span>
+        </div>
+        <div class="tool" id="tool">
+            <el-button type="primary" @click="add">新增</el-button>
+            <el-button @click="del" size="">删除</el-button>
+        </div>
+        <div class="content-wrapper relative">
+            <div id="tree" class="tree-wrapper">
+                    <el-tree
+                            :data="treeDatas"
+                            node-key="classifyCode"
+                            ref="tree"
+                            highlight-current
+                            :expand-on-click-node="false"
+                            @node-click="getKey"
+                            :props="defaultProps">
+                    </el-tree>
+                </div>
+            <div class="" id="form">
+                <div class="from-box">
+                    <el-form :model="form1" :inline="true" :model="formInline" class="demo-form-inline">
+                        <el-form-item   label="分类编号：" :label-width="formLabelWidth">
+                            <el-input v-model="form1.classifyCode"  auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item   label="分类名称：" :label-width="formLabelWidth">
+                            <el-input v-model="form1.classifyName" auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item   label="上级编码：" :label-width="formLabelWidth">
+                            <el-input v-model="form1.parentCode"  auto-complete="off"></el-input>
+                        </el-form-item>
+                            <el-form-item  class="long-text"   label="分类描述：" :label-width="formLabelWidth">
+                                <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 6}" v-model="form1.describtion"  auto-complete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item class="long-text"   label="全路径：" :label-width="formLabelWidth">
+                                <el-input type="textarea" autosize v-model="form1.fullPath"  auto-complete="off"></el-input>
+                            </el-form-item>
+                        <div class="btn-box">
+                            <el-form-item  :label-width="formLabelWidth">
+                                <el-button type="primary" @click="save1"> 保 存</el-button>
+                                <el-button type="" > 取 消 </el-button>
+                            </el-form-item>
+                        </div>
+                    </el-form>
+                </div>
+            </div>
+        </div>
+        <div class="foot-biu">
+             四川新迎顺信息技术股份有限公司
+        </div>
+    </div>
+</div>
+<div id="dialog">
+	<!--新增弹框-->
+    <el-dialog title="新增" :visible.sync="addFormVisible">
+        <el-form :model="addForm" :inline="true" :model="formInline" class="demo-form-inline">
+            <el-form-item   label="分类名称：" :label-width="formLabe2Width">
+                <el-input v-model="addForm.classifyName" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item   label="上级编码：" :label-width="formLabe2Width">
+                <el-input v-model="addForm.parentCode"  auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item   label="分类描述：" :label-width="formLabe2Width">
+                <el-input v-model="addForm.describtion"  auto-complete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="addFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addSubmitForm">确 定</el-button>
+        </div>
+    </el-dialog>
+</div>
+<!-- 先引入 Vue -->
+<script src="/businessProcessManager/js/ele/vue.js"></script>
+<script src="/businessProcessManager/js/ele/vue-resource.js"></script>
+<script src="/businessProcessManager/js/ele/vue-router.js"></script>
+<!-- 引入组件库 -->
+<script src="/businessProcessManager/js/ele/index.js"></script>
+<script src="/businessProcessManager/js/jquery.min.js"></script>
+<script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<script>
+//
+    var menu = new Vue({
+        el:'#menu',
+        methods: {
+            handleOpen:function(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose:function(key, keyPath) {
+                console.log(key, keyPath);
+            }
+        }
+    })
+//  弹出框
+    var dialog = new Vue({
+        el: '#dialog',
+        data:{
+            formLabelWidth: '180px',
+            addFormVisible: false,
+            addForm: {
+            	classifyName: "",
+                parentCode: "",
+                describtion: "",
+                fullPath: ""
+            },
+            formLabe2Width: '180px',
+            queryFormVisible:false,
+            queryForm:{
+                name:'',
+                date:''
+            }
+        },
+        methods: {
+//          提交新增
+            addSubmitForm:function () {
+                var that =this;
+                this.$confirm('确认提交吗？', '提示', {
+                    type: 'warning'
+                }).then(function () {
+                    console.log(dialog.addForm);
+                    that.$http.post("http://192.168.10.38:9907/actFlowclassify",dialog.addForm).then(function(data){
+                		this.$message({
+                            message: data.data,
+                            type: 'warning'
+                        });
+                		window.location.reload();
+                    },function(response){
+                        console.info(response);
+                        if(response){
+
+                        }
+                    });
+                    dialog.addFormVisible = false;
+                })
+            },
+
+        }
+    });
+    var tool = new Vue({
+        el:'#tool',
+        data:{
+          delData:''
+        },
+        methods:{
+            add:function () {
+                dialog.addFormVisible = true;
+            },
+            del:function () {
+                var that =this;
+                var delData=this.delData;
+                if(this.delData!=''&&this.delData!=undefined){
+                    this.$confirm('确认删除编号为'+delData+'的元素吗？', '提示', {
+                        type: 'warning'
+                    }).then(function () {
+                    	that.$http.delete("http://192.168.10.38:9907/actFlowclassify/"+delData).then(function(data){
+                    		this.$message({
+                                message: data.data,
+                                type: 'warning'
+                            });
+                    		window.location.reload();
+                        },function(response){
+                            console.info(response);
+                            if(response){
+
+                            }
+                        })
+                    }).catch(function () {
+                        //取消
+                    })
+                }else {
+                    this.$message({
+                        message: '请选择需要删除的内容！',
+                        type: 'warning'
+                    });
+                }
+            }
+        }
+    })
+    //    树形
+    var tree = new Vue({
+        el: '#tree',
+        data: {
+        	treeDatas:[],
+            defaultProps: {
+            	id:'classifyCode',
+                children: 'children',
+                label: 'classifyName',
+            }
+
+        },
+
+        created:function(){
+
+            this.getTree();
+        },
+
+        methods: {
+            getCheckedNodes:function() {
+                console.log(this.$refs.tree.getCheckedNodes());
+            },
+            getCheckedKeys:function() {
+                console.log(this.$refs.tree.getCheckedKeys());
+            },
+            setCheckedNodes:function() {
+                this.$refs.tree.setCheckedNodes([{
+                    id: 5,
+                    label: '二级 2-1'
+                }, {
+                    id: 9,
+                    label: '三级 1-1-1'
+                }]);
+            },
+            getKey:function (data,node) {
+                console.log(data);
+                form.form1 = data;
+                dialog.addForm.parentCode=data.classifyCode;
+                tool.delData = data.classifyCode;
+            },
+            setCheckedKeys:function() {
+                this.$refs.tree.setCheckedKeys([3]);
+            },
+            resetChecked:function() {
+                this.$refs.tree.setCheckedKeys([]);
+            },
+            getTree:function(){
+                this.$http.get("http://192.168.10.38:9907/actFlowclassify").then(function(data){
+                	tree.treeDatas=data.data;
+
+                },function(response){
+                    console.info(response);
+                    if(response){
+
+                    }
+                })
+            }
+        }
+    });
+    var form = new Vue({
+        el:'#form',
+        data:{
+            activeName: 'first',
+            formLabelWidth:'180px',
+            form1: {
+            	id: "",
+            	classifyCode: "",
+            	classifyName: "",
+            	parentCode: "",
+            	describtion: "",
+            	fullPath: ""
+            },
+            form2: {
+                code: "2312",
+                name: "",
+                id: "",
+                describe: "",
+                classify: ""
+            },
+        },
+        methods:{
+            handleClick:function(tab, event) {
+                console.log(tab, event);
+            },
+            save1:function () {
+            	this.$http.put("http://192.168.10.38:9907/actFlowclassify/",form.form1).then(function(data){
+            		this.$message({
+                        message: data.data,
+                        type: 'warning'
+                    });
+            		window.location.reload();
+                },function(response){
+                    console.info(response);
+                    if(response){
+
+                    }
+                });
+            }
+        }
+    })
+</script>
+</body>
+</html>
