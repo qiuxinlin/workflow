@@ -5,16 +5,11 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
-import org.activiti.engine.impl.persistence.entity.DeploymentEntity;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 
-import com.scxys.activiti.bean.Employee;
-import com.scxys.activiti.bean.LeaveBill;
 import com.scxys.activiti.bean.WorkflowBean;
 
 /** 
@@ -65,13 +60,7 @@ public interface WorkflowService {
 	  * @description 说明:使用当前用户名查询正在执行的任务表
 	  */
 	 public List<Task> findTaskListByName(String name);
-	 /**
-	  * 
-	  * @author 作者: qiuxinlin
-	  * @version 创建时间:2017年3月27日 下午2:57:06 
-	  * @description 说明:启动请假流程
-	  */
-	 public void saveStartProcess(WorkflowBean workflowBean,Employee employee);
+
 	 /**
 	  * 
 	  * @author 作者: qiuxinlin
@@ -79,20 +68,11 @@ public interface WorkflowService {
 	  * @description 说明:全任务委托
 	  */
 	 void delegateTasks(String afterDate,String beforeDate,String assignee,String delegateUser);
-	 /**
-	  * @Author: qiuxinlin
-	  * @Dercription: 通过任务ID获取对应的业务表单
-	  * @Date: 2017/7/28
-	  */
-	 Object findBusinessByTaskId(String taskId);
-
-
 	String findTaskFormKeyByTaskId(String taskId);
-	LeaveBill findLeaveBillByTaskId(String taskId);
 	List<String> findOutComeListByTaskId(String taskId);
-	void saveSubmitTask(WorkflowBean workflowBean,String userName);
+
 	List<Comment> findCommentByTaskId(String taskId);
-	List<Comment> findCommentByLeaveBillId(Long id);
+
 	ProcessDefinition findProcessDefinitionByTaskId(String taskId);
 	Map<String, Object> findCoordingByTask(String taskId);
 	String findTaskName(String taskId);
