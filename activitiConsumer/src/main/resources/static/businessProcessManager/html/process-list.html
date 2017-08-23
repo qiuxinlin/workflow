@@ -17,7 +17,9 @@
             <el-menu default-active="2" unique-opened class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
                 <el-submenu index="1">
                     <template slot="title"><i class="el-icon-menu"></i>业务流程管理</template>
+                    <a href="diagram.html"><el-menu-item index="1-2">流程设计器</el-menu-item></a>
                     <a href="process.html"><el-menu-item index="1-1">流程管理</el-menu-item></a>
+                    <a href="process-list.html"><el-menu-item index="1-1">流程列表</el-menu-item></a>
                     <a href="/sortManager"><el-menu-item index="1-2">分类管理</el-menu-item></a>
                     <a href="monitor.html"><el-menu-item index="1-3">运行监控</el-menu-item></a>
                     <a href="task-entrust.html"><el-menu-item index="1-4">任务委托</el-menu-item></a>
@@ -49,18 +51,17 @@
             </div>
             <div id="tab" class="run-detail" style="margin-left: 200px">
                 <el-tabs v-model="activeName">
-                    <el-tab-pane label="单任务委托" name="first">
                         <div class="table-box">
                             <div class="form-box">
                                 <el-form :inline="true" :model="taskForm" class="demo-form-inline">
-                                    <el-form-item label="委托人：">
+                                    <el-form-item label="流程名称：">
                                         <el-input v-model="taskForm.name" placeholder=""></el-input>
                                     </el-form-item>
                                 </el-form>
                             </div>
                             <div class="center">
                                 <el-table
-                                        :data="taskList"
+                                        :data="processList"
                                         border
                                         @selection-change="">
                                     <el-table-column
@@ -70,58 +71,38 @@
                                     </el-table-column>
                                     <el-table-column
                                             prop="id"
-                                            label="任务ID"
-                                    >
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="processDefinitionId"
-                                            label="流程名称"
+                                            label="流程ID"
                                     >
                                     </el-table-column>
                                     <el-table-column
                                             prop="name"
-                                            label="任务名称">
+                                            label="名称"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="key"
+                                            label="流程key"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="description"
+                                            label="流程描述">
+                                    </el-table-column>
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="version"
+                                            label="版本号"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop=""
+                                            label="操作"
+                                    >
                                     </el-table-column>
 
-                                    <el-table-column
-                                            prop="createTime"
-                                            label="委托时间"
-                                            :formatter="dateFormat"
-                                    >
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="owner"
-                                            label="委托人"
-                                    >
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="assignee"
-                                            label="办理人"
-                                    >
-                                    </el-table-column>
-                                    <el-table-column
-                                            label="状态"
-                                    >
-                                        <template scope="scope">
-                                            <span v-if="scope.row.delegationState==null">未委托</span>
-                                            <span v-else>已委托</span>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column
-                                            label="操作"
-                                            width="120"
-                                            fixed="right"
-                                    >
-                                        <template scope="scope">
-                                            <span v-if="scope.row.delegationState==null"><el-button @click="entrustTask(scope.row)" type="text" size="small">任务委托</el-button></span>
-                                            <span v-else><el-button @click="cancelEntrust(scope.row)" type="text" size="small">取消委托</el-button></span>
-                                        </template>
-                                    </el-table-column>
                                 </el-table>
                             </div>
                         </div>
-                    </el-tab-pane>
-
                 </el-tabs>
             </div>
         </div>
@@ -129,58 +110,6 @@
              四川新迎顺信息技术股份有限公司
         </div>
     </div>
-</div>
-<div id="dialog">
-
-    <!--新增弹框-->
-    <el-dialog title="新增" :visible.sync="addFormVisible">
-        <el-form :model="addForm" :inline="true" class="demo-form-inline">
-            <el-form-item   label="委托人：" :label-width="formLabe2Width">
-                <el-input v-model="addForm.owner"  auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item   label="受托人：" :label-width="formLabe2Width">
-                <el-input v-model="addForm.assignee" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item   label="委托时间：" :label-width="formLabe2Width">
-                <el-date-picker
-                        v-model="addForm.delegationDate"
-                        type="date"
-                        placeholder="选择日期"
-                        >
-                </el-date-picker>
-            </el-form-item>
-            <el-form-item   label="开始时间：" :label-width="formLabe2Width">
-                <el-date-picker
-                        v-model="addForm.startDate"
-                        type="date"
-                        placeholder="选择日期"
-                        >
-                </el-date-picker>
-            </el-form-item>
-            <el-form-item   label="结束时间：" :label-width="formLabe2Width">
-                <el-date-picker
-                        v-model="addForm.endDate"
-                        type="date"
-                        placeholder="选择日期"
-                        >
-                </el-date-picker>
-            </el-form-item>
-            <el-form-item   label="状态：" :label-width="formLabelWidth">
-                <el-input type="textarea" autosize v-model="addForm.describe"  auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item   label="操作人：" :label-width="formLabe2Width">
-                <el-input v-model="addForm.author"  auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item   label="委托事由：" :label-width="formLabelWidth">
-                <el-input type="textarea" autosize v-model="addForm.comment"  auto-complete="off"></el-input>
-            </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="addFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="addSubmitForm">确 定</el-button>
-        </div>
-    </el-dialog>
-
 </div>
 <!-- 先引入 Vue -->
 <script src="/businessProcessManager/js/ele/vue.js"></script>
@@ -192,12 +121,7 @@
 <script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="/bpm/js/date.js"></script>
 <script>
-    function formatDates(time){
-        return formatDate(new Date(time),'yyyy-MM-dd hh:mm');
-    };
-    function formatDatesTwo(time){
-        return formatDate(new Date(time),'yyyy-MM-dd');
-    };
+
     //多选结果
     var selectArray=new Array();
     //多选结果转换为字符串
@@ -215,7 +139,7 @@
         }
     });
 
-	//单任务委托
+	//流程列表
     var tab = new Vue({
         el:'#tab',
         data:{
@@ -230,13 +154,10 @@
                 startTime:'',
                 endTime:''
             },
-            taskList:[],
-            delegationList:[],
-            delegationQueryList:[]
+            processList:[]
         },
         created:function(){
-            this.getTask();
-            this.getDelegation();
+            this.query();
         },
         methods:{
             //选择
@@ -246,49 +167,8 @@
                 }
                 selectStr=selectArray.join("-");
             },
-            //格式化委托查询中的委托时间
-            dateFormatQuery:function(data,row){
-                if(data.startTime!=null){
-                    return formatDates(data.startTime);
-                }
-            },
-            //格式化开始时间
-            dateFormatStartDate:function(data,row){
-                if(data.startDate!=null){
-                    return formatDatesTwo(data.startDate);
-                }
-            },
-            //格式化结束时间
-            dateFormatEndDate:function(data,row){
-                if(data.endDate!=null){
-                    return formatDatesTwo(data.endDate);
-                }
-            },
-            //格式化委托时间
-            dateFormatDelegationDate:function(data,row){
-                if(data.delegationDate!=null){
-                    return formatDatesTwo(data.delegationDate);
-                }
-            },
-            //格式化开始时间
-            dateFormat:function(data,row){
-                if(data.createTime!=null){
-                    return formatDates(data.createTime);
-                }
-            },
             handleClick:function(tab, event) {
                 console.log(tab, event);
-            },
-            save1:function () {
-                this.$message({
-                    showClose: true,
-                    type: 'warning',
-                    duration:1000000,
-                    message: '您有4个文件需要进行会签！'
-                });
-            },
-            add:function () {//新增
-                dialog.addFormVisible = true;
             },
             del:function () {//删除
                 var that=this;
@@ -323,93 +203,8 @@
 
             },
             query:function () {//查询
-                this.$http.post("http://192.168.10.38:9904/query/historic-task-instances",{"taskOwner":tab.queryForm.owner,
-                    "taskCreatedAfter":tab.queryForm.startTime,"taskCreatedBefore":tab.queryForm.endTime}).then(function(data){
-                    tab.delegationQueryList=data.data.data;
-                },function(response){
-                    console.info(response);
-                    if(response){
-                    }
-                })
-            },
-            //全任务委托
-            entrustTasks:function (row) {
-                var that =this;
-                this.$confirm('确定委托吗？','提示',{type:'warning'}).then(function () {
-                    that.$http.get("http://192.168.10.38:9907/delegateTasks",{"id":row.id,"startDate":row.startDate,"endDate":row.endDate,"owner":row.owner,"assignee":row.assignee}).then(function(data){
-                        this.$message({
-                            message: data.data,
-                            type: 'warning'
-                        });
-                        window.location.reload();
-                    },function(response){
-                        console.info(response);
-                        if(response){
-
-                        }
-                    });
-                }).catch(function () {
-
-                })
-            },
-            //委托
-            entrustTask:function (row) {
-            	var that=this;
-            	if(tab.taskForm.name==""){
-            		this.$confirm('请选择委托人','提示',{type:'warning'});
-            		return;
-            	}
-                this.$confirm('确定委托吗？','提示',{type:'warning'}).then(function () {
-                	that.$http.post("http://192.168.10.38:9904/runtime/tasks/"+row.id,{"action":"delegate","assignee":tab.taskForm.name}).then(function(data){
-                		this.$message({
-                            message: data.data,
-                            type: 'warning'
-                        });
-                		window.location.reload();
-                    },function(response){
-                        console.info(response);
-                        if(response){
-
-                        }
-                    });
-                }).catch(function () {
-
-                })
-            },
-			//取消委托
-            cancelEntrust:function (row) {
-            	var that=this;
-                this.$confirm('确定取消委托吗？','提示',{type:'warning'}).then(function () {
-                	that.$http.put("http://192.168.10.38:9904/runtime/tasks/"+row.id,{"assignee":row.owner,"delegationState":null}).then(function(data){
-                		this.$message({
-                            message: data.data,
-                            type: 'warning'
-                        });
-                		window.location.reload();
-                    },function(response){
-                        console.info(response);
-                        if(response){
-
-                        }
-                    });
-                }).catch(function () {
-
-                })
-            },
-            //获取待办任务
-            getTask:function(){
-                this.$http.get("http://192.168.10.38:9904/runtime/tasks").then(function(data){
-                	tab.taskList=data.data.data;
-                },function(response){
-                    console.info(response);
-                    if(response){
-                    }
-                })
-            },
-          	//获取全任务委托表
-            getDelegation:function(){
-                this.$http.get("http://192.168.10.38:9907/actDelegation").then(function(data){
-                	tab.delegationList=data.data;
+                this.$http.get("http://192.168.10.38:9904/repository/process-definitions").then(function(data){
+                    tab.processList=data.data.data;
                 },function(response){
                     console.info(response);
                     if(response){
@@ -457,49 +252,6 @@ var tree = new Vue({
                 }
             })
         }
-    }
-});
-//    弹出框
-var dialog = new Vue({
-    el: '#dialog',
-    data:{
-        formLabelWidth: '180px',
-        addFormVisible: false,
-        addForm: {
-        	owner: "",
-        	assignee: "",
-        	delegationDate: "",
-        	startDate:"",
-        	endDate:"",
-        	comment:"",
-        	author: "",
-            id: ""
-        },
-        formLabe2Width: '180px'
-    },
-    methods: {
-		//提交新增
-        addSubmitForm:function () {
-            var that =this
-            this.$confirm('确认提交吗？', '提示', {
-                type: 'warning'
-            }).then(function () {
-                console.log(dialog.addForm)
-                that.$http.post("http://192.168.10.38:9907/actDelegation",dialog.addForm).then(function(data){
-                		this.$message({
-                            message: data.data,
-                            type: 'warning'
-                        });
-                		window.location.reload();
-                    },function(response){
-                        console.info(response);
-                        if(response){
-
-                        }
-                    });
-                dialog.addFormVisible = false;
-            })
-        },
     }
 });
 </script>
