@@ -65,7 +65,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		List<Task> taskList=null;
+		List<Task> taskList;
 		if(("").equals(assignee)){
 			taskList=taskService.createTaskQuery().taskCreatedAfter(after).taskCreatedBefore(before)
 					.list();
@@ -94,18 +94,16 @@ public class WorkflowServiceImpl implements WorkflowService {
 	
 	@Override
 	public List<Deployment> findDeploymentList() {
-		List<Deployment> list = repositoryService.createDeploymentQuery()//创建部署对象查询
+		return repositoryService.createDeploymentQuery()//创建部署对象查询
 				.orderByDeploymenTime().asc()//
 				.list();
-		return list;
 	}
 
 	@Override
 	public List<ProcessDefinition> findProcessDefinitionList() {
-		List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery()//创建流程定义查询
+		return repositoryService.createProcessDefinitionQuery()//创建流程定义查询
 				.orderByProcessDefinitionVersion().asc()//
 				.list();
-		return list;
 	}
 
 	@Override
@@ -123,11 +121,10 @@ public class WorkflowServiceImpl implements WorkflowService {
 	/**2：使用当前用户名查询正在执行的任务表，获取当前任务的集合List<Task>*/
 	@Override
 	public List<Task> findTaskListByName(String name) {
-		List<Task> list = taskService.createTaskQuery()//
+		return taskService.createTaskQuery()//
 					.taskAssignee(name)//指定个人任务查询
 					.orderByTaskCreateTime().asc()//升序
 					.list();
-		return list;
 	}
 	
 	/**使用任务ID，获取当前任务节点中对应的Form key中的连接的值*/
@@ -135,15 +132,14 @@ public class WorkflowServiceImpl implements WorkflowService {
 	public String findTaskFormKeyByTaskId(String taskId) {
 		TaskFormData formData = formService.getTaskFormData(taskId);
 		//获取Form key的值
-		String url = formData.getFormKey();
-		return url;
+		return formData.getFormKey();
 	}
 	
 	/**二：已知任务ID，查询ProcessDefinitionEntiy对象，从而获取当前任务完成之后的连线名称，并放置到List<String>集合中*/
 	@Override
 	public List<String> findOutComeListByTaskId(String taskId) {
 		//返回存放连线的名称集合
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		//1:使用任务ID，查询任务对象
 		Task task = taskService.createTaskQuery()//
 					.taskId(taskId)//使用任务ID查询
@@ -181,7 +177,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 	/**获取批注信息，传递的是当前任务ID，获取历史任务ID对应的批注*/
 	@Override
 	public List<Comment> findCommentByTaskId(String taskId) {
-		List<Comment> list = new ArrayList<Comment>();
+		List<Comment> list;
 		//使用当前的任务ID，查询当前流程对应的历史任务ID
 		//使用当前任务ID，获取当前任务对象
 		Task task = taskService.createTaskQuery()//
@@ -219,10 +215,9 @@ public class WorkflowServiceImpl implements WorkflowService {
 		//获取流程定义ID
 		String processDefinitionId = task.getProcessDefinitionId();
 		//查询流程定义的对象
-		ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()//创建流程定义查询对象，对应表act_re_procdef 
+		return repositoryService.createProcessDefinitionQuery()//创建流程定义查询对象，对应表act_re_procdef
 					.processDefinitionId(processDefinitionId)//使用流程定义ID查询
 					.singleResult();
-		return pd;
 	}
 	@Override
 	public String findTaskName(String taskId) {
@@ -230,8 +225,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		Task task = taskService.createTaskQuery()//
 					.taskId(taskId)//使用任务ID查询
 					.singleResult();
-		String taskName=task.getTaskDefinitionKey();
-		return taskName;
+		return task.getTaskDefinitionKey();
 	}
 	/**
 	 * 二：查看当前活动，获取当期活动对应的坐标x,y,width,height，将4个值存放到Map<String,Object>中
@@ -241,7 +235,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 	@Override
 	public Map<String, Object> findCoordingByTask(String taskId) {
 		//存放坐标
-		Map<String, Object> map = new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<>();
 		//使用任务ID，查询任务对象
 		Task task = taskService.createTaskQuery()//
 					.taskId(taskId)//使用任务ID查询
