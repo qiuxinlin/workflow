@@ -47,6 +47,18 @@
 <script src="/businessProcessManager/js/jquery.min.js"></script>
 <script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
+    //获取请求参数
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    };
+    var name=getQueryString("name");
+    var description=getQueryString("description");
+    var modelId=getQueryString("modelId");
+    document.getElementById("iframe").src="/bpmn-js/properties-panel/index.html?name="+name+"&description="+description
+    +"&modelId="+modelId;
+
     var menu = new Vue({
         el:'#menu',
         methods: {

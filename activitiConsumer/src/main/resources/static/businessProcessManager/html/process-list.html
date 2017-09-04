@@ -17,7 +17,6 @@
             <el-menu default-active="2" unique-opened class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
                 <el-submenu index="1">
                     <template slot="title"><i class="el-icon-menu"></i>业务流程管理</template>
-                    <a href="diagram.html"><el-menu-item index="1-2">流程设计器</el-menu-item></a>
                     <a href="process.html"><el-menu-item index="1-1">流程管理</el-menu-item></a>
                     <a href="process-list.html"><el-menu-item index="1-1">流程列表</el-menu-item></a>
                     <a href="/sortManager"><el-menu-item index="1-2">分类管理</el-menu-item></a>
@@ -98,9 +97,20 @@
                                             prop=""
                                             label="操作"
                                     >
+                                        <template scope="scope">
+                                            <el-button @click="startProcess(scope.row)" type="text" size="small">启动</el-button>
+                                            <el-button @click="designProcess(scope.row)" type="text" size="small">设计</el-button>
+                                        </template>
                                     </el-table-column>
-
                                 </el-table>
+                            </div>
+                            <div class="page-box mt20 text-right">
+                                <el-pagination
+                                        @current-change="handleCurrentChange"
+                                        :page-size="size"
+                                        layout="total, prev, pager, next"
+                                        :total="total">
+                                </el-pagination>
                             </div>
                         </div>
                 </el-tabs>
@@ -120,12 +130,6 @@
 <script src="/businessProcessManager/js/jquery.min.js"></script>
 <script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
-
-    //多选结果
-    var selectArray=new Array();
-    //多选结果转换为字符串
-    var selectStr=null;
-//
     var menu = new Vue({
         el:'#menu',
         methods: {
@@ -137,7 +141,6 @@
             }
         }
     });
-
 	//流程列表
     var tab = new Vue({
         el:'#tab',
@@ -153,57 +156,39 @@
                 startTime:'',
                 endTime:''
             },
-            processList:[]
+            processList:[],
+            total:0 ,
+            currentPage: 1,
+            size: 10
         },
         created:function(){
             this.query();
         },
         methods:{
-            //选择
-            selected:function (data) {
-                for(var i=0;i<data.length;i++){
-                    selectArray[i]=data[i].id;
-                }
-                selectStr=selectArray.join("-");
-            },
-            handleClick:function(tab, event) {
-                console.log(tab, event);
-            },
-            del:function () {//删除
-                var that=this;
-                if(selectArray.length>0){
-                    this.$confirm('确认删除？', '提示', {
-                        type: 'warning'
-                    }).then(function () {
-                        that.$http.post("http://192.168.10.38:9907/actDelegationDel",{"selectStr":selectStr},{
-                            emulateJSON:true
-                        }).then(function(data){
-                            this.$message({
-                                message: data.data,
-                                type: 'warning'
-                            });
-                            window.location.reload();
-                        },function(response){
-                            console.info(response);
-                            if(response){
-                            }
-                        })
-                    }).catch(function () {
-                        //取消
-                    })
-                }else {
+            //启动流程
+            startProcess:function(row) {
+                this.$http.post("http://192.168.10.38:9904/runtime/process-instances",{"processDefinitionKey":row.key}).then(function(data){
+                    var result=data.data.id;
+                    var message;
+                    if(result!=null){
+                        message="启动成功";
+                    }else {
+                        message="启动失败";
+                    }
                     this.$message({
-                        message: '请选择需要删除的内容！',
+                        message: message,
                         type: 'warning'
                     });
-                }
+                })
             },
-            edit:function () {//编辑
+
+            designProcess:function (row) {//设计
 
             },
             query:function () {//查询
                 this.$http.get("http://192.168.10.38:9904/repository/process-definitions").then(function(data){
                     tab.processList=data.data.data;
+                    tab.total = data.data.total;
                 },function(response){
                     console.info(response);
                     if(response){
@@ -213,46 +198,46 @@
         }
     })
 
-//    树形
-var tree = new Vue({
-    el: '#tree',
-    data: {
-        treeDatas:[],
-        defaultProps: {
-            label: 'NAME'
+    //    树形
+    var tree = new Vue({
+        el: '#tree',
+        data: {
+            treeDatas:[],
+            defaultProps: {
+                label: 'NAME'
+            },
+
         },
+        methods: {
+            getKey:function (data,node) {
+                this.$http.get("http://192.168.10.38:9907/actProcess/"+data.ID).then(function(data){
 
-    },
-    methods: {
-        getKey:function (data,node) {
-            this.$http.get("http://192.168.10.38:9907/actProcess/"+data.ID).then(function(data){
+                },function(response){
+                    console.info(response);
+                    if(response){
 
-            },function(response){
-                console.info(response);
-                if(response){
-
+                    }
+                })
+                console.log(data);
+            },
+            loadNode:function(node,addNode){
+                var pid;
+                if(node.id==0){
+                    pid = "-1";
+                }else{
+                    pid = node.data.ID;
                 }
-            })
-            console.log(data);
-        },
-        loadNode:function(node,addNode){
-            var pid;
-            if(node.id==0){
-                pid = "-1";
-            }else{
-                pid = node.data.ID;
+                this.$http.get("http://192.168.10.38:9907/actProcess",{'pid':pid}).then(function(data){
+                    addNode(data.data);
+                },function(response){
+                    console.info(response);
+                    if(response){
+
+                    }
+                })
             }
-            this.$http.get("http://192.168.10.38:9907/actProcess",{'pid':pid}).then(function(data){
-                addNode(data.data);
-            },function(response){
-                console.info(response);
-                if(response){
-
-                }
-            })
         }
-    }
-});
+    });
 </script>
 </body>
 </html>

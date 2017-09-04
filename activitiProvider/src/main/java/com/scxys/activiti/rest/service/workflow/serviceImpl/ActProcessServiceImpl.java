@@ -46,7 +46,9 @@ public class ActProcessServiceImpl implements ActProcessService{
 		NamedParameterJdbcTemplate jbdcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		Map param = new HashMap<>();
 		param.put("pid", pid);
-		List list = jbdcTemplate.queryForList("SELECT * from(SELECT af.classify_code as id , af.classify_name as name ,af.parent_code as pid from act_flowclassify af UNION SELECT ap.process_code as id , ap.process_name as name, ap.parent_code as pid from act_process ap ) v  where pid = :pid"
+		/*List list = jbdcTemplate.queryForList("SELECT * from(SELECT af.classify_code as id , af.classify_name as name ,af.parent_code as pid from act_flowclassify af UNION SELECT ap.process_code as id , ap.process_name as name, ap.parent_code as pid from act_process ap ) v  where pid = :pid"
+				, param);*/
+		List list = jbdcTemplate.queryForList("SELECT * from(SELECT af.classify_code as id , af.classify_name as name ,af.parent_code as pid from act_flowclassify af UNION SELECT AM.ID_ as id , AM.NAME_ as name, AM.CATEGORY_ as pid from ACT_RE_MODEL am ) v  where pid = :pid"
 				, param);
 		return list;
 	}

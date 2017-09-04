@@ -17,7 +17,7 @@
             <el-menu default-active="2" unique-opened class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
                 <el-submenu index="1">
                     <template slot="title"><i class="el-icon-menu"></i>业务流程管理</template>
-                    <a href="diagram.html"><el-menu-item index="1-2">流程设计器</el-menu-item></a>
+                    <!--<a href="diagram.html"><el-menu-item index="1-2">流程设计器</el-menu-item></a>-->
                     <a href="process.html"><el-menu-item index="1-1">流程管理</el-menu-item></a>
                     <a href="process-list.html"><el-menu-item index="1-1">流程列表</el-menu-item></a>
                     <a href="/sortManager"><el-menu-item index="1-2">分类管理</el-menu-item></a>
@@ -61,51 +61,23 @@
                             <el-tab-pane label="基本信息" name="first">
                                 <el-form :model="form1" :inline="true" class="demo-form-inline">
                                     <el-form-item   label="流程编号：" :label-width="formLabelWidth">
-                                        <el-input v-model="form1.processCode"  auto-complete="off"></el-input>
+                                        <el-input v-model="form1.id"  auto-complete="off"></el-input>
                                     </el-form-item>
                                     <el-form-item   label="流程名称：" :label-width="formLabelWidth">
-                                        <el-input v-model="form1.processName" auto-complete="off"></el-input>
+                                        <el-input v-model="form1.name" auto-complete="off"></el-input>
                                     </el-form-item>
-                                    <el-form-item   label="流程图ID：" :label-width="formLabelWidth">
-                                        <el-input v-model="form1.deploymentId"  auto-complete="off"></el-input>
+                                    <el-form-item   label="创建时间：" :label-width="formLabelWidth">
+                                        <el-input v-model="form1.createTime"  auto-complete="off" >{{form1.createTime |dateFilter}}</el-input>
+                                    </el-form-item>
+                                    <el-form-item   label="更新时间：" :label-width="formLabelWidth">
+                                        <el-input v-model="form1.lastUpdateTime"  auto-complete="off"></el-input>
                                     </el-form-item>
                                     <el-form-item  class="long-text" label="流程描述：" :label-width="formLabelWidth">
-                                        <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 1}" v-model="form1.describtion"  auto-complete="off"></el-input>
+                                        <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 1}" v-model="form1.metaInfo"  auto-complete="off"></el-input>
                                     </el-form-item>
-                                     <el-form-item  class="long-text"  label="流程分类：" :label-width="formLabelWidth">
-                                         <el-input type="textarea"  :autosize="{ minRows: 1, maxRows: 1}"  v-model="form1.flowClassify"  auto-complete="off"></el-input>
+                                    <el-form-item   label="版本：" :label-width="formLabelWidth">
+                                        <el-input v-model="form1.version"  auto-complete="off"></el-input>
                                     </el-form-item>
-                                    <el-form-item   label="上级编码：" :label-width="formLabelWidth">
-                                        <el-input v-model="form1.parentCode"  auto-complete="off"></el-input>
-                                    </el-form-item>
-                                    <div class="btn-box">
-                                        <el-form-item  :label-width="formLabelWidth">
-                                            <el-button type="primary" @click="save1"> 保 存 </el-button>
-                                            <el-button type="" > 取 消 </el-button>
-                                        </el-form-item>
-                                    </div>
-                                </el-form>
-                            </el-tab-pane>
-                            <el-tab-pane label="流程建模" name="second">
-                                <el-form :model="form2" :inline="true" :model="formInline" class="demo-form-inline">
-                                    <el-form-item   label="流程编号：" :label-width="formLabelWidth">
-                                        <el-input v-model="form2.code"  auto-complete="off"></el-input>
-                                    </el-form-item>
-                                    <el-form-item   label="流程名称：" :label-width="formLabelWidth">
-                                        <el-input v-model="form2.name" auto-complete="off"></el-input>
-                                    </el-form-item>
-                                    <el-form-item   label="流程图ID：" :label-width="formLabelWidth">
-                                        <el-input v-model="form2.id"  auto-complete="off"></el-input>
-                                    </el-form-item>
-                                    <el-form-item class="long-text"  label="流程描述：" :label-width="formLabelWidth">
-                                        <el-input type="textarea" autosize v-model="form2.describe"  auto-complete="off"></el-input>
-                                    </el-form-item>
-                                    <el-form-item   class="long-text" label="流程分类：" :label-width="formLabelWidth">
-                                        <el-input type="textarea" autosize v-model="form2.classify"  auto-complete="off"></el-input>
-                                    </el-form-item>
-                                    <el-form-item   label="上级编码：" :label-width="formLabe2Width">
-                						<el-input v-model="form2.parentCode"  auto-complete="off"></el-input>
-            						</el-form-item>
                                     <div class="btn-box">
                                         <el-form-item  :label-width="formLabelWidth">
                                             <el-button type="primary" @click="save1"> 保 存 </el-button>
@@ -135,23 +107,11 @@
 	<!--新增弹框-->
     <el-dialog title="新增" :visible.sync="addFormVisible">
         <el-form :model="addForm" :inline="true" class="demo-form-inline">
-            <el-form-item   label="流程编号：" :label-width="formLabe2Width">
-                <el-input v-model="addForm.processCode"  auto-complete="off"></el-input>
-            </el-form-item>
             <el-form-item   label="流程名称：" :label-width="formLabe2Width">
                 <el-input v-model="addForm.processName" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item   label="流程图ID：" :label-width="formLabe2Width">
-                <el-input v-model="addForm.deploymentId"  auto-complete="off"></el-input>
-            </el-form-item>
             <el-form-item   label="流程描述：" :label-width="formLabelWidth">
                 <el-input type="textarea" autosize v-model="addForm.describtion"  auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item  class="long-text"  label="流程分类：" :label-width="formLabelWidth">
-                <el-input type="textarea" autosize v-model="addForm.flowClassify"  auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item   label="上级编码：" :label-width="formLabe2Width">
-                <el-input v-model="addForm.parentCode"  auto-complete="off"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -168,9 +128,20 @@
 <script src="/businessProcessManager/js/ele/index.js"></script>
 <script src="/businessProcessManager/js/jquery.min.js"></script>
 <script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
-
+<script src="/businessProcessManager/js/date.js"></script>
 <script>
-//
+    var dateFilter = Vue.filter('dateFilter', function(value) {
+        if(value == null || value == undefined || value == "") {
+            return "";
+        }
+        /*var time = new Date(parseInt(value));*/
+        return 1;
+    });
+    //日期格式化
+    function formatDates(time){
+        return formatDate(new Date(time),'yyyy-MM-dd hh:mm');
+    };
+
     var menu = new Vue({
         el:'#menu',
         methods: {
@@ -189,34 +160,24 @@
             formLabelWidth: '180px',
             addFormVisible: false,
             addForm: {
-            	processCode: "",
             	processName: "",
-            	deploymentId: "",
-            	flowClassify: "",
-            	describtion: "",
-            	parentCode: ""
+            	describtion: ""
             },
             formLabe2Width: '180px'
         },
         methods: {
-//          提交新增
+            // 提交新增
             addSubmitForm:function () {
-                var that =this
+                var that =this;
+                var modelId;
                 this.$confirm('确认提交吗？', '提示', {
                     type: 'warning'
                 }).then(function () {
                     console.log(dialog.addForm);
-                    that.$http.post("http://192.168.10.38:9907/actProcess",dialog.addForm).then(function(data){
-                		this.$message({
-                            message: data.data,
-                            type: 'warning'
-                        });
-                		window.location.reload();
-                    },function(response){
-                        console.info(response);
-                        if(response){
-
-                        }
+                    that.$http.post("http://192.168.10.38:9904/repository/models",{"name":dialog.addForm.processName}).then(function(data){
+                		modelId=data.data.id;
+                		window.location.href="diagram.html?name="+dialog.addForm.processName+"&description="+dialog.addForm.describtion
+                        +"&modelId="+modelId;
                     });
                     dialog.addFormVisible = false;
                 })
@@ -292,13 +253,13 @@
                 }]);
             },
             getKey:function (data,node) {
-            	   this.$http.get("http://192.168.10.38:9907/actProcess/"+data.ID).then(function(data){
+            	   this.$http.get("http://192.168.10.38:9904/repository/models/"+data.ID).then(function(data){
             		   tabs.form1 = data.data;
             		   tool.delData = data.data.processCode;
                 },function(response){
                     console.info(response);
-                    if(response){
-
+                    if(response.status==404){
+                        tabs.form1 = null;
                     }
                 })
                 console.log(data);
@@ -325,15 +286,6 @@
                     }
                 })
             }
-
-//        ,renderContent:function(h, node, data, store) {
-//            return ('<span><span><span>{node.label}</span></span>'+
-//            '<span style="float: right; margin-right: 20px">'+
-//                '<el-button size="mini" on-click={ () => this.append(store, data) }>Append</el-button>'+
-//            '<el-button size="mini" on-click={ () => this.remove(store, data) }>Delete</el-button>'+
-//            '</span>'+
-//            '</span>');
-//        }
         }
     });
     var tabs = new Vue({
@@ -343,12 +295,11 @@
             formLabelWidth:'180px',
             form1: {
             	id: "",
-            	processCode: "",
-            	processName: "",
-            	deploymentId: "",
-                describtion: "",
-                flowClassify: "",
-                parentCode: ""
+            	name: "",
+                createTime: "",
+                lastUpdateTime: "",
+                metaInfo: "",
+                version: ""
             },
             form2: {
                 code: "2312",
@@ -364,7 +315,8 @@
                 console.log(tab, event);
             },
             save1:function () {
-            	this.$http.put("http://192.168.10.38:9907/actProcess",tabs.form1).then(function(data){
+            	this.$http.put("http://192.168.10.38:9904/repository/models/"+tabs.form1.id,{"name":tabs.form1
+                    .name}).then(function(data){
             		this.$message({
                         message: data.data,
                         type: 'warning'

@@ -1,8 +1,7 @@
 package com.scxys.activiti.rest.service.workflow.serviceImpl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -31,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.scxys.activiti.service.WorkflowService;
+
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -79,47 +80,42 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 
 	@Override
-	public void deploymentProcessDefinition(File file, String filename) {
+	public void deployment(String name,String diagramData,String svgData) {
+		String classpath=WorkflowServiceImpl.class.getResource("/").toString().substring(6);
+		String diagramFilepath=classpath+"processes/"+name+".bpmn";
+		String svgFilepath=classpath+"processes/"+name+".svg";
+		PrintStream psDiagram = null;
+		PrintStream psSvg = null;
 		try {
-			//2：将File类型的文件转化成ZipInputStream流
-			ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(file));
-			repositoryService.createDeployment()//创建部署对象
-							.name(filename)//添加部署名称
-							.addZipInputStream(zipInputStream)//
-							.deploy();//完成部署
-		} catch (Exception e) {
+			File diagramXml = new File(diagramFilepath);
+			File svg = new File(svgFilepath);
+			psDiagram = new PrintStream(new FileOutputStream(diagramXml),true);
+			psSvg = new PrintStream(new FileOutputStream(svg),true);
+			psDiagram.println(diagramData);// 往文件里写入字符串
+			psSvg.println(svgData);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			if(psDiagram!=null&&psSvg!=null){
+				psDiagram.close();
+				psSvg.close();
+			}
 		}
-	}
-	
-	@Override
-	public List<Deployment> findDeploymentList() {
-		return repositoryService.createDeploymentQuery()//创建部署对象查询
-				.orderByDeploymenTime().asc()//
-				.list();
+		repositoryService.createDeployment()//创建部署对象
+						.name(name)//添加部署名称
+						.addClasspathResource("processes/"+name+".bpmn")
+						.addClasspathResource("processes/"+name+".svg")
+						.deploy();
 	}
 
-	@Override
 	public List<ProcessDefinition> findProcessDefinitionList() {
 		return repositoryService.createProcessDefinitionQuery()//创建流程定义查询
 				.orderByProcessDefinitionVersion().asc()//
 				.list();
 	}
 
-	@Override
-	public InputStream findImageInputStream(String deploymentId,
-			String imageName) {
-		return repositoryService.getResourceAsStream(deploymentId, imageName);
-	}
-
-	@Override
-	public void deleteProcessDefinitionByDeploymentId(String deploymentId) {
-		repositoryService.deleteDeployment(deploymentId, true);//true代表关联查询
-
-	}
-	
 	/**2：使用当前用户名查询正在执行的任务表，获取当前任务的集合List<Task>*/
-	@Override
 	public List<Task> findTaskListByName(String name) {
 		return taskService.createTaskQuery()//
 					.taskAssignee(name)//指定个人任务查询
@@ -128,7 +124,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 	
 	/**使用任务ID，获取当前任务节点中对应的Form key中的连接的值*/
-	@Override
 	public String findTaskFormKeyByTaskId(String taskId) {
 		TaskFormData formData = formService.getTaskFormData(taskId);
 		//获取Form key的值
@@ -136,7 +131,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 	
 	/**二：已知任务ID，查询ProcessDefinitionEntiy对象，从而获取当前任务完成之后的连线名称，并放置到List<String>集合中*/
-	@Override
 	public List<String> findOutComeListByTaskId(String taskId) {
 		//返回存放连线的名称集合
 		List<String> list = new ArrayList<>();
@@ -175,7 +169,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 	
 	/**获取批注信息，传递的是当前任务ID，获取历史任务ID对应的批注*/
-	@Override
 	public List<Comment> findCommentByTaskId(String taskId) {
 		List<Comment> list;
 		//使用当前的任务ID，查询当前流程对应的历史任务ID
@@ -206,7 +199,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 
 	
 	/**1：获取任务ID，获取任务对象，使用任务对象获取流程定义ID，查询流程定义对象*/
-	@Override
 	public ProcessDefinition findProcessDefinitionByTaskId(String taskId) {
 		//使用任务ID，查询任务对象
 		Task task = taskService.createTaskQuery()//
@@ -219,7 +211,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 					.processDefinitionId(processDefinitionId)//使用流程定义ID查询
 					.singleResult();
 	}
-	@Override
 	public String findTaskName(String taskId) {
 		//使用任务ID，查询任务对象
 		Task task = taskService.createTaskQuery()//
@@ -232,7 +223,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 		 map集合的key：表示坐标x,y,width,height
 		 map集合的value：表示坐标对应的值
 	 */
-	@Override
 	public Map<String, Object> findCoordingByTask(String taskId) {
 		//存放坐标
 		Map<String, Object> map = new HashMap<>();
