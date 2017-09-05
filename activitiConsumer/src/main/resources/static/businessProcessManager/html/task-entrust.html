@@ -120,6 +120,14 @@
                                     </el-table-column>
                                 </el-table>
                             </div>
+                            <div class="page-box mt20 text-right">
+                                <el-pagination
+                                        @current-change="handleCurrentChange"
+                                        :page-size="size"
+                                        layout="total, prev, pager, next"
+                                        :total="total">
+                                </el-pagination>
+                            </div>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="全任务委托" name="second">
@@ -147,8 +155,7 @@
                                             prop="id"
                                             label="ID"
                                     >
-                                    </el-table-column
->
+                                    </el-table-column>
                                     <el-table-column
                                             prop="delegationDate"
                                             label="委托时间"
@@ -201,6 +208,14 @@
                                         </template>
                                     </el-table-column>
                                 </el-table>
+                            </div>
+                            <div class="page-box mt20 text-right">
+                                <el-pagination
+                                        @current-change="handleCurrentChange2"
+                                        :page-size="size2"
+                                        layout="total, prev, pager, next"
+                                        :total="total2">
+                                </el-pagination>
                             </div>
                         </div>
                     </el-tab-pane>
@@ -292,7 +307,6 @@
     </div>
 </div>
 <div id="dialog">
-
     <!--新增弹框-->
     <el-dialog title="新增" :visible.sync="addFormVisible">
         <el-form :model="addForm" :inline="true" class="demo-form-inline">
@@ -393,13 +407,40 @@
             },
             taskList:[],
             delegationList:[],
-            delegationQueryList:[]
+            delegationQueryList:[],
+            total:0 ,
+            currentPage: 1,
+            size: 10,
+            total2:0 ,
+            size2: 10
         },
         created:function(){
             this.getTask();
             this.getDelegation();
         },
         methods:{
+            //单任务委托分页查询
+            handleCurrentChange:function(data){
+                var start=(data-1)*10;
+                this.$http.get("http://192.168.10.38:9904/runtime/tasks?start="+start).then(function(data){
+                    tab.taskList=data.data.data;
+                },function(response){
+                    console.info(response);
+                    if(response){
+                    }
+                })
+            },
+            //全任务委托分页查询
+            handleCurrentChange2:function(data){
+                var start=(data-1)*10;
+                this.$http.get("http://192.168.10.38:9907/actDelegation?start"+start).then(function(data){
+                    tab.delegationList=data.data.data;
+                },function(response){
+                    console.info(response);
+                    if(response){
+                    }
+                })
+            },
             //选择
             selected:function (data) {
                 for(var i=0;i<data.length;i++){
@@ -561,6 +602,7 @@
             getTask:function(){
                 this.$http.get("http://192.168.10.38:9904/runtime/tasks").then(function(data){
                 	tab.taskList=data.data.data;
+                    tab.total = data.data.total;
                 },function(response){
                     console.info(response);
                     if(response){
@@ -570,7 +612,8 @@
           	//获取全任务委托表
             getDelegation:function(){
                 this.$http.get("http://192.168.10.38:9907/actDelegation").then(function(data){
-                	tab.delegationList=data.data;
+                	tab.delegationList=data.data.data;
+                    tab.total2 = data.data.total;
                 },function(response){
                     console.info(response);
                     if(response){

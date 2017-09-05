@@ -56,8 +56,13 @@
     var name=getQueryString("name");
     var description=getQueryString("description");
     var modelId=getQueryString("modelId");
-    document.getElementById("iframe").src="/bpmn-js/properties-panel/index.html?name="+name+"&description="+description
-    +"&modelId="+modelId;
+    var processDefinitionId=getQueryString("processDefinitionId");
+    if(processDefinitionId!=null&&processDefinitionId!="undefined"){
+        document.getElementById("iframe").src="/bpmn-js/properties-panel/index.html?processDefinitionId="+processDefinitionId;
+    }else{
+        document.getElementById("iframe").src="/bpmn-js/properties-panel/index.html?name="+name+"&description="+description
+            +"&modelId="+modelId+"&processDefinitionId=testformkey%3a2%3a48490";
+    }
 
     var menu = new Vue({
         el:'#menu',

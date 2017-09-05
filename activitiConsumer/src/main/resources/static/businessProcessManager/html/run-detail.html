@@ -102,8 +102,15 @@
                                             :formatter="durationInMillisFormatter"
                                     >
                                     </el-table-column>
-
                                 </el-table>
+                            </div>
+                            <div class="page-box mt20 text-right">
+                                <el-pagination
+                                        @current-change="handleCurrentChange"
+                                        :page-size="size"
+                                        layout="total, prev, pager, next"
+                                        :total="total">
+                                </el-pagination>
                             </div>
                         </div>
                     </el-tab-pane>
@@ -153,12 +160,26 @@
             	processDefinitionId:'',
                 eg:''
             },
-            detailList:[]
+            detailList:[],
+            total:0 ,
+            currentPage: 1,
+            size: 10
         },
         created:function(){
             this.getTaskInstances();
         },
         methods:{
+            //分页查询
+            handleCurrentChange:function(data){
+                var start=data+1;
+                this.$http.get("http://192.168.10.38:9904/history/historic-task-instances?processInstanceId="+parameter+"&start="+start).then(function(data){
+                    tab.detailList=data.data.data;
+                },function(response){
+                    console.info(response);
+                    if(response){
+                    }
+                })
+            },
         	//格式化开始时间
         	dateFormat:function(data,row){
         	    if(data.startTime!=null){
@@ -181,6 +202,7 @@
         	getTaskInstances:function(){
                 this.$http.get("http://192.168.10.38:9904/history/historic-task-instances?processInstanceId="+parameter).then(function(data){
                 	tab.detailList=data.data.data;
+                    tab.total = data.data.total;
                 },function(response){
                     console.info(response);
                     if(response){

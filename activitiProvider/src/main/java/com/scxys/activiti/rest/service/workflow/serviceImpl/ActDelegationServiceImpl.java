@@ -2,6 +2,7 @@ package com.scxys.activiti.rest.service.workflow.serviceImpl;
 
 import java.util.List;
 
+import com.scxys.activiti.rest.common.api.AbstractPaginateList;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.dubbo.config.annotation.Service;

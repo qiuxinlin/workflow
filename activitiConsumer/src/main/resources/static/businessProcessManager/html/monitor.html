@@ -96,39 +96,59 @@
                                             prop="processDefinitionId"
                                             label="流程定义ID">
                                     </el-table-column>
-
                                     <el-table-column
+                                            prop="processDefinitionKey"
+                                            label="流程定义key">
+                                    </el-table-column>
+                                    <!--<el-table-column
                                             prop="startTime"
                                             label="开始时间"
                                             :formatter="dateFormatStartTime"
                                     >
-                                    </el-table-column>
-                                    <el-table-column
+                                    </el-table-column>-->
+                                    <!--<el-table-column
                                             prop="endTime"
                                             label="结束时间"
                                             :formatter="dateFormatEndTime"
                                     >
-                                    </el-table-column>
-                                    <el-table-column
+                                    </el-table-column>-->
+                                   <!-- <el-table-column
                                             prop="durationInMillis"
                                             label="办理时长"
                                             :formatter="durationInMillisFormatter"
                                     >
-                                    </el-table-column>
-                                    <el-table-column
+                                    </el-table-column>-->
+                                    <!--<el-table-column
                                             prop="startActivityId"
                                             label="启动节点"
                                     >
-                                    </el-table-column>
+                                    </el-table-column>-->
                                     <el-table-column
+                                            prop="activityId"
+                                            label="当前任务ID"
+                                    >
+                                    </el-table-column>
+                                   <!-- <el-table-column
                                             prop="endActivityId"
                                             label="结束节点"
                                     >
-                                    </el-table-column>
+                                    </el-table-column>-->
                                     <el-table-column
+                                            prop="suspended"
+                                            label="是否暂停"
+                                    >
+                                    </el-table-column>
+                                    <!--<el-table-column
                                             label="完成情况">
                                     	<template scope="scope">
                                             <span v-if="scope.row.endActivityId==null">未完成</span>
+                                            <span v-else>完成</span>
+                                        </template>
+                                    </el-table-column>-->
+                                    <el-table-column
+                                            label="完成情况">
+                                        <template scope="scope">
+                                            <span v-if="scope.row.ended==false">未完成</span>
                                             <span v-else>完成</span>
                                         </template>
                                     </el-table-column>
@@ -139,8 +159,15 @@
                                             <el-button @click="cancelEntrust(scope.row)" type="text" >运行明细</el-button>
                                         </template>
                                     </el-table-column>
-
                                 </el-table>
+                            </div>
+                            <div class="page-box mt20 text-right">
+                                <el-pagination
+                                        @current-change="handleCurrentChange"
+                                        :page-size="size"
+                                        layout="total, prev, pager, next"
+                                        :total="total">
+                                </el-pagination>
                             </div>
                         </div>
                     </el-tab-pane>
@@ -321,7 +348,6 @@
                             </div>
                         </div>
                     </el-tab-pane>
-
                 </el-tabs>
             </div>
         </div>
@@ -380,12 +406,26 @@
                 children: 'children',
                 label: 'NAME'
             },
-            processInstances:[]
+            processInstances:[],
+            total:0 ,
+            currentPage: 1,
+            size: 10
         },
         created:function(){
             this.getProcessInstances();
         },
         methods:{
+            //分页查询
+            handleCurrentChange:function(data){
+                var start=(data-1)*10;
+                this.$http.get("http://192.168.10.38:9904/runtime/process-instances?start="+start).then(function(data){
+                    tab.processInstances=data.data.data;
+                },function(response){
+                    console.info(response);
+                    if(response){
+                    }
+                })
+            },
             //格式化开始时间
             dateFormatStartTime:function(data,row){
                 if(data.startTime!=null){
@@ -400,8 +440,9 @@
             },
         	//获取流程实例表
         	getProcessInstances:function(){
-                this.$http.get("http://192.168.10.38:9904/history/historic-process-instances").then(function(data){
+                this.$http.get("http://192.168.10.38:9904/runtime/process-instances").then(function(data){
                 	tab.processInstances=data.data.data;
+                    tab.total = data.data.total;
                 },function(response){
                     console.info(response);
                     if(response){

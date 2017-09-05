@@ -110,12 +110,14 @@
                                     </el-table-column>
                                 </el-table>
                             </div>
-                            <div class="page-box mt20 text-right">
+                           <!-- <div class="page-box mt20 text-right">
                                 <el-pagination
-                                        layout="prev, pager, next"
-                                        :total="50">
+                                        @current-change="handleCurrentChange"
+                                        :page-size="size"
+                                        layout="total, prev, pager, next"
+                                        :total="total">
                                 </el-pagination>
-                            </div>
+                            </div>-->
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="KPI指标" name="second">
@@ -313,7 +315,10 @@
                 startTime:'',
                 endTime:''
             },
-            variablesList:[]
+            variablesList:[],
+            total:0 ,
+            currentPage: 1,
+            size: 10
         },
         created:function(){
             this.getVariables();
