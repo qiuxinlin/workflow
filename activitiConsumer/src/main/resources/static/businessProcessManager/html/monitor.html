@@ -134,9 +134,12 @@
                                     >
                                     </el-table-column>-->
                                     <el-table-column
-                                            prop="suspended"
                                             label="是否暂停"
                                     >
+                                        <template scope="scope">
+                                            <span v-if="scope.row.suspended==false">否</span>
+                                            <span v-else>是</span>
+                                        </template>
                                     </el-table-column>
                                     <!--<el-table-column
                                             label="完成情况">

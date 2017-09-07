@@ -53,14 +53,14 @@
                         <div class="table-box">
                             <div class="form-box">
                                 <el-form :inline="true" :model="taskForm" class="demo-form-inline">
-                                    <el-form-item label="流程名称：">
+                                    <el-form-item label="任务名称：">
                                         <el-input v-model="taskForm.name" placeholder=""></el-input>
                                     </el-form-item>
                                 </el-form>
                             </div>
                             <div class="center">
                                 <el-table
-                                        :data="processList"
+                                        :data="runTaskList"
                                         border
                                         @selection-change="">
                                     <el-table-column
@@ -70,36 +70,44 @@
                                     </el-table-column>
                                     <el-table-column
                                             prop="id"
-                                            label="流程ID"
+                                            label="任务ID"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="processInstanceId"
+                                            label="流程实例ID"
                                     >
                                     </el-table-column>
                                     <el-table-column
                                             prop="name"
-                                            label="名称"
+                                            label="任务名称"
                                     >
                                     </el-table-column>
                                     <el-table-column
-                                            prop="key"
-                                            label="流程key"
+                                            prop="assignee"
+                                            label="待办人"
                                     >
                                     </el-table-column>
                                     <el-table-column
-                                            prop="description"
-                                            label="流程描述">
-                                    </el-table-column>
+                                            prop="createTime"
+                                            label="创建日期"
+                                            :formatter="dateFormatCreatTime"
+                                    >
                                     </el-table-column>
                                     <el-table-column
-                                            prop="version"
-                                            label="版本号"
+                                            label="是否暂停"
                                     >
+                                        <template scope="scope">
+                                            <span v-if="scope.row.suspended==false">否</span>
+                                            <span v-else>是</span>
+                                        </template>
                                     </el-table-column>
                                     <el-table-column
                                             prop=""
                                             label="操作"
                                     >
                                         <template scope="scope">
-                                            <el-button @click="startProcess(scope.row)" type="text" size="small">启动</el-button>
-                                            <el-button @click="designProcess(scope.row)" type="text" size="small">设计</el-button>
+                                            <el-button @click="taskAction(scope.row)" type="text" size="small">办理</el-button>
                                         </template>
                                     </el-table-column>
                                 </el-table>
@@ -129,7 +137,12 @@
 <script src="/businessProcessManager/js/ele/index.js"></script>
 <script src="/businessProcessManager/js/jquery.min.js"></script>
 <script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="/businessProcessManager/js/date.js"></script>
 <script>
+    //日期格式化
+    function formatDates(time){
+        return formatDate(new Date(time),'yyyy-MM-dd hh:mm');
+    };
     var menu = new Vue({
         el:'#menu',
         methods: {
@@ -156,7 +169,7 @@
                 startTime:'',
                 endTime:''
             },
-            processList:[],
+            runTaskList:[],
             total:0 ,
             currentPage: 1,
             size: 10
@@ -165,51 +178,54 @@
             this.query();
         },
         methods:{
+            //格式化创建时间
+            dateFormatCreatTime:function(data,row){
+                if(data.createTime!=null){
+                    return formatDates(data.createTime);
+                }
+            },
             //分页查询
             handleCurrentChange:function(data){
                 var start=(data-1)*10;
-                this.$http.get("http://192.168.10.38:9904/repository/process-definitions?sort=deploymentId&order=desc&start="+start).then(function(data){
-                    tab.processList=data.data.data;
+                this.$http.get("http://192.168.10.38:9904/runtime/tasks?sort=createTime&order=desc&start="+start).then(function(data){
+                    tab.runTaskList=data.data.data;
                 },function(response){
                     console.info(response);
                     if(response){
                     }
                 })
             },
-            //启动流程
-            startProcess:function(row) {
-                window.location.href="http://localhost:8089?processDefinitionKey="+row.key;
-                /*this.$http.post("http://192.168.10.38:9904/runtime/process-instances",{"processDefinitionKey":row.key}).then(function(data){
-                    var result=data.data.id;
-                    var message;
-                    if(result!=null){
-                        message="启动成功";
-                    }else {
-                        message="启动失败";
-                    }
-                    this.$message({
-                        message: message,
-                        type: 'warning'
-                    });
-                })*/
-            },
-            //设计
-            designProcess:function (row) {
-                var processDefinitionId=row.id;
-                if(processDefinitionId!=null&&processDefinitionId!="undefined"){
-                    processDefinitionId=processDefinitionId.replace(/:/g,"%3a");
-                    window.location.href="diagram.html?processDefinitionId="+processDefinitionId;
-                }
-            },
             query:function () {//查询
-                this.$http.get("http://192.168.10.38:9904/repository/process-definitions?sort=deploymentId&order=desc").then(function(data){
-                    tab.processList=data.data.data;
+                this.$http.get("http://192.168.10.38:9904/runtime/tasks?sort=createTime&order=desc").then(function(data){
+                    tab.runTaskList=data.data.data;
                     tab.total = data.data.total;
                 },function(response){
                     console.info(response);
                     if(response){
                     }
-                })
+                });
+            },
+            //办理任务
+            taskAction:function(row) {
+                var businessKey;
+                var self=this;
+                this.$http.get("http://192.168.10.38:9907/businessKey/"+row.processInstanceId).then(function(data){
+                    businessKey=data.data.data;
+                    window.location.href="http://localhost:8089?pocCode="+businessKey+"&taskId="+row.id;
+                },function(response){
+                    console.info(response);
+                    if(response){
+                    }
+                });
+               /* $.ajax({
+                    type:"get",
+                    url: "http://192.168.10.38:9907/businessKey/"+row.processInstanceId,
+                    async:false,
+                    success: function(data){
+                        businessKey=data.data;
+                        console.log(businessKey);
+                    }
+                });*/
             }
         }
     })

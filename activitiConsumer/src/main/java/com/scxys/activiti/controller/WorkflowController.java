@@ -28,7 +28,6 @@ import java.util.Map;
  * @description 说明:
  */
 @RestController
-//@RequestMapping("/workflowController/")
 public class WorkflowController {
 
     @Reference(version = "1.0.0")
@@ -45,13 +44,13 @@ public class WorkflowController {
      */
     @RequestMapping(value="/delegateTasks", method=RequestMethod.GET)
     public String delegateTasks(@RequestParam("id") String id, @RequestParam("startDate") String afterDate, @RequestParam("endDate") String beforeDate, @RequestParam("owner") String assignee, @RequestParam("assignee") String delegateUser) {
-        if (afterDate.equals("") || afterDate == null) {
+        if (afterDate == null || afterDate.equals("") ) {
             return "请选择开始时间";
         }
-        if (beforeDate.equals("") || beforeDate == null) {
+        if (beforeDate == null || beforeDate.equals("")) {
             return "请选择结束时间";
         }
-        if (delegateUser.equals("") || delegateUser == null) {
+        if (delegateUser == null || delegateUser.equals("")) {
             return "请选择委托人";
         }
         workflowService.delegateTasks(afterDate, beforeDate, assignee, delegateUser);
@@ -79,5 +78,18 @@ public class WorkflowController {
         }
         workflowService.deployment(name,diagramData,svgData);
         return CommRes.successRes();
+    }
+
+    /**
+     * @Author: qiuxinlin
+     * @Dercription: 根据流程实例ID获取BusinessKey
+     * @Date: 2017/9/7
+     */
+    @RequestMapping(value = "businessKey/{processInstanceId}",method = RequestMethod.GET)
+    public CommRes findBusinessKeyByPiId(@PathVariable String processInstanceId){
+        if(processInstanceId==null||processInstanceId.isEmpty()){
+            return CommRes.errorRes("400","流程实例ID不能为空");
+        }
+        return CommRes.success(workflowService.findBusinessKeyByPiId(processInstanceId));
     }
 }

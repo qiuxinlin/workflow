@@ -30,5 +30,11 @@ public interface WorkflowService {
 	 * @Date: 2017/8/29
 	 */
 	void deployment(String name,String diagramData,String svgData);
+	/**
+	 * @Author: qiuxinlin
+	 * @Dercription: 根据流程实例ID获取BusinessKey
+	 * @Date: 2017/9/7
+	 */
+	String findBusinessKeyByPiId(String processInstanceId);
 }
  
