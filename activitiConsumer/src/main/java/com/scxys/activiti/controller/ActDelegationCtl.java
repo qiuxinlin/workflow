@@ -1,6 +1,7 @@
 package com.scxys.activiti.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,9 +30,12 @@ public class ActDelegationCtl {
 		delegationService.add(delegation);
 	}
 	@RequestMapping(value="/actDelegation", method=RequestMethod.GET)
-	public List<ActDelegation> findAll(){
+	public Map findAll(){
 		List<ActDelegation> list=delegationService.findAll();
-		return list;
+		Map map=new HashMap();
+		map.put("data",list);
+		map.put("total",list.size());
+		return map;
 	}
 	@RequestMapping(value = "/actDelegationDel",method = RequestMethod.POST)
 	public String delete(@RequestParam("selectStr") String selectStr){

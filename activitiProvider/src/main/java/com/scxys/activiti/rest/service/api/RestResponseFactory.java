@@ -121,7 +121,7 @@ public class RestResponseFactory {
   public RestResponseFactory() {
     initializeVariableConverters();
   }
-  
+
   public List<TaskResponse> createTaskResponseList(List<Task> tasks) {
     RestUrlBuilder urlBuilder = createUrlBuilder();
     List<TaskResponse> responseList = new ArrayList<TaskResponse>();

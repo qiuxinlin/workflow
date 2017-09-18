@@ -37,3 +37,5 @@ spring:
     check-process-definitions: false
 server:
   port: 9907
+  tomcat:
+    max-http-post-size: 1553500000

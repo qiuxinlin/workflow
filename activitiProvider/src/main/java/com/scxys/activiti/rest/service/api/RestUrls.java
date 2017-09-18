@@ -69,7 +69,7 @@ public final class RestUrls {
   public static final String SEGMENT_PICTURE = "picture";
   public static final String SEGMENT_INFO = "info";
   public static final String SEGMENT_MEMBERS = "members";
-  public static final String SEGMENT_MODEL = "model";
+  public static final String SEGMENT_MODEL = "com/scxys/activiti/rest/editor/model";
   public static final String SEGMENT_PROPERTIES = "properties";
   public static final String SEGMENT_ENGINE_INFO = "engine";
   public static final String SEGMENT_ACTIVITIES = "activities";

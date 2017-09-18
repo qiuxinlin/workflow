@@ -18,40 +18,9 @@ public class ActivitiControllerApplication {
 		SpringApplication.run(ActivitiControllerApplication.class, args);
 	}
 
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index() {
-		System.out.println("----------");
-		return "login";
-	}
-
-	@RequestMapping(value = "/bpm", method = RequestMethod.GET)
-	public String bpm() {
-		return "bpm/html/actFlowclassify";
-	}
-
-	@RequestMapping(value = "/process", method = RequestMethod.GET)
-	public String process() {
-		return "bpm/html/actProcess";
-	}
-
-	@RequestMapping(value = "/userGroup", method = RequestMethod.GET)
-	public String userGroup() {
-		return "bpm/html/userGroup";
-	}
-
-	@RequestMapping(value = "/taskDelegate", method = RequestMethod.GET)
-	public String taskDelegate() {
-		return "bpm/html/task-entrust";
-	}
-
-	@RequestMapping(value = "/monitor", method = RequestMethod.GET)
-	public String monitor() {
-		return "bpm/html/monitor";
-	}
-
-	@RequestMapping(value = "/runDetail", method = RequestMethod.GET)
-	public String runDetail() {
-		return "bpm/html/run-detail";
+	@RequestMapping(value = "/sortManager",method = RequestMethod.GET)
+	public String sortManager(){
+		return "businessProcessManager/sortManager";
 	}
 	/**
 	 * @Author: qiuxinlin

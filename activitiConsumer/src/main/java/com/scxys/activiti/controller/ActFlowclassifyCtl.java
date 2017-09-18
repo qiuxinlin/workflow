@@ -57,7 +57,13 @@ public class ActFlowclassifyCtl {
 		return listMap;
 	}
 
-	@DeleteMapping
+	@RequestMapping(value="/actFlowclassifys", method=RequestMethod.GET, produces="application/json")
+	public List<ActFlowclassify> getFlowclassifys(){
+		//List<ActFlowclassify> list=flowclassifyService.findAll();
+		List<ActFlowclassify> list=flowclassifyService.findAll();
+		return list;
+	}
+
 	@RequestMapping(value="/actFlowclassify/{classifyCode}", method=RequestMethod.DELETE)
 	public String deleteFlowclassifyByCode(@PathVariable("classifyCode") String classifyCode) {
 		flowclassifyService.deleteFlowclassifyByCode(classifyCode);
