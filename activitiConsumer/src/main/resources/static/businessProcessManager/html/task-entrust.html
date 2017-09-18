@@ -584,14 +584,13 @@
             cancelEntrust:function (row) {
             	var that=this;
                 this.$confirm('确定取消委托吗？','提示',{type:'warning'}).then(function () {
-                	that.$http.put(url+portP+"runtime/tasks/"+row.id,{"assignee":row.owner,"delegationState":null}).then(function(data){
-                		this.$message({
+                	that.$http.put(url+portP+"runtime/tasks/"+row.id,{"assignee":null,"delegationState":null}).then(function(data){
+                		/*this.$message({
                             message: data.data,
                             type: 'warning'
-                        });
+                        });*/
                 		window.location.reload();
                     },function(response){
-                        console.info(response);
                         if(response){
 
                         }
