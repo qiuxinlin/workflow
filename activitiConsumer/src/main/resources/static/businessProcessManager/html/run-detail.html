@@ -174,7 +174,7 @@
             //分页查询
             handleCurrentChange:function(data){
                 var start=data+1;
-                this.$http.get(url+"9904/history/historic-task-instances?processInstanceId="+parameter+"&start="+start).then(function(data){
+                this.$http.get(url+portP+"history/historic-task-instances?processInstanceId="+parameter+"&start="+start).then(function(data){
                     tab.detailList=data.data.data;
                 },function(response){
                     console.info(response);
@@ -202,7 +202,7 @@
             },
         	//获取历史任务实例
         	getTaskInstances:function(){
-                this.$http.get(url+"9904/history/historic-task-instances?processInstanceId="+parameter).then(function(data){
+                this.$http.get(url+portP+"history/historic-task-instances?processInstanceId="+parameter).then(function(data){
                 	tab.detailList=data.data.data;
                     tab.total = data.data.total;
                 },function(response){

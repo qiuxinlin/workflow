@@ -1,3 +1,3 @@
 var url="http://localhost:";
 var portC="9907/";
-var portp="9904/";
+var portP="9904/";

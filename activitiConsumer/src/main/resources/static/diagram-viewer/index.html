@@ -112,9 +112,9 @@ $(document).ready(function(){
   baseUrl = baseUrl + shortenedUrl.substring(0, shortenedUrl.indexOf("/"));
   
   ActivitiRest.options = {
-		processInstanceHighLightsUrl: url+"9904/process-instance/{processInstanceId}/highlights?callback=?",
-		processDefinitionUrl: url+"9904/process-definition/{processDefinitionId}/diagram-layout?callback=?",
-		processDefinitionByKeyUrl: url+"9904/process-definition/{processDefinitionKey}/diagram-layout?callback=?"
+		processInstanceHighLightsUrl: url+portP+"process-instance/{processInstanceId}/highlights?callback=?",
+		processDefinitionUrl: url+portP+"process-definition/{processDefinitionId}/diagram-layout?callback=?",
+		processDefinitionByKeyUrl: url+portP+"process-definition/{processDefinitionKey}/diagram-layout?callback=?"
 	};
   
   if (processDefinitionId) {

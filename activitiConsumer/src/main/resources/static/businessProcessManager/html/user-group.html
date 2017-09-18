@@ -375,7 +375,7 @@ var tree = new Vue({
     },
     methods: {
         getKey:function (data,node) {
-            this.$http.get(url+"9907/actProcess/"+data.ID).then(function(data){
+            this.$http.get(url+portC+"actProcess/"+data.ID).then(function(data){
 
             },function(response){
                 console.info(response);
@@ -392,7 +392,7 @@ var tree = new Vue({
             }else{
                 pid = node.data.ID;
             }
-            this.$http.get(url+"9907/actProcess",{'pid':pid}).then(function(data){
+            this.$http.get(url+portC+"actProcess",{'pid':pid}).then(function(data){
                 addNode(data.data);
             },function(response){
                 console.info(response);
@@ -489,7 +489,7 @@ var tree = new Vue({
         methods:{
             handleCurrentChange:function(val) {
                 this.currentRow = val;
-                this.$http.get(url+"9904/identity/users?memberOfGroup="+val.id).then(function(data){
+                this.$http.get(url+portP+"identity/users?memberOfGroup="+val.id).then(function(data){
                 	tabs.form1 = Object.assign({},val);
                 	tabs.form1.groupList=data.data.data;
                 },function(response){
@@ -506,7 +506,7 @@ var tree = new Vue({
                 console.log('当前第'+val+'页');
             },
             getGroup:function(){
-                this.$http.get(url+"9904/identity/groups").then(function(data){
+                this.$http.get(url+portP+"identity/groups").then(function(data){
                 	group.groupDatas=data.data.data;
 
                 },function(response){

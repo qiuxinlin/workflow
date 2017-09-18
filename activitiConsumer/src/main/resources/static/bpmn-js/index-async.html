@@ -63,7 +63,7 @@ html, body, #canvas {
 	</script>
 	<script>
   		var deploymentId=getUrl().deploymentId;
-  		importAjax(url+"9907/deviceExceptionController/findResource/62539"/* +deploymentId */);
+  		importAjax(url+portC+"deviceExceptionController/findResource/62539"/* +deploymentId */);
   </script>
   <script type="text/javascript">
 	$(document).ready(function()
@@ -80,7 +80,7 @@ html, body, #canvas {
 					$.ajax({
 						   type: "GET",
 						   async:false,
-						   url: url+"9904/history/historic-task-instances/80005",
+						   url: url+portP+"history/historic-task-instances/80005",
 						   success: function(data){
 							   alert("开始时间:"+data.startTime+",结束时间:"+data.endTime+",办理人:"+data.assignee);
 						   }
