@@ -525,7 +525,7 @@
 
             },
             getKey:function (data,node) {
-                this.$http.get("http://192.168.10.38:9907/actProcess/"+data.ID).then(function(data){
+                this.$http.get("http://localhost:9907/actProcess/"+data.ID).then(function(data){
 
                 },function(response){
                     console.info(response);
@@ -542,7 +542,7 @@
                 }else{
                     pid = node.data.ID;
                 }
-                this.$http.get("http://192.168.10.38:9907/actProcess",{'pid':pid}).then(function(data){
+                this.$http.get("http://localhost:9907/actProcess",{'pid':pid}).then(function(data){
                     addNode(data.data);
                 },function(response){
                     console.info(response);

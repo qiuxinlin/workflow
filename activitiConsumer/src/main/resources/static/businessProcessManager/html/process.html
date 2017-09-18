@@ -174,7 +174,7 @@
                     type: 'warning'
                 }).then(function () {
                     console.log(dialog.addForm);
-                    that.$http.post("http://192.168.10.38:9904/repository/models",{"name":dialog.addForm.processName}).then(function(data){
+                    that.$http.post("http://localhost:9904/repository/models",{"name":dialog.addForm.processName}).then(function(data){
                 		modelId=data.data.id;
                 		window.location.href="diagram.html?name="+dialog.addForm.processName+"&description="+dialog.addForm.describtion
                         +"&modelId="+modelId;
@@ -202,7 +202,7 @@
                         type: 'warning'
                     }).then(function () {
                         //删除 do something
-                        that.$http.delete("http://192.168.10.38:9907/actProcess/"+delData).then(function(data){
+                        that.$http.delete("http://localhost:9907/actProcess/"+delData).then(function(data){
                     		this.$message({
                                 message: data.data,
                                 type: 'warning'
@@ -253,7 +253,7 @@
                 }]);
             },
             getKey:function (data,node) {
-            	   this.$http.get("http://192.168.10.38:9904/repository/models/"+data.ID).then(function(data){
+            	   this.$http.get("http://localhost:9904/repository/models/"+data.ID).then(function(data){
             		   tabs.form1 = data.data;
             		   tool.delData = data.data.processCode;
                 },function(response){
@@ -277,7 +277,7 @@
             	}else{
             		pid = node.data.ID;
             	}
-                this.$http.get("http://192.168.10.38:9907/actProcess",{'pid':pid}).then(function(data){
+                this.$http.get("http://localhost:9907/actProcess",{'pid':pid}).then(function(data){
                 	addNode(data.data);
                 },function(response){
                     console.info(response);
@@ -315,7 +315,7 @@
                 console.log(tab, event);
             },
             save1:function () {
-            	this.$http.put("http://192.168.10.38:9904/repository/models/"+tabs.form1.id,{"name":tabs.form1
+            	this.$http.put("http://localhost:9904/repository/models/"+tabs.form1.id,{"name":tabs.form1
                     .name}).then(function(data){
             		this.$message({
                         message: data.data,

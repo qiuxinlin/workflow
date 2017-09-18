@@ -159,7 +159,7 @@
                     type: 'warning'
                 }).then(function () {
                     console.log(dialog.addForm);
-                    that.$http.post("http://192.168.10.38:9907/actFlowclassify",dialog.addForm).then(function(data){
+                    that.$http.post("http://localhost:9907/actFlowclassify",dialog.addForm).then(function(data){
                 		this.$message({
                             message: data.data,
                             type: 'warning'
@@ -193,7 +193,7 @@
                     this.$confirm('确认删除编号为'+delData+'的元素吗？', '提示', {
                         type: 'warning'
                     }).then(function () {
-                    	that.$http.delete("http://192.168.10.38:9907/actFlowclassify/"+delData).then(function(data){
+                    	that.$http.delete("http://localhost:9907/actFlowclassify/"+delData).then(function(data){
                     		this.$message({
                                 message: data.data,
                                 type: 'warning'
@@ -264,7 +264,7 @@
                 this.$refs.tree.setCheckedKeys([]);
             },
             getTree:function(){
-                this.$http.get("http://192.168.10.38:9907/actFlowclassify").then(function(data){
+                this.$http.get("http://localhost:9907/actFlowclassify").then(function(data){
                 	tree.treeDatas=data.data;
 
                 },function(response){
@@ -302,7 +302,7 @@
                 console.log(tab, event);
             },
             save1:function () {
-            	this.$http.put("http://192.168.10.38:9907/actFlowclassify/",form.form1).then(function(data){
+            	this.$http.put("http://localhost:9907/actFlowclassify/",form.form1).then(function(data){
             		this.$message({
                         message: data.data,
                         type: 'warning'

@@ -421,7 +421,7 @@
             //分页查询
             handleCurrentChange:function(data){
                 var start=(data-1)*10;
-                this.$http.get("http://192.168.10.38:9904/runtime/process-instances?start="+start).then(function(data){
+                this.$http.get("http://localhost:9904/runtime/process-instances?start="+start).then(function(data){
                     tab.processInstances=data.data.data;
                 },function(response){
                     console.info(response);
@@ -443,7 +443,7 @@
             },
         	//获取流程实例表
         	getProcessInstances:function(){
-                this.$http.get("http://192.168.10.38:9904/runtime/process-instances").then(function(data){
+                this.$http.get("http://localhost:9904/runtime/process-instances").then(function(data){
                 	tab.processInstances=data.data.data;
                     tab.total = data.data.total;
                 },function(response){
@@ -467,7 +467,7 @@
 
             },
             getKey:function (data,node) {
-            	   this.$http.get("http://192.168.10.38:9907/actProcess/"+data.ID).then(function(data){
+            	   this.$http.get("http://localhost:9907/actProcess/"+data.ID).then(function(data){
 
                 },function(response){
                     console.info(response);
@@ -484,7 +484,7 @@
             	}else{
             		pid = node.data.ID;
             	}
-                this.$http.get("http://192.168.10.38:9907/actProcess",{'pid':pid}).then(function(data){
+                this.$http.get("http://localhost:9907/actProcess",{'pid':pid}).then(function(data){
                 	addNode(data.data);
                 },function(response){
                     console.info(response);
@@ -500,7 +500,7 @@
                 }
             },
             cancelEntrust:function(data){
-            	window.location.href="http://192.168.10.38:9907/businessProcessManager/html/run-detail.html?processInstanceId="+data.id+"&processDefinitionId="+data.processDefinitionId;
+            	window.location.href="http://localhost:9907/businessProcessManager/html/run-detail.html?processInstanceId="+data.id+"&processDefinitionId="+data.processDefinitionId;
             }
         }
     })
