@@ -57,12 +57,13 @@
 
 	<script src="extend.js" charset="utf-8"></script>
 	<script src="index.js" charset="utf-8"></script>
-
+	<!--引入url配置文件-->
+	<script src="/businessProcessManager/js/config.js"></script>
 	<!--select树形选择框js-->
 	<script type="text/javascript">
 		/*动态生成select选择框的option*/
         $(document).ready(function(){
-            $.get("http://localhost:9907/actFlowclassifys",function(data,status){
+            $.get(url+"9907/actFlowclassifys",function(data,status){
                 for(var i=0;i<data.length;i++){
 					var ss ="<option value="+"'"+data[i].classifyCode+"'"+" parent="+"'"+data[i].parentCode+"'"+">"+data[i].classifyName+"</option>";
                     $("#select").append(ss);

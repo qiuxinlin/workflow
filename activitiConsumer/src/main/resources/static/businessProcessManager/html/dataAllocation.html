@@ -286,7 +286,8 @@
 <script src="/businessProcessManager/js/ele/index.js"></script>
 <script src="/businessProcessManager/js/jquery.min.js"></script>
 <script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
-
+<!--引入url配置文件-->
+<script src="/businessProcessManager/js/config.js"></script>
 <script>
     //
     var menu = new Vue({
@@ -326,7 +327,7 @@
         methods:{
             //查询流程实例变量
             getVariables:function(){
-                this.$http.get("http://localhost:9904/runtime/process-instances/1715/variables").then(function(data){
+                this.$http.get(url+"9904/runtime/process-instances/1715/variables").then(function(data){
                     tab.variablesList=data.data;
                 },function(response){
                     console.info(response);
@@ -371,7 +372,7 @@
         },
         methods: {
             getKey:function (data,node) {
-                this.$http.get("http://localhost:9907/actProcess/"+data.ID).then(function(data){
+                this.$http.get(url+"9907/actProcess/"+data.ID).then(function(data){
 
                 },function(response){
                     console.info(response);
@@ -388,7 +389,7 @@
                 }else{
                     pid = node.data.ID;
                 }
-                this.$http.get("http://localhost:9907/actProcess",{'pid':pid}).then(function(data){
+                this.$http.get(url+"9907/actProcess",{'pid':pid}).then(function(data){
                     addNode(data.data);
                 },function(response){
                     console.info(response);
@@ -431,7 +432,7 @@
                     type: 'warning'
                 }).then(function () {
                     console.log(dialog.addForm);
-                    that.$http.put("http://localhost:9904/runtime/process-instances/1715/variables",JSON.stringify(variable)).then(function(data){
+                    that.$http.put(url+"9904/runtime/process-instances/1715/variables",JSON.stringify(variable)).then(function(data){
                         this.$message({
                             message: data.data,
                             type: 'warning'
@@ -455,7 +456,7 @@
                     type: 'warning'
                 }).then(function () {
                     console.log(dialog.addForm);
-                    that.$http.put("http://localhost:9904/runtime/process-instances/1715/variables",JSON.stringify(variable)).then(function(data){
+                    that.$http.put(url+"9904/runtime/process-instances/1715/variables",JSON.stringify(variable)).then(function(data){
                         this.$message({
                             message: data.data,
                             type: 'warning'

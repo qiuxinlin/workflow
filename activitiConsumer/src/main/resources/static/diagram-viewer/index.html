@@ -17,7 +17,8 @@
   <script src="js/LineBreakMeasurer.js" type="text/javascript" charset="utf-8"></script>
   <script src="js/ProcessDiagramGenerator.js" type="text/javascript" charset="utf-8"></script>
   <script src="js/ProcessDiagramCanvas.js" type="text/javascript" charset="utf-8"></script>
-  
+  <!--引入url配置文件-->
+  <script src="/businessProcessManager/js/config.js"></script>
   <style type="text/css" media="screen">
     
   </style>
@@ -111,9 +112,9 @@ $(document).ready(function(){
   baseUrl = baseUrl + shortenedUrl.substring(0, shortenedUrl.indexOf("/"));
   
   ActivitiRest.options = {
-		processInstanceHighLightsUrl: "http://localhost:9904/process-instance/{processInstanceId}/highlights?callback=?",
-		processDefinitionUrl: "http://localhost:9904/process-definition/{processDefinitionId}/diagram-layout?callback=?",
-		processDefinitionByKeyUrl: "http://localhost:9904/process-definition/{processDefinitionKey}/diagram-layout?callback=?"
+		processInstanceHighLightsUrl: url+"9904/process-instance/{processInstanceId}/highlights?callback=?",
+		processDefinitionUrl: url+"9904/process-definition/{processDefinitionId}/diagram-layout?callback=?",
+		processDefinitionByKeyUrl: url+"9904/process-definition/{processDefinitionKey}/diagram-layout?callback=?"
 	};
   
   if (processDefinitionId) {

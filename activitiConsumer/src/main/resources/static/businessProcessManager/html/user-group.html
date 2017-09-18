@@ -194,7 +194,8 @@
 <script src="/businessProcessManager/js/ele/index.js"></script>
 <script src="/businessProcessManager/js/jquery.min.js"></script>
 <script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
-
+<!--引入url配置文件-->
+<script src="/businessProcessManager/js/config.js"></script>
 <script>
 //
     var menu = new Vue({
@@ -374,7 +375,7 @@ var tree = new Vue({
     },
     methods: {
         getKey:function (data,node) {
-            this.$http.get("http://localhost:9907/actProcess/"+data.ID).then(function(data){
+            this.$http.get(url+"9907/actProcess/"+data.ID).then(function(data){
 
             },function(response){
                 console.info(response);
@@ -391,7 +392,7 @@ var tree = new Vue({
             }else{
                 pid = node.data.ID;
             }
-            this.$http.get("http://localhost:9907/actProcess",{'pid':pid}).then(function(data){
+            this.$http.get(url+"9907/actProcess",{'pid':pid}).then(function(data){
                 addNode(data.data);
             },function(response){
                 console.info(response);
@@ -488,7 +489,7 @@ var tree = new Vue({
         methods:{
             handleCurrentChange:function(val) {
                 this.currentRow = val;
-                this.$http.get("http://localhost:9904/identity/users?memberOfGroup="+val.id).then(function(data){
+                this.$http.get(url+"9904/identity/users?memberOfGroup="+val.id).then(function(data){
                 	tabs.form1 = Object.assign({},val);
                 	tabs.form1.groupList=data.data.data;
                 },function(response){
@@ -505,7 +506,7 @@ var tree = new Vue({
                 console.log('当前第'+val+'页');
             },
             getGroup:function(){
-                this.$http.get("http://localhost:9904/identity/groups").then(function(data){
+                this.$http.get(url+"9904/identity/groups").then(function(data){
                 	group.groupDatas=data.data.data;
 
                 },function(response){

@@ -401,7 +401,8 @@
 <script src="/businessProcessManager/js/ele/index.js"></script>
 <script src="/businessProcessManager/js/jquery.min.js"></script>
 <script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
-
+<!--引入url配置文件-->
+<script src="/businessProcessManager/js/config.js"></script>
 <script>
     //
     var menu = new Vue({
@@ -525,7 +526,7 @@
 
             },
             getKey:function (data,node) {
-                this.$http.get("http://localhost:9907/actProcess/"+data.ID).then(function(data){
+                this.$http.get(url+portC+"actProcess/"+data.ID).then(function(data){
 
                 },function(response){
                     console.info(response);
@@ -542,7 +543,7 @@
                 }else{
                     pid = node.data.ID;
                 }
-                this.$http.get("http://localhost:9907/actProcess",{'pid':pid}).then(function(data){
+                this.$http.get(url+"9907/actProcess",{'pid':pid}).then(function(data){
                     addNode(data.data);
                 },function(response){
                     console.info(response);

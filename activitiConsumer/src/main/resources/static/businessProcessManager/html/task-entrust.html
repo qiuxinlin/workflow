@@ -366,6 +366,8 @@
 <script src="/businessProcessManager/js/jquery.min.js"></script>
 <script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="/businessProcessManager/js/date.js"></script>
+<!--引入url配置文件-->
+<script src="/businessProcessManager/js/config.js"></script>
 <script>
     function formatDates(time){
         return formatDate(new Date(time),'yyyy-MM-dd hh:mm');
@@ -422,7 +424,7 @@
             //单任务委托分页查询
             handleCurrentChange:function(data){
                 var start=(data-1)*10;
-                this.$http.get("http://localhost:9904/runtime/tasks?start="+start).then(function(data){
+                this.$http.get(url+"9904/runtime/tasks?start="+start).then(function(data){
                     tab.taskList=data.data.data;
                 },function(response){
                     console.info(response);
@@ -433,7 +435,7 @@
             //全任务委托分页查询
             handleCurrentChange2:function(data){
                 var start=(data-1)*10;
-                this.$http.get("http://localhost:9907/actDelegation?start"+start).then(function(data){
+                this.$http.get(url+"9907/actDelegation?start"+start).then(function(data){
                     tab.delegationList=data.data.data;
                 },function(response){
                     console.info(response);
@@ -498,7 +500,7 @@
                     this.$confirm('确认删除？', '提示', {
                         type: 'warning'
                     }).then(function () {
-                        that.$http.post("http://localhost:9907/actDelegationDel",{"selectStr":selectStr},{
+                        that.$http.post(url+"9907/actDelegationDel",{"selectStr":selectStr},{
                             emulateJSON:true
                         }).then(function(data){
                             this.$message({
@@ -525,7 +527,7 @@
 
             },
             query:function () {//查询
-                this.$http.post("http://localhost:9904/query/historic-task-instances",{"taskOwner":tab.queryForm.owner,
+                this.$http.post(url+"9904/query/historic-task-instances",{"taskOwner":tab.queryForm.owner,
                     "taskCreatedAfter":tab.queryForm.startTime,"taskCreatedBefore":tab.queryForm.endTime}).then(function(data){
                     tab.delegationQueryList=data.data.data;
                 },function(response){
@@ -538,7 +540,7 @@
             entrustTasks:function (row) {
                 var that =this;
                 this.$confirm('确定委托吗？','提示',{type:'warning'}).then(function () {
-                    that.$http.get("http://localhost:9907/delegateTasks",{"id":row.id,"startDate":row.startDate,"endDate":row.endDate,"owner":row.owner,"assignee":row.assignee}).then(function(data){
+                    that.$http.get(url+"9907/delegateTasks",{"id":row.id,"startDate":row.startDate,"endDate":row.endDate,"owner":row.owner,"assignee":row.assignee}).then(function(data){
                         this.$message({
                             message: data.data,
                             type: 'warning'
@@ -562,7 +564,7 @@
             		return;
             	}
                 this.$confirm('确定委托吗？','提示',{type:'warning'}).then(function () {
-                	that.$http.post("http://localhost:9904/runtime/tasks/"+row.id,{"action":"delegate","assignee":tab.taskForm.name}).then(function(data){
+                	that.$http.post(url+"9904/runtime/tasks/"+row.id,{"action":"delegate","assignee":tab.taskForm.name}).then(function(data){
                 		this.$message({
                             message: data.data,
                             type: 'warning'
@@ -582,7 +584,7 @@
             cancelEntrust:function (row) {
             	var that=this;
                 this.$confirm('确定取消委托吗？','提示',{type:'warning'}).then(function () {
-                	that.$http.put("http://localhost:9904/runtime/tasks/"+row.id,{"assignee":row.owner,"delegationState":null}).then(function(data){
+                	that.$http.put(url+"9904/runtime/tasks/"+row.id,{"assignee":row.owner,"delegationState":null}).then(function(data){
                 		this.$message({
                             message: data.data,
                             type: 'warning'
@@ -600,7 +602,7 @@
             },
             //获取待办任务
             getTask:function(){
-                this.$http.get("http://localhost:9904/runtime/tasks").then(function(data){
+                this.$http.get(url+"9904/runtime/tasks").then(function(data){
                 	tab.taskList=data.data.data;
                     tab.total = data.data.total;
                 },function(response){
@@ -611,7 +613,7 @@
             },
           	//获取全任务委托表
             getDelegation:function(){
-                this.$http.get("http://localhost:9907/actDelegation").then(function(data){
+                this.$http.get(url+"9907/actDelegation").then(function(data){
                 	tab.delegationList=data.data.data;
                     tab.total2 = data.data.total;
                 },function(response){
@@ -635,7 +637,7 @@ var tree = new Vue({
     },
     methods: {
         getKey:function (data,node) {
-            this.$http.get("http://localhost:9907/actProcess/"+data.ID).then(function(data){
+            this.$http.get(url+"9907/actProcess/"+data.ID).then(function(data){
 
             },function(response){
                 console.info(response);
@@ -652,7 +654,7 @@ var tree = new Vue({
             }else{
                 pid = node.data.ID;
             }
-            this.$http.get("http://localhost:9907/actProcess",{'pid':pid}).then(function(data){
+            this.$http.get(url+"9907/actProcess",{'pid':pid}).then(function(data){
                 addNode(data.data);
             },function(response){
                 console.info(response);
@@ -689,7 +691,7 @@ var dialog = new Vue({
                 type: 'warning'
             }).then(function () {
                 console.log(dialog.addForm)
-                that.$http.post("http://localhost:9907/actDelegation",dialog.addForm).then(function(data){
+                that.$http.post(url+"9907/actDelegation",dialog.addForm).then(function(data){
                 		this.$message({
                             message: data.data,
                             type: 'warning'
