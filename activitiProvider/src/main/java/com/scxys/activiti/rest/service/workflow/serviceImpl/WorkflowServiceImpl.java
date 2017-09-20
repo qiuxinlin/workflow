@@ -81,9 +81,13 @@ public class WorkflowServiceImpl implements WorkflowService {
 
 	@Override
 	public void deployment(String name,String diagramData,String svgData) {
-		String classpath=WorkflowServiceImpl.class.getResource("/").toString().substring(6);
-		String diagramFilepath=classpath+"processes/"+name+".bpmn";
-		String svgFilepath=classpath+"processes/"+name+".svg";
+		//String classpath=WorkflowServiceImpl.class.getResource("/").toString().substring(6);
+		/*本地文件地址*/
+		//String diagramFilepath=classpath+"processes/"+name+".bpmn";
+		//String svgFilepath=classpath+"processes/"+name+".svg";
+		/*服务器上文件地址*/
+		String diagramFilepath="/root/workflow/processes/"+name+".bpmn";
+		String svgFilepath="/root/workflow/processes/"+name+".svg";
 		PrintStream psDiagram = null;
 		PrintStream psSvg = null;
 		try {

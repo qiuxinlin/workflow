@@ -213,6 +213,7 @@
                 var self=this;
                 this.$http.get(url+portC+"businessKey/"+row.processInstanceId).then(function(data){
                     businessKey=data.data.data;
+                    /*../../poc/index.html*/
                     window.location.href="../../poc/index.html?pocCode="+businessKey+"&taskId="+row.id;
                 },function(response){
                     console.info(response);
