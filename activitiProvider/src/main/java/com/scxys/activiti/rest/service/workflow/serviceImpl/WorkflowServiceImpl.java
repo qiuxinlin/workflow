@@ -90,9 +90,11 @@ public class WorkflowServiceImpl implements WorkflowService {
 		String svgFilepath="/root/workflow/processes/"+name+".svg";
 		PrintStream psDiagram = null;
 		PrintStream psSvg = null;
+		File diagramXml =null;
+		File svg = null;
 		try {
-			File diagramXml = new File(diagramFilepath);
-			File svg = new File(svgFilepath);
+			diagramXml = new File(diagramFilepath);
+			svg = new File(svgFilepath);
 			psDiagram = new PrintStream(new FileOutputStream(diagramXml),true);
 			psSvg = new PrintStream(new FileOutputStream(svg),true);
 			psDiagram.println(diagramData);// 往文件里写入字符串
@@ -106,8 +108,14 @@ public class WorkflowServiceImpl implements WorkflowService {
 				psSvg.close();
 			}
 		}
-		InputStream inputStreamDiagram=this.getClass().getResourceAsStream(diagramFilepath);
-		InputStream inputStreamSvg=this.getClass().getResourceAsStream(svgFilepath);
+		InputStream inputStreamDiagram= null;
+		InputStream inputStreamSvg= null;
+		try {
+			inputStreamDiagram = new FileInputStream(diagramXml);
+			inputStreamSvg=new FileInputStream(svg);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		repositoryService.createDeployment()//创建部署对象
 						.name(name)//添加部署名称
 						.addInputStream(name+".bpmn",inputStreamDiagram)
