@@ -18,9 +18,9 @@ public class ActivitiControllerApplication {
 		SpringApplication.run(ActivitiControllerApplication.class, args);
 	}
 
-	@RequestMapping(value = "/sortManager",method = RequestMethod.GET)
+	@RequestMapping(value = "/index",method = RequestMethod.GET)
 	public String sortManager(){
-		return "businessProcessManager/sortManager";
+		return "businessProcessManager/html/process-list";
 	}
 	/**
 	 * @Author: qiuxinlin

@@ -17,14 +17,15 @@
             <el-menu default-active="2" unique-opened class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
                 <el-submenu index="1">
                     <template slot="title"><i class="el-icon-menu"></i>业务流程管理</template>
-                    <a href="process.html"><el-menu-item index="1-1">流程管理</el-menu-item></a>
-                    <a href="process-list.html"><el-menu-item index="1-1">流程列表</el-menu-item></a>
-                    <a href="/sortManager"><el-menu-item index="1-2">分类管理</el-menu-item></a>
-                    <a href="monitor.html"><el-menu-item index="1-3">运行监控</el-menu-item></a>
-                    <a href="task-entrust.html"><el-menu-item index="1-4">任务委托</el-menu-item></a>
-                    <a href="user-group.html"><el-menu-item index="1-5">用户分组</el-menu-item></a>
+                    <a href="/businessProcessManager/html/process.html"><el-menu-item index="1-1">流程管理</el-menu-item></a>
+                    <a href="/businessProcessManager/html/process-list.html"><el-menu-item index="1-1">流程列表</el-menu-item></a>
+                    <a href="/businessProcessManager/html/sortManager.html"><el-menu-item index="1-2">分类管理</el-menu-item></a>
+                    <a href="/businessProcessManager/html/run-task.html"><el-menu-item index="1-3">待办任务</el-menu-item></a>
+                    <a href="/businessProcessManager/html/monitor.html"><el-menu-item index="1-3">运行监控</el-menu-item></a>
+                    <a href="/businessProcessManager/html/task-entrust.html"><el-menu-item index="1-4">任务委托</el-menu-item></a>
+                   <!-- <a href="user-group.html"><el-menu-item index="1-5">用户分组</el-menu-item></a>
                     <a href="dataAllocation.html"><el-menu-item index="1-6">数据配置</el-menu-item></a>
-                    <a href="exampleAllocation.html"><el-menu-item index="1-7">实例配置</el-menu-item></a>
+                    <a href="exampleAllocation.html"><el-menu-item index="1-7">实例配置</el-menu-item></a>-->
                 </el-submenu>
             </el-menu>
 
@@ -200,7 +201,7 @@
                 var processDefinitionId=row.id;
                 if(processDefinitionId!=null&&processDefinitionId!="undefined"){
                     processDefinitionId=processDefinitionId.replace(/:/g,"%3a");
-                    window.location.href="diagram.html?processDefinitionId="+processDefinitionId;
+                    window.location.href="/businessProcessManager/html/diagram.html?processDefinitionId="+processDefinitionId;
                 }
             },
             query:function () {//查询
