@@ -106,10 +106,12 @@ public class WorkflowServiceImpl implements WorkflowService {
 				psSvg.close();
 			}
 		}
+		InputStream inputStreamDiagram=this.getClass().getResourceAsStream(diagramFilepath);
+		InputStream inputStreamSvg=this.getClass().getResourceAsStream(svgFilepath);
 		repositoryService.createDeployment()//创建部署对象
 						.name(name)//添加部署名称
-						.addClasspathResource("processes/"+name+".bpmn")
-						.addClasspathResource("processes/"+name+".svg")
+						.addInputStream(name+".bpmn",inputStreamDiagram)
+						.addInputStream(name+".svg",inputStreamSvg)
 						.deploy();
 	}
 
