@@ -178,8 +178,11 @@
                     console.log(dialog.addForm);
                     that.$http.post(url+portP+"repository/models",{"name":dialog.addForm.processName}).then(function(data){
                 		modelId=data.data.id;
-                		window.location.href="diagram.html?name="+dialog.addForm.processName+"&description="+dialog.addForm.describtion
-                        +"&modelId="+modelId;
+                		var originalUrl ="/activiti/toDiagram?name="+dialog.addForm.processName+"&description="+dialog.addForm.describtion
+                            +"&modelId="+modelId;
+                          var encodeUrl = encodeURI(originalUrl);
+                          console.info(encodeUrl);
+                		window.location.href=encodeUrl;
                     });
                     dialog.addFormVisible = false;
                 })
