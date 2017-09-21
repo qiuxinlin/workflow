@@ -71,7 +71,12 @@
                                     </el-table-column>
                                     <el-table-column
                                             prop="id"
-                                            label="流程ID"
+                                            label="流程定义ID"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="deploymentId"
+                                            label="流程部署ID"
                                     >
                                     </el-table-column>
                                     <el-table-column
@@ -101,6 +106,7 @@
                                         <template scope="scope">
                                             <el-button @click="startProcess(scope.row)" type="text" size="small">启动</el-button>
                                             <el-button @click="designProcess(scope.row)" type="text" size="small">设计</el-button>
+                                            <el-button @click="deleteProcess(scope.row)" type="text" size="small">删除</el-button>
                                         </template>
                                     </el-table-column>
                                 </el-table>
@@ -195,6 +201,25 @@
                         type: 'warning'
                     });
                 })*/
+            },
+            //删除流程
+            deleteProcess:function(row) {
+                var self=this;
+                this.$http.get(url+portP+"runtime/process-instances?processDefinitionId="+row.id).then(function(data){
+                   if(data.data.total!=0){
+                       this.$confirm("该流程下有"+data.data.total+"个流程实例正在运行，确认删除吗？", "提示", {
+                           type: 'warning'
+                       }).then(function () {
+                           self.$http.delete(url+portP+"repository/deployments/"+row.deploymentId+"?cascade=true").then(function(data){
+                               document.location.reload();
+                           })
+                       })
+                   }else{
+                       this.$http.delete(url+portP+"repository/deployments/"+row.deploymentId).then(function(data){
+                           document.location.reload();
+                       })
+                   }
+                })
             },
             //设计
             designProcess:function (row) {

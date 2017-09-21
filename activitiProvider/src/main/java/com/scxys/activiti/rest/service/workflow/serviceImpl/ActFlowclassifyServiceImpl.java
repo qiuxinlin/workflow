@@ -61,22 +61,22 @@ public class ActFlowclassifyServiceImpl implements ActFlowclassifyService{
 
 	@Override
 	public String getNextClassifyCode(String currentId){
-		List<String> codeList=flowclassifyDao.findChildrensCode(currentId);
+		List<ActFlowclassify> codeList=flowclassifyDao.findChildrensCode(currentId);
 		if (codeList.size()==0){
 			if(("0").equals(currentId)){
 				return "01";
 			}
 			return currentId+"01";
 		}
-		String temp;
+		ActFlowclassify temp;
 		for(int i=0;i<codeList.size()-1;i++){
-			if(Integer.parseInt(codeList.get(i))>Integer.parseInt(codeList.get(i+1))){
+			if(Integer.parseInt(codeList.get(i).getClassifyCode())>Integer.parseInt(codeList.get(i+1).getClassifyCode())){
 				temp=codeList.get(i);
 				codeList.set(i,codeList.get(i+1));
 				codeList.set(i+1,temp);
 			}
 		}
-		int resultInt=Integer.parseInt(codeList.get(codeList.size()-1))+1;
+		int resultInt=Integer.parseInt(codeList.get(codeList.size()-1).getClassifyCode())+1;
 		String resultString=null;
 		if (resultInt<10){
 			resultString="0"+resultInt;
