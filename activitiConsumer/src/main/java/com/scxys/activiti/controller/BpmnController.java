@@ -50,7 +50,7 @@ public class BpmnController {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            String path = "H:"+File.separator+"idea"+File.separator+"workspace"+File.separator+"activity" +File.separator+"target"+File.separator+"classes"+File.separator+ "processes" + File.separator + fileName;
+            String path = "e:/root/workflow/processes/"+ fileName+".bpmn";
             Document document = documentBuilder.parse(new File(path));
             Element rootElement = document.getDocumentElement();
             NodeList rootChildren = rootElement.getElementsByTagName("userTask");
@@ -101,6 +101,10 @@ public class BpmnController {
                             assigneeNode.setSingle(false);
                             NamedNodeMap namedNodeMap = child.item(j).getAttributes();
                             Node nameNode = namedNodeMap.getNamedItem("isSequential");
+                            if(nameNode==null){
+                                assigneeNode.setSerial(false);
+                                break;
+                            }
                             String nameNodeValue = nameNode.getNodeValue();
                             if (null == nameNodeValue || "".equals(nameNodeValue)) {
                                 assigneeNode.setSerial(true);

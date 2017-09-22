@@ -211,25 +211,26 @@
             //办理任务
             taskAction:function(row) {
                 var businessKey;
+                var formkeyUrl;
                 var self=this;
-                this.$http.get(url+portC+"businessKey/"+row.processInstanceId).then(function(data){
+               /* this.$http.get(url+portC+"businessKey/"+row.processInstanceId).then(function(data){
                     businessKey=data.data.data;
-                    /*../../poc/index.html*/
-                    window.location.href="../../poc/index.html?pocCode="+businessKey+"&taskId="+row.id;
+                    /!*../../poc/index.html*!/
+                   window.location.href="../../poc/index.html?pocCode="+businessKey+"&taskId="+row.id;
                 },function(response){
                     console.info(response);
                     if(response){
                     }
-                });
-               /* $.ajax({
-                    type:"get",
-                    url: url+portC+"businessKey/"+row.processInstanceId,
-                    async:false,
-                    success: function(data){
-                        businessKey=data.data;
-                        console.log(businessKey);
-                    }
                 });*/
+               //通过taskid获取到当前任务的formkey,实现跳转到业务页面
+                this.$http.get(url+portP+"form/form-data?taskId="+row.id).then(function(data){
+                    formkeyUrl=data.data.formKey;
+                    window.location.href=formkeyUrl;
+                },function(response){
+                    console.info(response);
+                    if(response){
+                    }
+                })
             }
         }
     })
