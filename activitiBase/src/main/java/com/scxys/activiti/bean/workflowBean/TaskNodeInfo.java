@@ -2,7 +2,7 @@ package com.scxys.activiti.bean.workflowBean;
 
 import java.io.Serializable;
 
-public class TaskInfo implements Serializable{
+public class TaskNodeInfo implements Serializable{
 
     private String assignee;
 

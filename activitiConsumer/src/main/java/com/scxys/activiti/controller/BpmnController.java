@@ -1,12 +1,8 @@
 package com.scxys.activiti.controller;
 
 
+import com.neoinfo.pojo.CommRes;
 import com.scxys.activiti.bean.workflowBean.AssigneeNode;
-import com.scxys.activiti.bean.workflowBean.CommRes;
-import com.scxys.activiti.bean.workflowBean.ProcessDefineInfo;
-import com.scxys.activiti.bean.workflowBean.TaskInfo;
-import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.bpmn.model.FlowElement;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -17,23 +13,19 @@ import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.PvmActivity;
 import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
-import org.activiti.engine.repository.Deployment;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "activiti")
@@ -50,116 +42,6 @@ public class BpmnController {
 
     @Autowired
     private TaskService taskService;
-
-
-    public static List<AssigneeNode> assigneeNodes;
-
-    //发布流程
-    @ResponseBody
-    @RequestMapping(value = "/deploy")
-    public CommRes DeployProgress(String fileName) {
-        Deployment deployment = repositoryService.createDeployment().addClasspathResource("processes" + File.separator + fileName).deploy();
-        System.out.println("流程模型部署成功");
-        System.out.println("流程部署id:" + "-------------" + deployment.getId());
-        return new CommRes("200", "部署流程id:" + deployment.getId(), "成功");
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/deploy/list")
-    public CommRes getDeployList() {
-        List<ProcessDefinition> definitionList = repositoryService.createProcessDefinitionQuery().orderByProcessDefinitionVersion().asc().list();
-        if (null == definitionList || definitionList.size()>0) {
-            return new CommRes("200",null,"没有数据");
-        }
-        List<ProcessDefineInfo> processDefineInfoList = new ArrayList<>(definitionList.size());
-        for (ProcessDefinition processDefinition : definitionList) {
-            ProcessDefineInfo processDefineInfo = new ProcessDefineInfo();
-            processDefineInfo.setId(processDefinition.getId());
-            processDefineInfo.setName(processDefinition.getName());
-            processDefineInfo.setKey(processDefinition.getKey());
-            processDefineInfoList.add(processDefineInfo);
-        }
-        return new CommRes("200",processDefineInfoList,"ok");
-    }
-
-    //启动流程
-    @RequestMapping(value = "/start", method = RequestMethod.POST)
-    @ResponseBody
-    public CommRes startProgress(String assignees, String processKey) {
-        List<String> assigneeList = this.convertToList(assignees);
-        Map<String, Object> varibles = new HashMap<>();
-        varibles.put("assigneeList", assigneeList);
-        ProcessInstance processInstance = null;
-        try {
-            processInstance = runtimeService.startProcessInstanceByKey(processKey, varibles);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new CommRes("500", null, "失败");
-        }
-        return new CommRes("200", processInstance.getTenantId(), "成功");
-    }
-
-    //获取任务列表
-    @ResponseBody
-    @RequestMapping(value = "/task/list")
-    public CommRes getTask(String assignee) {
-        TaskQuery taskQuery = taskService.createTaskQuery();
-        taskQuery.taskAssignee(assignee);
-        List<Task> taskList = taskQuery.list();
-        List<TaskInfo> taskInfoList = new ArrayList<>(taskList.size());
-        for (Task task : taskList) {
-            System.out.println(task.getAssignee() + "----" + task.getName() + "--" + task.getId());
-            TaskInfo taskInfo = new TaskInfo();
-            taskInfo.setAssignee(task.getAssignee());
-            taskInfo.setTaskName(task.getName());
-            taskInfo.setTaskId(task.getId());
-            taskInfoList.add(taskInfo);
-        }
-        return new CommRes("200", taskInfoList, "成功");
-    }
-
-    //完成节点任务
-    @ResponseBody
-    @RequestMapping(value = "/task/complete")
-    public CommRes complete(String taskId, String proInstanceId, String assignees) {
-        if (null == assignees || "".equals(assignees)) {
-            try {
-                taskService.complete(taskId);
-                return new CommRes("200", null, "完成任务节点");
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new CommRes("500", null, "异常");
-            }
-        }
-        Map<String, Object> varibles = new HashMap<>();
-        //单个办理人
-        if (null != assignees && !assignees.contains(",")) {
-            List<String> assigneeList = new ArrayList<>();
-            assigneeList.add(assignees);
-            varibles.put("assigneeList", assigneeList);
-        }
-        //多个办理人
-        if (null != assignees && assignees.contains(",")) {
-            List<String> assigneeList = this.convertToList(assignees);
-            varibles.put("assigneeList", assigneeList);
-        }
-        try {
-            taskService.complete(taskId, varibles);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new CommRes("500", null, "error");
-        }
-        return new CommRes("200", null, "ok");
-    }
-
-    //获取当前节点还有多少个办理任务（是否办理就进入下一个节点）
-    @ResponseBody
-    @RequestMapping(value = "/task/compresult")
-    public CommRes getCompResult(String taskId) {
-        Integer instanceOfNumbers = (Integer) taskService.getVariable(taskId, "nrOfInstances");
-        Integer completeCounter = (Integer) taskService.getVariable(taskId, "nrOfCompletedInstances");
-        return new CommRes("200", instanceOfNumbers + "--" + completeCounter, "ok");
-    }
 
     //获取流程图的每个节点信息
     @ResponseBody
@@ -241,10 +123,10 @@ public class BpmnController {
                 }
                 assigneeNodeList.add(assigneeNode);
             }
-            return new CommRes("200", assigneeNodeList, "ok");
+            return CommRes.success(assigneeNodeList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new CommRes("500", null, "error");
+           return CommRes.errorRes(HttpStatus.EXPECTATION_FAILED.toString(),"文件解析异常");
         }
     }
 
@@ -301,24 +183,5 @@ public class BpmnController {
         return nameNode.getNodeValue();
     }
 
-    public List<String> convertToList(String assignees) {
-        String[] assigneeArr = assignees.split(",");
-        List<String> assigneeList = new ArrayList<>();
-        for (int i = 0; i < assigneeArr.length; i++) {
-            assigneeList.add(assigneeArr[i]);
-        }
-        return assigneeList;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/task/nodes/{processId}")
-    public CommRes getNodes(@PathVariable String processId) {
-        BpmnModel model = repositoryService.getBpmnModel(processId);
-        if (null != model) {
-            Collection<FlowElement> flowElementList = model.getMainProcess().getFlowElements();
-            return new CommRes("200", flowElementList, "ok");
-        }
-        return new CommRes("500", null, "error");
-    }
 
 }
