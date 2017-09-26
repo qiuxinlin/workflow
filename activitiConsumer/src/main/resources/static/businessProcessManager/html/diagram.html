@@ -59,12 +59,7 @@
     };
     var modelId=getQueryString("modelId");
     var processDefinitionId=getQueryString("processDefinitionId");
-    if(processDefinitionId!=null&&processDefinitionId!="undefined"){
-        document.getElementById("iframe").src="/bpmn-js/properties-panel/index.html?processDefinitionId="+processDefinitionId;
-    }else{
-        document.getElementById("iframe").src="/bpmn-js/properties-panel/index.html?name="+name+"&description="+description
-            +"&modelId="+modelId;
-    }
+    document.getElementById("iframe").src="/bpmn-js/properties-panel/index.html";
 
     var menu = new Vue({
         el:'#menu',
