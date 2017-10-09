@@ -16,7 +16,7 @@ public class UiController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("name",name);
         modelAndView.addObject("description",description);
-        modelAndView.setViewName("businessProcessManager/html/diagram");
+        modelAndView.setViewName("redirect:businessProcessManager/html/diagram");
         return modelAndView;
     }
 }
