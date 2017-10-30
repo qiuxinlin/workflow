@@ -72,19 +72,6 @@ public class WorkflowController {
     }
     /**
      * @Author: qiuxinlin
-     * @Dercription: 根据流程实例ID获取BusinessKey
-     * @Date: 2017/9/7
-     */
-    @RequestMapping(value = "businessKey/{processInstanceId}",method = RequestMethod.GET)
-    @ResponseBody
-    public CommRes findBusinessKeyByPiId(@PathVariable String processInstanceId){
-        if(processInstanceId==null||processInstanceId.isEmpty()){
-            return CommRes.errorRes("400","流程实例ID不能为空");
-        }
-        return CommRes.success(workflowService.findBusinessKeyByPiId(processInstanceId));
-    }
-    /**
-     * @Author: qiuxinlin
      * @Dercription: 获取从别的系统登陆过来的用户
      * @Date: 2017/9/19
      */

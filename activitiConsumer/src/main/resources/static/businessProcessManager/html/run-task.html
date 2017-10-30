@@ -214,24 +214,26 @@
                 var businessKey;
                 var formkeyUrl;
                 var self=this;
-               /* this.$http.get(url+portC+"businessKey/"+row.processInstanceId).then(function(data){
-                    businessKey=data.data.data;
-                    /!*../../poc/index.html*!/
-                   window.location.href="../../poc/index.html?pocCode="+businessKey+"&taskId="+row.id;
-                },function(response){
-                    console.info(response);
-                    if(response){
+                //通过流程实例获取businessKey
+                $.ajax({
+                    type: 'get',
+                    url: row.processInstanceUrl,
+                    async: false,
+                    success: function(data){
+                        businessKey=data.businessKey;
+                        console.info(businessKey);
                     }
-                });*/
-               //通过taskid获取到当前任务的formkey,实现跳转到业务页面
-                this.$http.get(url+portP+"form/form-data?taskId="+row.id).then(function(data){
-                    formkeyUrl=data.data.formKey;
-                    window.location.href=formkeyUrl;
-                },function(response){
-                    console.info(response);
-                    if(response){
+                });
+                //通过taskid获取到当前任务的formkey,实现跳转到业务页面
+                $.ajax({
+                    type: 'get',
+                    url: url+portP+"form/form-data?taskId="+row.id,
+                    async: false,
+                    success: function(data){
+                        formkeyUrl=data.formKey;
+                        window.location.href=formkeyUrl+"&businessKey="+businessKey;
                     }
-                })
+                });
             }
         }
     })

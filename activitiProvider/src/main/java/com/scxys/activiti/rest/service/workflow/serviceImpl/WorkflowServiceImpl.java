@@ -123,17 +123,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 						.deploy();
 	}
 
-	@Override
-	public String findBusinessKeyByPiId(String processInstanceId) {
-		ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
-				.processInstanceId(processInstanceId)//使用流程实例ID查询
-				.singleResult();
-		if(pi!=null){
-			return pi.getBusinessKey();
-		}
-		return null;
-	}
-
 	/**使用任务ID，获取当前任务节点中对应的Form key中的连接的值*/
 	public String findTaskFormKeyByTaskId(String taskId) {
 		TaskFormData formData = formService.getTaskFormData(taskId);
