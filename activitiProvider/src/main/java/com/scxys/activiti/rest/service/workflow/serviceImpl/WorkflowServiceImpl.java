@@ -122,12 +122,4 @@ public class WorkflowServiceImpl implements WorkflowService {
 						.addInputStream(name+".svg",inputStreamSvg)
 						.deploy();
 	}
-
-	/**使用任务ID，获取当前任务节点中对应的Form key中的连接的值*/
-	public String findTaskFormKeyByTaskId(String taskId) {
-		TaskFormData formData = formService.getTaskFormData(taskId);
-		//获取Form key的值
-		return formData.getFormKey();
-	}
-
 }

@@ -212,9 +212,14 @@
             //办理任务
             taskAction:function(row) {
                 var businessKey;
-                var formkeyUrl;
-                var self=this;
                 //通过流程实例获取businessKey
+                this.$http.get(row.processInstanceUrl).then(function(data){
+                    console.info(businessKey);
+                    businessKey=data.data.businessKey;
+                    var businessResult=businessKey.split(":");
+                    window.location.href=row.formKey+"&businessId="+businessResult[0]+"&businessType="+businessResult[1];
+                });
+               /* //通过流程实例获取businessKey
                 $.ajax({
                     type: 'get',
                     url: row.processInstanceUrl,
@@ -223,17 +228,7 @@
                         businessKey=data.businessKey;
                         console.info(businessKey);
                     }
-                });
-                //通过taskid获取到当前任务的formkey,实现跳转到业务页面
-                $.ajax({
-                    type: 'get',
-                    url: url+portP+"form/form-data?taskId="+row.id,
-                    async: false,
-                    success: function(data){
-                        formkeyUrl=data.formKey;
-                        window.location.href=formkeyUrl+"&businessKey="+businessKey;
-                    }
-                });
+                });*/
             }
         }
     })
