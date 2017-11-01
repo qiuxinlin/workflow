@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.scxys.activiti.rest.service.api.engine.variable.*;
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
@@ -54,16 +55,6 @@ import com.scxys.activiti.rest.service.api.engine.AttachmentResponse;
 import com.scxys.activiti.rest.service.api.engine.CommentResponse;
 import com.scxys.activiti.rest.service.api.engine.EventResponse;
 import com.scxys.activiti.rest.service.api.engine.RestIdentityLink;
-import com.scxys.activiti.rest.service.api.engine.variable.BooleanRestVariableConverter;
-import com.scxys.activiti.rest.service.api.engine.variable.DateRestVariableConverter;
-import com.scxys.activiti.rest.service.api.engine.variable.DoubleRestVariableConverter;
-import com.scxys.activiti.rest.service.api.engine.variable.IntegerRestVariableConverter;
-import com.scxys.activiti.rest.service.api.engine.variable.LongRestVariableConverter;
-import com.scxys.activiti.rest.service.api.engine.variable.QueryVariable;
-import com.scxys.activiti.rest.service.api.engine.variable.RestVariable;
-import com.scxys.activiti.rest.service.api.engine.variable.RestVariableConverter;
-import com.scxys.activiti.rest.service.api.engine.variable.ShortRestVariableConverter;
-import com.scxys.activiti.rest.service.api.engine.variable.StringRestVariableConverter;
 import com.scxys.activiti.rest.service.api.engine.variable.RestVariable.RestVariableScope;
 import com.scxys.activiti.rest.service.api.form.FormDataResponse;
 import com.scxys.activiti.rest.service.api.form.RestEnumFormProperty;
@@ -1168,6 +1159,7 @@ public class RestResponseFactory {
     variableConverters.add(new DoubleRestVariableConverter());
     variableConverters.add(new BooleanRestVariableConverter());
     variableConverters.add(new DateRestVariableConverter());
+    variableConverters.add(new CollectionRestVariableConverter());//添加集合类型的rest变量转换器
   }
   
   protected String formatUrl(String serverRootUrl, String[] fragments, Object ... arguments) {
