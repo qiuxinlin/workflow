@@ -213,11 +213,26 @@
             taskAction:function(row) {
                 var businessKey;
                 //通过流程实例获取businessKey
-                this.$http.get(row.processInstanceUrl).then(function(data){
-                    console.info(businessKey);
+               /* this.$http.get(row.processInstanceUrl).then(function(data){
+                    console.info(data);
                     businessKey=data.data.businessKey;
                     var businessResult=businessKey.split(":");
                     window.location.href=row.formKey+"&businessId="+businessResult[0]+"&businessType="+businessResult[1];
+                });*/
+               //更换成ajax请求  方便门户使用
+                $.ajax({
+                    type: 'get',
+                    url: row.processInstanceUrl,
+                    async: true,
+                    success: function(data){
+                        console.info(data);
+                        businessKey=data.businessKey;
+                        if(businessKey==undefined||businessKey==null){
+                            window.location.href=row.formKey
+                        }
+                        var businessResult=businessKey.split(":");
+                        window.location.href=row.formKey+"&businessId="+businessResult[0]+"&businessType="+businessResult[1];
+                    }
                 });
                /* //通过流程实例获取businessKey
                 $.ajax({
