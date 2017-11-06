@@ -1,18 +1,6 @@
-package com.scxys.activiti.service; 
+package com.scxys.activiti.service;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-
-import org.activiti.engine.repository.Deployment;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.task.Comment;
-import org.activiti.engine.task.Task;
-
-import com.scxys.activiti.bean.WorkflowBean;
-
-/** 
+/**
  * @author 作者: 
  * @version 创建时间:2017年3月22日 下午1:55:09 
  * @description 说明:

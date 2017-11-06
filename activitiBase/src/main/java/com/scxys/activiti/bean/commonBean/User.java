@@ -1,6 +1,5 @@
 package com.scxys.activiti.bean.commonBean;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;

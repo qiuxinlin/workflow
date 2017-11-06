@@ -6,11 +6,12 @@ import com.scxys.activiti.bean.commonBean.User;
 import com.scxys.activiti.service.ActDelegationService;
 import com.scxys.activiti.service.WorkflowService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -22,8 +23,10 @@ import java.io.IOException;
 public class WorkflowController {
 
     @Reference(version = "1.0.0")
+    private
     WorkflowService workflowService;
     @Reference(version = "1.0.0")
+    private
     ActDelegationService delegationService;
     @Autowired User user;
 
@@ -35,13 +38,13 @@ public class WorkflowController {
     @RequestMapping(value="/delegateTasks", method=RequestMethod.GET)
     @ResponseBody
     public String delegateTasks(@RequestParam("id") String id, @RequestParam("startDate") String afterDate, @RequestParam("endDate") String beforeDate, @RequestParam("owner") String assignee, @RequestParam("assignee") String delegateUser) {
-        if (afterDate == null || afterDate.equals("") ) {
+        if (afterDate == null || afterDate.isEmpty()) {
             return "请选择开始时间";
         }
-        if (beforeDate == null || beforeDate.equals("")) {
+        if (beforeDate == null || beforeDate.isEmpty()) {
             return "请选择结束时间";
         }
-        if (delegateUser == null || delegateUser.equals("")) {
+        if (delegateUser == null || delegateUser.isEmpty()) {
             return "请选择委托人";
         }
         workflowService.delegateTasks(afterDate, beforeDate, assignee, delegateUser);

@@ -106,7 +106,7 @@ public class BpmnController {
                                 break;
                             }
                             String nameNodeValue = nameNode.getNodeValue();
-                            if (null == nameNodeValue || "".equals(nameNodeValue)) {
+                            if (null == nameNodeValue || nameNodeValue.isEmpty()) {
                                 assigneeNode.setSerial(true);
                                 break;
                             }
@@ -174,14 +174,14 @@ public class BpmnController {
     }
 
     //获取节点id
-    public String getNodeId(Node node) {
+    private String getNodeId(Node node) {
         NamedNodeMap namedNodeMap = node.getAttributes();
         Node nameNode = namedNodeMap.getNamedItem("id");
         return nameNode.getNodeValue();
     }
 
     //获取连线目标值targetRef
-    public String getTargetRef(Node node) {
+    private String getTargetRef(Node node) {
         NamedNodeMap namedNodeMap = node.getAttributes();
         Node nameNode = namedNodeMap.getNamedItem("targetRef");
         return nameNode.getNodeValue();

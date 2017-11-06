@@ -67,7 +67,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 			e.printStackTrace();
 		}
 		List<Task> taskList;
-		if(("").equals(assignee)){
+		if(assignee != null && assignee.isEmpty()){
 			taskList=taskService.createTaskQuery().taskCreatedAfter(after).taskCreatedBefore(before)
 					.list();
 		}else {

@@ -15,6 +15,7 @@ import java.util.Map;
 @RestController
 public class BusPocCtl {
     @Reference(version = "1.0.0")
+    private
     BusPocService busPocService;
 
     @RequestMapping(value = "/busPoc",method = RequestMethod.POST)
@@ -24,8 +25,7 @@ public class BusPocCtl {
     }
     @RequestMapping(value = "/busPoc/{id}",method = RequestMethod.GET)
     public BusPoc findOne(@PathVariable Long id){
-        BusPoc busPoc=busPocService.findOne(id);
-        return busPoc;
+        return busPocService.findOne(id);
     }
 
     @RequestMapping(value = "/busPoc",method = RequestMethod.GET)

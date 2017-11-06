@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class TaskNodeInfo implements Serializable{
 
+    private static final long serialVersionUID = 4085005631935986462L;
     private String assignee;
 
     private String taskId;

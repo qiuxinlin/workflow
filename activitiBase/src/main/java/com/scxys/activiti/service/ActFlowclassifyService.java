@@ -5,10 +5,9 @@ package com.scxys.activiti.service;
 * @description 说明:
 */
 
-import java.util.List;
-import java.util.Map;
-
 import com.scxys.activiti.bean.ActFlowclassify;
+
+import java.util.List;
 
 public interface ActFlowclassifyService {
 

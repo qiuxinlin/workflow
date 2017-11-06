@@ -1,24 +1,14 @@
 package com.scxys.activiti.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.scxys.activiti.bean.ActProcess;
+import com.scxys.activiti.service.ActProcessService;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.scxys.activiti.bean.ActFlowclassify;
-import com.scxys.activiti.bean.ActProcess;
-import com.scxys.activiti.service.ActProcessService;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author 作者:qiuxinlin
@@ -29,6 +19,7 @@ import com.scxys.activiti.service.ActProcessService;
 public class ActProcessCtl {
 
 	@Reference(version = "1.0.0")
+	private
 	ActProcessService actProcessService;
 
 	@RequestMapping(value = "/actProcess", method = RequestMethod.POST, produces = "application/json")

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class AssigneeNode implements Serializable{
 
+    private static final long serialVersionUID = -3682043996395858791L;
     //任务标签id
     private String taskId;
 

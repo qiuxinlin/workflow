@@ -1,20 +1,17 @@
 package com.scxys.activiti.controller;
 
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.neoinfo.pojo.CommRes;
+import com.scxys.activiti.bean.ActFlowclassify;
+import com.scxys.activiti.service.ActFlowclassifyService;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.neoinfo.pojo.CommRes;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.NativeWebRequest;
-
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.scxys.activiti.bean.ActFlowclassify;
-import com.scxys.activiti.service.ActFlowclassifyService;
 
 /** 
 * @author 作者:qiuxinlin 
@@ -25,11 +22,12 @@ import com.scxys.activiti.service.ActFlowclassifyService;
 public class ActFlowclassifyCtl {
 
 	@Reference(version="1.0.0")
+	private
 	ActFlowclassifyService flowclassifyService;
 	
 	@RequestMapping(value="/actFlowclassify", method = RequestMethod.POST, produces = "application/json")
 	public CommRes addFlowclassify(@RequestBody ActFlowclassify flowclassify, HttpServletRequest request, HttpServletResponse response){
-		if(flowclassify.getParentCode().equals("")||flowclassify.getParentCode()==null){
+		if(flowclassify.getParentCode().isEmpty() ||flowclassify.getParentCode()==null){
 			return CommRes.errorRes("400","上级编码为空");
 		}
 		String classfyCode=flowclassifyService.getNextClassifyCode(flowclassify.getParentCode());
@@ -53,15 +51,13 @@ public class ActFlowclassifyCtl {
 		//List<ActFlowclassify> list=flowclassifyService.findAll();
 		List<ActFlowclassify> root=flowclassifyService.findRoot();
 		//List<ActFlowclassify> childrens=flowclassifyService.findChildrens("0");
-		List<Map<String, Object>> listMap=getChildrens(root);
-		return listMap;
+		return getChildrens(root);
 	}
 
 	@RequestMapping(value="/actFlowclassifys", method=RequestMethod.GET, produces="application/json")
 	public List<ActFlowclassify> getFlowclassifys(){
 		//List<ActFlowclassify> list=flowclassifyService.findAll();
-		List<ActFlowclassify> list=flowclassifyService.findAll();
-		return list;
+		return flowclassifyService.findAll();
 	}
 
 	@RequestMapping(value="/actFlowclassify/{classifyCode}", method=RequestMethod.DELETE)
