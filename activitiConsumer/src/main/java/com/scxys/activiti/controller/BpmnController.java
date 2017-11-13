@@ -50,7 +50,7 @@ public class BpmnController {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            String path = "e:/root/workflow/processes/"+ fileName+".bpmn";
+            String path = "/root/workflow/processes/"+ fileName+".bpmn";
             Document document = documentBuilder.parse(new File(path));
             Element rootElement = document.getDocumentElement();
             NodeList rootChildren = rootElement.getElementsByTagName("userTask");
