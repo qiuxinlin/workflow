@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>流程定义列表</title>
+    <title>流程定义</title>
     <link rel="stylesheet" href="/businessProcessManager/js/ele/index.css">
     <link rel="stylesheet" href="/businessProcessManager/css/style.css">
 </head>
@@ -17,19 +17,17 @@
             <el-menu default-active="2" unique-opened class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
                 <el-submenu index="1">
                     <template slot="title"><i class="el-icon-menu"></i>业务流程管理</template>
-                    <a href="/businessProcessManager/html/process.html"><el-menu-item index="1-1">流程管理</el-menu-item></a>
-                    <a href="/businessProcessManager/html/process-list.html"><el-menu-item index="1-1">流程定义列表</el-menu-item></a>
-                    <a href="/businessProcessManager/html/sortManager.html"><el-menu-item index="1-2">分类管理</el-menu-item></a>
+                    <a href="/businessProcessManager/html/process-list.html"><el-menu-item index="1-1">流程定义</el-menu-item></a>
+                    <!--<a href="/businessProcessManager/html/sortManager.html"><el-menu-item index="1-2">分类管理</el-menu-item></a>-->
                     <a href="/businessProcessManager/html/run-task.html"><el-menu-item index="1-3">待办任务</el-menu-item></a>
                     <a href="/businessProcessManager/html/monitor.html"><el-menu-item index="1-3">运行监控</el-menu-item></a>
-                    <a href="/businessProcessManager/html/task-entrust.html"><el-menu-item index="1-4">任务委托</el-menu-item></a>
+                    <!--<a href="/businessProcessManager/html/task-entrust.html"><el-menu-item index="1-4">任务委托</el-menu-item></a>-->
                     <a href="/businessProcessManager/html/model-list.html"><el-menu-item index="1-4">模型管理</el-menu-item></a>
                     <!-- <a href="user-group.html"><el-menu-item index="1-5">用户分组</el-menu-item></a>
                     <a href="dataAllocation.html"><el-menu-item index="1-6">数据配置</el-menu-item></a>
                     <a href="exampleAllocation.html"><el-menu-item index="1-7">实例配置</el-menu-item></a>-->
                 </el-submenu>
             </el-menu>
-
         </div>
     </div>
     <div class="main-wrapper " >
@@ -56,8 +54,9 @@
                             <div class="form-box">
                                 <el-form :inline="true" :model="taskForm" class="demo-form-inline">
                                     <el-form-item label="流程名称：">
-                                        <el-input v-model="taskForm.name" placeholder=""></el-input>
+                                        <el-input v-model="Varname" placeholder=""></el-input>
                                     </el-form-item>
+                                    <el-button type="primary" @click="query">查询</el-button>
                                 </el-form>
                             </div>
                             <div class="center">
@@ -94,7 +93,6 @@
                                             prop="description"
                                             label="流程描述">
                                     </el-table-column>
-                                    </el-table-column>
                                     <el-table-column
                                             prop="version"
                                             label="版本号"
@@ -114,7 +112,7 @@
                             </div>
                             <div class="page-box mt20 text-right">
                                 <el-pagination
-                                        @current-change="handleCurrentChange"
+                                        @current-change="query"
                                         :page-size="size"
                                         layout="total, prev, pager, next"
                                         :total="total">
@@ -169,13 +167,14 @@
             processList:[],
             total:0 ,
             currentPage: 1,
-            size: 10
+            size: 10,
+            Varname:''
         },
         created:function(){
             this.query();
         },
         methods:{
-            //分页查询
+           /* //分页查询
             handleCurrentChange:function(data){
                 var start=(data-1)*10;
                 this.$http.get(url+portP+"repository/process-definitions?sort=deploymentId&order=desc&start="+start).then(function(data){
@@ -185,11 +184,11 @@
                     if(response){
                     }
                 })
-            },
+            },*/
             //启动流程
             startProcess:function(row) {
-                window.location.href="../../poc/index.html?processDefinitionKey="+row.key;
-                /*this.$http.post(url+portP+"runtime/process-instances",{"processDefinitionKey":row.key}).then(function(data){
+                /*window.location.href="../../poc/index.html?processDefinitionKey="+row.key;*/
+                this.$http.post(url+portP+"runtime/process-instances",{"processDefinitionKey":row.key}).then(function(data){
                     var result=data.data.id;
                     var message;
                     if(result!=null){
@@ -201,7 +200,7 @@
                         message: message,
                         type: 'warning'
                     });
-                })*/
+                })
             },
             //删除流程
             deleteProcess:function(row) {
@@ -212,11 +211,19 @@
                            type: 'warning'
                        }).then(function () {
                            self.$http.delete(url+portP+"repository/deployments/"+row.deploymentId+"?cascade=true").then(function(data){
+                               self.$message({
+                                   message: "删除成功",
+                                   type: 'warning'
+                               });
                                document.location.reload();
                            })
                        })
                    }else{
                        this.$http.delete(url+portP+"repository/deployments/"+row.deploymentId).then(function(data){
+                           self.$message({
+                               message: "删除成功",
+                               type: 'warning'
+                           });
                            document.location.reload();
                        })
                    }
@@ -230,19 +237,34 @@
                     window.location.href="/businessProcessManager/html/diagram.html?processDefinitionId="+processDefinitionId;
                 }
             },
-            query:function () {//查询
-                this.$http.get(url+portP+"repository/process-definitions?sort=deploymentId&order=desc").then(function(data){
-                    tab.processList=data.data.data;
-                    tab.total = data.data.total;
-                },function(response){
-                    console.info(response);
-                    if(response){
-                    }
-                })
+            //查询 包括分页查询 条件查询
+            query:function (data) {
+                var Vstart=0;
+                if(data!=undefined&&!isNaN(data)){
+                    Vstart=(data-1)*10;
+                }
+                if(this.Varname==""){
+                    this.$http.get(url+portP+"repository/process-definitions?sort=deploymentId&order=desc&start="+Vstart).then(function(data){
+                        tab.processList=data.data.data;
+                        tab.total = data.data.total;
+                    },function(response){
+                        console.info(response);
+                        if(response){
+                        }
+                    })
+                }else{
+                    this.$http.get(url+portP+"repository/process-definitions?nameLike=%25"+tab.Varname+"%25&sort=deploymentId&order=desc").then(function(data){
+                        tab.processList=data.data.data;
+                        tab.total = data.data.total;
+                    },function(response){
+                        console.info(response);
+                        if(response){
+                        }
+                    })
+                }
             }
         }
     })
-
     //    树形
     var tree = new Vue({
         el: '#tree',
@@ -251,7 +273,6 @@
             defaultProps: {
                 label: 'NAME'
             },
-
         },
         methods: {
             getKey:function (data,node) {
