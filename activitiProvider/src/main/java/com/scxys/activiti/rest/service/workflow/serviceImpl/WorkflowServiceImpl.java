@@ -1,37 +1,26 @@
 package com.scxys.activiti.rest.service.workflow.serviceImpl;
 
-import java.io.*;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipInputStream;
-
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
-import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.activiti.engine.impl.pvm.PvmTransition;
-import org.activiti.engine.impl.pvm.process.ActivityImpl;
-import org.activiti.engine.repository.Deployment;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Comment;
-import org.activiti.engine.task.Task;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.alibaba.dubbo.config.annotation.Service;
 import com.scxys.activiti.service.WorkflowService;
+import org.activiti.engine.*;
+import org.activiti.engine.task.Task;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
-import javax.validation.constraints.NotNull;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -80,7 +69,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 
 	@Override
-	public void deployment(String name,String diagramData,String svgData) {
+	public void deployment(String name,String diagramData,String svgData,String category) {
 		//String classpath=WorkflowServiceImpl.class.getResource("/").toString().substring(6);
 		/*本地文件地址*/
 		//String diagramFilepath=classpath+"processes/"+name+".bpmn";
@@ -108,6 +97,20 @@ public class WorkflowServiceImpl implements WorkflowService {
 				psSvg.close();
 			}
 		}
+		if(category!=null&&!category.isEmpty()){
+			//修改bpmn xml文件中的targetNamespace 即修改流程定义的类别
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			try {
+				DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+				Document document = documentBuilder.parse(diagramXml);
+				Element rootElement = document.getDocumentElement();
+				rootElement.setAttribute("targetNamespace",category);
+				doc2XmlFile(document,diagramFilepath);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		//获取部署文件
 		InputStream inputStreamDiagram= null;
 		InputStream inputStreamSvg= null;
 		try {
@@ -118,8 +121,18 @@ public class WorkflowServiceImpl implements WorkflowService {
 		}
 		repositoryService.createDeployment()//创建部署对象
 						.name(name)//添加部署名称
+						.category(category)
 						.addInputStream(name+".bpmn",inputStreamDiagram)
 						.addInputStream(name+".svg",inputStreamSvg)
 						.deploy();
 	}
+	public void doc2XmlFile(Document document, String filename) throws TransformerException
+		{
+			TransformerFactory tFactory = TransformerFactory.newInstance();
+			Transformer transformer = tFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			DOMSource source = new DOMSource(document);
+			StreamResult result = new StreamResult(new File(filename));
+			transformer.transform(source, result);
+		}
 }

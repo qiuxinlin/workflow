@@ -60,7 +60,7 @@ public class WorkflowController {
      */
     @RequestMapping(value = "/deployment",method = RequestMethod.POST ,produces = "application/json")
     @ResponseBody
-    public CommRes deployment(String name, String diagramData, String svgData ) {
+    public CommRes deployment(String name, String diagramData, String svgData, String category ) {
         if(name==null||name.isEmpty()){
             return CommRes.errorRes("400","部署名称为空");
         }
@@ -70,7 +70,7 @@ public class WorkflowController {
         if(svgData==null||svgData.isEmpty()){
             return CommRes.errorRes("400","图片数据为空");
         }
-        workflowService.deployment(name,diagramData,svgData);
+        workflowService.deployment(name,diagramData,svgData,category);
         return CommRes.successRes();
     }
     /**

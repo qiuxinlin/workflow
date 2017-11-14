@@ -17,6 +17,6 @@ public interface WorkflowService {
 	 * @Dercription: 部署流程
 	 * @Date: 2017/8/29
 	 */
-	void deployment(String name,String diagramData,String svgData);
+	void deployment(String name,String diagramData,String svgData,String category);
 }
  
