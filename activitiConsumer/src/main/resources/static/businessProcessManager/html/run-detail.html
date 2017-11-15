@@ -41,16 +41,6 @@
                 <el-tabs v-model="activeName">
                     <el-tab-pane label="运行明细" name="first">
                         <div class="table-box">
-                            <div class="form-box">
-                                <el-form :inline="true" :model="detailForm" class="demo-form-inline">
-                                    <el-form-item label="流程名称：">
-                                        <el-input v-model="detailForm.processDefinitionId" placeholder=""></el-input>
-                                    </el-form-item>
-                                    <el-form-item label="任务实例：">
-                                        <el-input v-model="detailForm.eg" placeholder=""></el-input>
-                                    </el-form-item>
-                                </el-form>
-                            </div>
                             <div class="center">
                                 <el-table
                                         :data="detailList"

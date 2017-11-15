@@ -377,8 +377,6 @@
                     tab.processInstances=data.data.data;
                 },function(response){
                     console.info(response);
-                    if(response){
-                    }
                 })
             },
             //格式化开始时间
@@ -400,8 +398,6 @@
                     tab.total = data.data.total;
                 },function(response){
                     console.info(response);
-                    if(response){
-                    }
                 })
             },
             handleClick:function(tab, event) {
@@ -419,13 +415,10 @@
 
             },
             getKey:function (data,node) {
-            	   this.$http.get(url+portC+"actProcess/"+data.ID).then(function(data){
+                this.$http.get(url+portC+"actProcess/"+data.ID).then(function(data){
 
                 },function(response){
                     console.info(response);
-                    if(response){
-
-                    }
                 })
                 console.log(data);
             },
@@ -440,9 +433,6 @@
                 	addNode(data.data);
                 },function(response){
                     console.info(response);
-                    if(response){
-
-                    }
                 })
             },
             //毫秒转化为分钟
@@ -463,7 +453,8 @@
                         message: data.data.data,
                         type: 'warning'
                     });
-                    document.location.reload();
+                    //document.location.reload();
+                    self.getProcessInstances();
                 });
             },
             //暂停流程实例
@@ -480,7 +471,8 @@
                         message: message,
                         type: 'warning'
                     });
-                    document.location.reload();
+                    //document.location.reload();
+                    self.getProcessInstances();
                 });
 
             },
@@ -498,7 +490,8 @@
                         message: message,
                         type: 'warning'
                     });
-                    document.location.reload();
+                    //document.location.reload();
+                    self.getProcessInstances();
                 });
             },
         }
