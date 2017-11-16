@@ -8,6 +8,9 @@ public class AssigneeNode implements Serializable{
     //任务标签id
     private String taskId;
 
+    //任务名称
+    private String taskName;
+
     //单个办理人
     private String assignee;
 
@@ -79,5 +82,13 @@ public class AssigneeNode implements Serializable{
 
     public void setTaskId(String taskId) {
         this.taskId = taskId;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 }

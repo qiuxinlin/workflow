@@ -16,6 +16,6 @@ public class UiController {
         model.addAttribute("name",name);
         model.addAttribute("description",description);
         //modelAndView.setViewName("/businessProcessManager/html/diagram.html");
-        return "/businessProcessManager/html/diagram";
+        return "businessProcessManager/html/diagram";
     }
 }

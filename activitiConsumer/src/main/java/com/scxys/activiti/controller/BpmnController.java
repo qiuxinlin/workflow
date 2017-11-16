@@ -66,6 +66,8 @@ public class BpmnController {
                 Node node = rootChildren.item(i);
                 String taskId = this.getNodeId(node);
                 assigneeNode.setTaskId(taskId);
+                String taskName=this.getTaskName(node);
+                assigneeNode.setTaskName(taskName);
                 //判断任务前是否有条件
                 //如果hasCondition为false则没有排它网关，即不存在条件
                 if (!hasCondition) {
@@ -184,6 +186,13 @@ public class BpmnController {
     private String getTargetRef(Node node) {
         NamedNodeMap namedNodeMap = node.getAttributes();
         Node nameNode = namedNodeMap.getNamedItem("targetRef");
+        return nameNode.getNodeValue();
+    }
+
+    //获取任务name
+    public String getTaskName(Node node) {
+        NamedNodeMap namedNodeMap = node.getAttributes();
+        Node nameNode = namedNodeMap.getNamedItem("name");
         return nameNode.getNodeValue();
     }
 
