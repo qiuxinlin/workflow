@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Map;
 
+import com.neoinfo.pojo.CommRes;
 import com.scxys.activiti.editor.constants.ModelDataJsonConstants;
 import net.sf.json.JSONObject;
 import org.activiti.engine.ActivitiException;
@@ -56,7 +57,7 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
   
   @RequestMapping(value= "/model/{modelId}/save", method = RequestMethod.PUT, produces = "application/json")
   @ResponseStatus(value = HttpStatus.OK)
-  public void saveModel(@PathVariable String modelId,@RequestBody Map<String,String> map) {
+  public CommRes saveModel(@PathVariable String modelId, @RequestBody Map<String,String> map) {
     try {
       
       Model model = repositoryService.getModel(modelId);
@@ -84,7 +85,7 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
       final byte[] result = outStream.toByteArray();
       repositoryService.addModelEditorSourceExtra(model.getId(), result);
       outStream.close();
-      
+      return CommRes.success("保存成功");
     } catch (Exception e) {
       LOGGER.error("Error saving model", e);
       throw new ActivitiException("Error saving model", e);
