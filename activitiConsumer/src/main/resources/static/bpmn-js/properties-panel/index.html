@@ -51,7 +51,7 @@
 			<div class="bpp-properties-header">
 				<div id="tree">
                     <div style="margin-bottom: 5px"><span style="font-size: 120%;font-weight: bold">流程所属组织机构</span></div>
-					<el-input placeholder="请输入内容" v-model="form1.organization" class="input-with-select" disabled>
+					<el-input placeholder="请输入内容" v-model="organization" class="input-with-select" disabled>
 						<el-button slot="append" icon="el-icon-search" @click="dutyDialog=true;">选择</el-button>
 					</el-input>
                     <div style="margin-bottom: 5px"><span style="font-size: 120%;font-weight: bold">流程类型</span></div>
@@ -109,9 +109,7 @@
                     label: 'organizationName',
                     children: 'zones'
                 },
-                form1: {
-                    organization: ""
-                },
+				organization: "",
                 options: [{
                     value: '1',
                     label: '发文流程'
@@ -120,6 +118,9 @@
                     label: '收文流程'
                 }],
                 processType: ''
+            },
+            created:function(){
+                this.queryOrgAndType();
             },
             methods: {
                 treeLoadNode: function (node, resolve) {  //树加载
@@ -135,13 +136,25 @@
                     this.dutyDialog = true;
                 },
                 selected:function (val) {
-					this.form1.organization=val.organizationName;
+					this.organization=val.organizationName;
                     organization=val.organizationCode;
                     this.dutyDialog = false;
                 },
                 setProcessType:function (val) {
                     console.info(val);
                     processType=val;
+                },
+                queryOrgAndType:function () {
+                    var processDefinitionId=parent.processDefinitionId;
+                    if(processDefinitionId!=null&&processDefinitionId!=""){
+                        this.$http.get(url+portP+"repository/process-definitions/"+processDefinitionId).then(function(data){
+                            var organization=data.data.category;
+                            tree.organization=organization.split("-")[0];
+                            tree.processType=organization.split("-")[1];
+                        },function(response){
+                            console.info(response);
+                        })
+					}
                 }
             }
         });
