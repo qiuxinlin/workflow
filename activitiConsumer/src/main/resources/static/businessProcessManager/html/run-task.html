@@ -36,20 +36,7 @@
             <span class="position-info">您现在的位置：<a>公文管理</a> &gt; <span class="current-position">公文会签</span></span>
         </div>
         <div class="content-wrapper" style="top: 50px;">
-            <div id="tree" class="tree-wrapper">
-                <el-tree
-                        :data="treeDatas"
-                        node-key="id"
-                        ref="tree"
-                        highlight-current
-                        lazy
-                        :expand-on-click-node="false"
-                        :load="loadNode"
-                        @node-click="getKey"
-                        :props="defaultProps">
-                </el-tree>
-            </div>
-            <div id="tab" class="run-detail" style="margin-left: 200px">
+            <div id="tab" class="run-detail">
                 <el-tabs v-model="activeName">
                         <div class="table-box">
                             <div class="form-box">
@@ -260,47 +247,6 @@
             }
         }
     })
-
-    //    树形
-    var tree = new Vue({
-        el: '#tree',
-        data: {
-            treeDatas:[],
-            defaultProps: {
-                label: 'NAME'
-            },
-
-        },
-        methods: {
-            getKey:function (data,node) {
-                this.$http.get(url+portC+"actProcess/"+data.ID).then(function(data){
-
-                },function(response){
-                    console.info(response);
-                    if(response){
-
-                    }
-                })
-                console.log(data);
-            },
-            loadNode:function(node,addNode){
-                var pid;
-                if(node.id==0){
-                    pid = "-1";
-                }else{
-                    pid = node.data.ID;
-                }
-                this.$http.get(url+portC+"actProcess",{'pid':pid}).then(function(data){
-                    addNode(data.data);
-                },function(response){
-                    console.info(response);
-                    if(response){
-
-                    }
-                })
-            }
-        }
-    });
 </script>
 </body>
 </html>

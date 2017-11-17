@@ -40,20 +40,7 @@
             <div id="tab" class="run-detail relative">
                 <el-tabs v-model="activeName">
                     <el-tab-pane label="按流程" name="first">
-                        <div  class="tree-wrapper">
-                            <el-tree
-                                    :data="treeDatas"
-                                    node-key="id"
-                                    ref="tree"
-                                    highlight-current
-                                    lazy
-                                    :expand-on-click-node="false"
-                                    :load="loadNode"
-                                    @node-click="getKey"
-                                    :props="defaultProps">
-                            </el-tree>
-                        </div>
-                        <div class="table-box" style="margin-left: 200px">
+                        <div class="table-box">
                             <div class="center">
                                 <el-table
                                         :data="processInstances"
@@ -396,41 +383,6 @@
                 this.$http.get(url+portP+"runtime/process-instances").then(function(data){
                 	tab.processInstances=data.data.data;
                     tab.total = data.data.total;
-                },function(response){
-                    console.info(response);
-                })
-            },
-            handleClick:function(tab, event) {
-                console.log(tab, event);
-            },
-            save1:function () {
-                this.$message({
-                    showClose: true,
-                    type: 'warning',
-                    duration:1000000,
-                    message: '您有4个文件需要进行会签！'
-                });
-            },
-            query:function () {//查询
-
-            },
-            getKey:function (data,node) {
-                this.$http.get(url+portC+"actProcess/"+data.ID).then(function(data){
-
-                },function(response){
-                    console.info(response);
-                })
-                console.log(data);
-            },
-            loadNode:function(node,addNode){
-            	var pid;
-            	if(node.id==0){
-            		pid = "-1";
-            	}else{
-            		pid = node.data.ID;
-            	}
-                this.$http.get(url+portC+"actProcess",{'pid':pid}).then(function(data){
-                	addNode(data.data);
                 },function(response){
                     console.info(response);
                 })

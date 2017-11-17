@@ -37,24 +37,17 @@
             <span class="position-info">您现在的位置：<a>公文管理</a> &gt; <span class="current-position">公文会签</span></span>
         </div>
         <div class="content-wrapper" style="top: 50px;">
-            <div id="tree" class="tree-wrapper">
-                <el-tree
-                        :data="treeDatas"
-                        node-key="id"
-                        ref="tree"
-                        highlight-current
-                        lazy
-                        :expand-on-click-node="false"
-                        :load="loadNode"
-                        @node-click="getKey"
-                        :props="defaultProps">
-                </el-tree>
-            </div>
-            <div id="tab" class="run-detail" style="margin-left: 200px">
+            <div id="tab" class="run-detail">
                 <el-tabs v-model="activeName">
                         <div class="table-box">
-                            <div class="tool" id="tool">
-                                <el-button type="primary" @click="add">新增</el-button>
+                            <div class="form-box">
+                                <el-form :inline="true" :model="taskForm" class="demo-form-inline">
+                                    <el-form-item label="流程名称：">
+                                        <el-input v-model="Varname" placeholder=""></el-input>
+                                    </el-form-item>
+                                    <el-button type="primary" @click="query">查询</el-button>
+                                    <el-button type="primary" @click="add">新增</el-button>
+                                </el-form>
                             </div>
                             <div class="center">
                                 <el-table
@@ -89,6 +82,11 @@
                                     >
                                     </el-table-column>
                                     <el-table-column
+                                            prop="category"
+                                            label="分类编码"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
                                             prop=""
                                             label="操作"
                                     >
@@ -101,7 +99,7 @@
                             </div>
                             <div class="page-box mt20 text-right">
                                 <el-pagination
-                                        @current-change="handleCurrentChange"
+                                        @current-change="query"
                                         :page-size="size"
                                         layout="total, prev, pager, next"
                                         :total="total">
@@ -214,7 +212,8 @@
             modelList:[],
             total:0 ,
             currentPage: 1,
-            size: 10
+            size: 10,
+            Varname:''
         },
         created:function(){
             this.query();
@@ -236,17 +235,6 @@
                     return formatDates(data.lastUpdateTime);
                 }
             },
-            //分页查询
-            handleCurrentChange:function(data){
-                var start=(data-1)*10;
-                this.$http.get(url+portP+"repository/models?start="+start).then(function(data){
-                    tab.modelList=data.data.data;
-                },function(response){
-                    console.info(response);
-                    if(response){
-                    }
-                })
-            },
             //删除模型
             deleteModel:function(row) {
                 var self=this;
@@ -263,60 +251,31 @@
             designModel:function (row) {
                 window.location.href="/businessProcessManager/html/diagram.html?modelId="+row.id;
             },
-            //查询模型列表
-            query:function () {
-                this.$http.get(url+portP+"repository/models").then(function(data){
-                    tab.modelList=data.data.data;
-                    tab.total = data.data.total;
-                },function(response){
-                    console.info(response);
-                    if(response){
-                    }
-                })
+            //查询模型列表 包括分页查询
+            query:function (data) {
+                var Vstart=0;
+                if(data!=undefined&&!isNaN(data)){
+                    Vstart=(data-1)*10;
+                }
+                if(this.Varname==""){
+                    this.$http.get(url+portP+"repository/models?start="+Vstart).then(function(data){
+                        tab.modelList=data.data.data;
+                        tab.total = data.data.total;
+                    },function(response){
+                        console.info(response);
+                    })
+                }else{
+                    this.$http.get(url+portP+"repository/models?nameLike=%25"+tab.Varname+"%25&start="+Vstart).then(function(data){
+                        tab.modelList=data.data.data;
+                        tab.total = data.data.total;
+                    },function(response){
+                        console.info(response);
+                    })
+                }
+
             }
         }
     })
-
-    //    树形
-    var tree = new Vue({
-        el: '#tree',
-        data: {
-            treeDatas:[],
-            defaultProps: {
-                label: 'NAME'
-            },
-
-        },
-        methods: {
-            getKey:function (data,node) {
-                this.$http.get(url+portC+"actProcess/"+data.ID).then(function(data){
-
-                },function(response){
-                    console.info(response);
-                    if(response){
-
-                    }
-                })
-                console.log(data);
-            },
-            loadNode:function(node,addNode){
-                var pid;
-                if(node.id==0){
-                    pid = "-1";
-                }else{
-                    pid = node.data.ID;
-                }
-                this.$http.get(url+portC+"actProcess",{'pid':pid}).then(function(data){
-                    addNode(data.data);
-                },function(response){
-                    console.info(response);
-                    if(response){
-
-                    }
-                })
-            }
-        }
-    });
 </script>
 </body>
 </html>

@@ -35,7 +35,7 @@
             <span class="position-info">您现在的位置：<a>公文管理</a> &gt; <span class="current-position">公文会签</span></span>
         </div>
         <div class="content-wrapper" style="top: 50px;">
-            <div id="tree" class="tree-wrapper">
+            <!--<div id="tree" class="tree-wrapper">
                 <el-tree
                         :data="treeDatas"
                         node-key="id"
@@ -47,8 +47,8 @@
                         @node-click="getKey"
                         :props="defaultProps">
                 </el-tree>
-            </div>
-            <div id="tab" class="run-detail" style="margin-left: 200px">
+            </div>-->
+            <div id="tab" class="run-detail">
                 <el-tabs v-model="activeName">
                         <div class="table-box">
                             <div class="form-box">
@@ -96,6 +96,11 @@
                                     <el-table-column
                                             prop="version"
                                             label="版本号"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="category"
+                                            label="分类编码"
                                     >
                                     </el-table-column>
                                     <el-table-column
@@ -251,24 +256,20 @@
                         tab.total = data.data.total;
                     },function(response){
                         console.info(response);
-                        if(response){
-                        }
                     })
                 }else{
-                    this.$http.get(url+portP+"repository/process-definitions?nameLike=%25"+tab.Varname+"%25&sort=deploymentId&order=desc").then(function(data){
+                    this.$http.get(url+portP+"repository/process-definitions?nameLike=%25"+tab.Varname+"%25&sort=deploymentId&order=desc&start="+Vstart).then(function(data){
                         tab.processList=data.data.data;
                         tab.total = data.data.total;
                     },function(response){
                         console.info(response);
-                        if(response){
-                        }
                     })
                 }
             }
         }
     })
     //    树形
-    var tree = new Vue({
+    /*var tree = new Vue({
         el: '#tree',
         data: {
             treeDatas:[],
@@ -305,7 +306,7 @@
                 })
             }
         }
-    });
+    });*/
 </script>
 </body>
 </html>
