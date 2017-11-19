@@ -152,6 +152,7 @@
                             var category=data.data.category;
                             tree.organization=category.split("-")[0];
                             tree.processType=category.split("-")[1];
+                            organization=category.split("-")[0];
                         },function(response){
                             console.info(response);
                         })
@@ -160,6 +161,7 @@
                             var category=data.data.category;
                             tree.organization=category.split("-")[0];
                             tree.processType=category.split("-")[1];
+                            organization=category.split("-")[0];
                         },function(response){
                             console.info(response);
                         })
