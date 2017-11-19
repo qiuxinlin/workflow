@@ -146,11 +146,20 @@
                 },
                 queryOrgAndType:function () {
                     var processDefinitionId=parent.processDefinitionId;
+                    var modelId=parent.modelId;
                     if(processDefinitionId!=null&&processDefinitionId!=""){
                         this.$http.get(url+portP+"repository/process-definitions/"+processDefinitionId).then(function(data){
-                            var organization=data.data.category;
-                            tree.organization=organization.split("-")[0];
-                            tree.processType=organization.split("-")[1];
+                            var category=data.data.category;
+                            tree.organization=category.split("-")[0];
+                            tree.processType=category.split("-")[1];
+                        },function(response){
+                            console.info(response);
+                        })
+					}else if(modelId!=null&&modelId!=""){
+                        this.$http.get(url+portP+"repository/models/"+modelId).then(function(data){
+                            var category=data.data.category;
+                            tree.organization=category.split("-")[0];
+                            tree.processType=category.split("-")[1];
                         },function(response){
                             console.info(response);
                         })
