@@ -147,6 +147,12 @@
                 queryOrgAndType:function () {
                     var processDefinitionId=parent.processDefinitionId;
                     var modelId=parent.modelId;
+                    if(processDefinitionId==null||processDefinitionId==""){
+                        processDefinitionId=getQueryString("processDefinitionId");
+                    }
+                    if(modelId==null||modelId==""){
+                        modelId=getQueryString("modelId");
+                    }
                     if(processDefinitionId!=null&&processDefinitionId!=""){
                         this.$http.get(url+portP+"repository/process-definitions/"+processDefinitionId).then(function(data){
                             var category=data.data.category;
