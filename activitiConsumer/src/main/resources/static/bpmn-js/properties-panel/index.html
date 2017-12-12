@@ -1,17 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>流程设计器</title>
 	<link rel="stylesheet" href="css/diagram-js.css" />
 	<link rel="stylesheet" href="vendor/bpmn-font/css/bpmn-embedded.css" />
 	<link rel="stylesheet" href="css/app.css" />
-	<!--树形选择下拉框-->
-	<link href="css/select2.min.css" rel="stylesheet" />
-	<link href="css/select2-bootstrap.min.css" rel="stylesheet" />
-	<script src="js/jquery.min.js"></script>
-	<script src="js/select2.min.js"></script>
-	<script src="js/zh-CN.js"></script>
+
+	<link rel="stylesheet" href="/businessProcessManager/js/ele/index.css">
+	<link rel="stylesheet" href="/businessProcessManager/css/style.css">
+	<!-- 先引入 Vue -->
+	<script src="/businessProcessManager/js/ele/vue.js"></script>
+	<script src="/businessProcessManager/js/ele/vue-resource.js"></script>
+	<script src="/businessProcessManager/js/ele/vue-router.js"></script>
+	<!-- 引入组件库 -->
+	<script src="/businessProcessManager/js/ele/index.js"></script>
+	<script src="/businessProcessManager/js/jquery.min.js"></script>
+	<script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="/businessProcessManager/js/date.js"></script>
+    <style>
+        .v-modal{
+            background: content-box;
+        }
+    </style>
 </head>
 <body>
 	<div class="content" id="js-drop-zone">
@@ -35,12 +46,38 @@
 
 		<div class="canvas" id="js-canvas">
 		</div>
+
 		<div id="js-properties-panel">
 			<div class="bpp-properties-header">
-				<span class="label">流程类型</span>
-				<select id="select" style="width: 100%;margin-left: 10%;border-bottom: 15px">
-					<option value="-1">全部</option>
-				</select>
+				<div id="tree">
+                    <div style="margin-bottom: 5px"><span style="font-size: 120%;font-weight: bold">流程所属组织机构</span></div>
+					<el-input placeholder="请输入内容" v-model="organization" class="input-with-select" disabled>
+						<el-button slot="append" icon="el-icon-search" @click="dutyDialog=true;">选择</el-button>
+					</el-input>
+                    <div style="margin-bottom: 5px"><span style="font-size: 120%;font-weight: bold">流程类型</span></div>
+                    <!--流程类型-->
+                    <el-select v-model="processType" placeholder="请选择" @change="setProcessType">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <!--组织机构数-->
+                    <el-dialog :fullscreen="false" title="选择组织机构" :visible.sync="dutyDialog">
+						<el-tree
+								:data="treeDatas"
+								node-key="id"
+								ref="tree"
+								highlight-current lazy
+								:expand-on-click-node="false"
+								:load="treeLoadNode"
+								@node-click="selected"
+								:props="treeProps">
+						</el-tree>
+					</el-dialog>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -57,120 +94,98 @@
 
 	<script src="extend.js" charset="utf-8"></script>
 	<script src="index.js" charset="utf-8"></script>
-
-	<!--select树形选择框js-->
-	<script type="text/javascript">
-		/*动态生成select选择框的option*/
-        $(document).ready(function(){
-            $.get("http://localhost:9907/actFlowclassifys",function(data,status){
-                for(var i=0;i<data.length;i++){
-					var ss ="<option value="+"'"+data[i].classifyCode+"'"+" parent="+"'"+data[i].parentCode+"'"+">"+data[i].classifyName+"</option>";
-                    $("#select").append(ss);
-				}
-            });
-        });
-		/*select2*/
-        $(function() {
-            (function($) {
-                $.fn.select2tree = function(options) {
-                    var defaults = {
-                        language: "zh-CN",
-                        theme: "bootstrap"
-                    };
-                    var opts = $.extend(defaults, options);
-                    opts.templateResult = function(data, container) {
-                        if(data.element) {
-                            //insert span element and add 'parent' property
-                            var $wrapper = $("<span></span><span>" + data.text + "</span>");
-                            var $element = $(data.element);
-                            $(container).attr("val", $element.val())
-                            if($element.attr("parent")) {
-                                $(container).attr("parent", $element.attr("parent"));
-                            }
-                            return $wrapper;
-                        } else {
-                            return data.text;
+	<!--引入url配置文件-->
+	<script src="/businessProcessManager/js/config.js"></script>
+	<script>
+		var organization;
+		var processType;
+        //树形
+        var tree = new Vue({
+            el: '#tree',
+            data: {
+                dutyDialog: false,
+                treeDatas:[],
+                treeProps: {
+                    label: 'organizationName',
+                    children: 'zones'
+                },
+				organization: "",
+                options: [{
+                    value: '1',
+                    label: '发文流程'
+                }, {
+                    value: '2',
+                    label: '收文流程'
+                }],
+                processType: ''
+            },
+            created:function(){
+                this.queryOrgAndType();
+            },
+            methods: {
+                treeLoadNode: function (node, resolve) {  //树加载
+                    const that = this;
+                    that.$http.get("http://192.168.3.71:22003/organization/getTree",
+                        {'pid': node.data.organizationCode}).then(function (data) {
+                        if (showError(data, that)) {
+                            resolve(data.data.data);
                         }
-                    };
-
-                    $(this).select2(opts).on("select2:open", open);
-                };
-
-                function moveOption(id) {
-                    if(id) {
-                        $(".select2-results__options li[parent=" + id + "]").insertAfter(".select2-results__options li[val=" + id + "]");
-                        $(".select2-results__options li[parent=" + id + "]").each(function() {
-                            moveOption($(this).attr("val"));
-                        });
-                    } else {
-                        $(".select2-results__options li:not([parent])").appendTo(".select2-results__options ul");
-                        $(".select2-results__options li:not([parent])").each(function() {
-                            moveOption($(this).attr("val"));
-                        });
-                    }
-                }
-
-                //deal switch action
-                function switchAction(id, open) {
-                    $(".select2-results__options li[parent='" + id + "']").each(function() {
-                        switchAction($(this).attr("val"), open);
                     });
-                    if(open) {
-                        $(".select2-results__options li[val=" + id + "] span[class]:eq(0)").removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-down");
-                        $(".select2-results__options li[parent='" + id + "']").slideDown();
-                    } else {
-                        $(".select2-results__options li[val=" + id + "] span[class]:eq(0)").addClass("glyphicon-chevron-right").removeClass("glyphicon-chevron-down");
-                        $(".select2-results__options li[parent='" + id + "']").slideUp();
+                },
+                dutyDialogOpen() {
+                    this.dutyDialog = true;
+                },
+                selected:function (val) {
+					this.organization=val.organizationName;
+                    organization=val.organizationCode;
+                    this.dutyDialog = false;
+                },
+                setProcessType:function (val) {
+                    console.info(val);
+                    processType=val;
+                },
+                queryOrgAndType:function () {
+                    var processDefinitionId=parent.processDefinitionId;
+                    var modelId=parent.modelId;
+                    if(processDefinitionId==null||processDefinitionId==""){
+                        processDefinitionId=getQueryString("processDefinitionId");
                     }
-                }
-
-                //get the level of li
-                function getLevel(id) {
-                    var level = 0;
-                    while($(".select2-results__options li[parent][val='" + id + "']").length > 0) {
-                        id = $(".select2-results__options li[val='" + id + "']").attr("parent");
-                        level++;
+                    if(modelId==null||modelId==""){
+                        modelId=getQueryString("modelId");
                     }
-                    return level;
+                    if(processDefinitionId!=null&&processDefinitionId!=""){
+                        this.$http.get(url+portP+"repository/process-definitions/"+processDefinitionId).then(function(data){
+                            var category=data.data.category;
+                            tree.organization=category.split("-")[0];
+                            tree.processType=category.split("-")[1];
+                            organization=category.split("-")[0];
+                        },function(response){
+                            console.info(response);
+                        })
+					}else if(modelId!=null&&modelId!=""){
+                        this.$http.get(url+portP+"repository/models/"+modelId).then(function(data){
+                            var category=data.data.category;
+                            tree.organization=category.split("-")[0];
+                            tree.processType=category.split("-")[1];
+                            organization=category.split("-")[0];
+                        },function(response){
+                            console.info(response);
+                        })
+					}
                 }
-
-                function open() {
-                    setTimeout(function() {
-                        moveOption();
-
-                        $(".select2-results__options li").each(function() {
-                            var $this = $(this);
-                            //loop li add some classes and properties
-                            if($this.attr("parent")) {
-                                $(this).siblings("li[val=" + $this.attr("parent") + "]").find("span:eq(0)").addClass("glyphicon glyphicon-chevron-down switch").css({
-                                    "padding": "0 10px",
-                                    "cursor": "default"
-                                });
-                                $(this).siblings("li[val=" + $this.attr("parent") + "]").find("span:eq(1)").css("font-weight", "bold");
-                            }
-                            //add gap for children
-                            if(!$this.attr("style")) {
-                                var paddingLeft = getLevel($this.attr("val")) * 2;
-                                $("li[parent='" + $this.attr("parent") + "']").css("padding-left", paddingLeft + "em");
-                            }
-                        });
-
-                        //override mousedown for collapse/expand
-                        $(".switch").mousedown(function() {
-                            switchAction($(this).parent().attr("val"), $(this).hasClass("glyphicon-chevron-right"));
-                            event.stopPropagation();
-                        });
-
-                        //override mouseup to nothing
-                        $(".switch").mouseup(function() {
-                            return false;
-                        });
-                    }, 0);
-                }
-            })(jQuery);
-
-            $("#select").select2tree();
+            }
         });
+        function showError(data, that) {
+            if (data.data.code != '200') {
+                that.$message({
+                    message: data.data.msg,
+                    type: 'warning'
+                });
+                return null;
+            } else {
+                return data;
+            }
+        }
 	</script>
 </body>
 </html>

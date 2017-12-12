@@ -1,18 +1,15 @@
 package com.scxys.activiti.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.scxys.activiti.bean.ActDelegation;
+import com.scxys.activiti.service.ActDelegationService;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.bind.annotation.*;
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.scxys.activiti.bean.ActDelegation;
-import com.scxys.activiti.bean.ActFlowclassify;
-import com.scxys.activiti.service.ActDelegationService;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /** 
 * @author 作者:qiuxinlin 
@@ -23,6 +20,7 @@ import com.scxys.activiti.service.ActDelegationService;
 public class ActDelegationCtl {
 
 	@Reference(version="1.0.0")
+	private
 	ActDelegationService delegationService;
 	
 	@RequestMapping(value="/actDelegation", method = RequestMethod.POST, produces = "application/json")
@@ -41,8 +39,8 @@ public class ActDelegationCtl {
 	public String delete(@RequestParam("selectStr") String selectStr){
 		String[] array=selectStr.split("-");
 		if(array.length>0){
-			for(int i=0;i<array.length;i++){
-				delegationService.deleteById(Long.parseLong(array[i]));
+			for (String anArray : array) {
+				delegationService.deleteById(Long.parseLong(anArray));
 			}
 			return "删除成功";
 		}

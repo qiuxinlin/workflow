@@ -17,14 +17,16 @@
             <el-menu default-active="2" unique-opened class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
                 <el-submenu index="1">
                     <template slot="title"><i class="el-icon-menu"></i>业务流程管理</template>
-                    <a href="process.html"><el-menu-item index="1-1">流程管理</el-menu-item></a>
-                    <a href="process-list.html"><el-menu-item index="1-1">流程列表</el-menu-item></a>
-                    <a href="/sortManager"><el-menu-item index="1-2">分类管理</el-menu-item></a>
-                    <a href="monitor.html"><el-menu-item index="1-3">运行监控</el-menu-item></a>
-                    <a href="task-entrust.html"><el-menu-item index="1-4">任务委托</el-menu-item></a>
-                    <a href="user-group.html"><el-menu-item index="1-5">用户分组</el-menu-item></a>
+                    <!--<a href="/businessProcessManager/html/process.html"><el-menu-item index="1-1">流程管理</el-menu-item></a>-->
+                    <a href="/businessProcessManager/html/process-list.html"><el-menu-item index="1-1">流程定义</el-menu-item></a>
+                   <!-- <a href="/businessProcessManager/html/sortManager.html"><el-menu-item index="1-2">分类管理</el-menu-item></a>-->
+                    <a href="/businessProcessManager/html/run-task.html"><el-menu-item index="1-3">待办任务</el-menu-item></a>
+                    <a href="/businessProcessManager/html/monitor.html"><el-menu-item index="1-3">运行监控</el-menu-item></a>
+                    <a href="/businessProcessManager/html/task-entrust.html"><el-menu-item index="1-4">任务委托</el-menu-item></a>
+                    <a href="/businessProcessManager/html/model-list.html"><el-menu-item index="1-4">模型管理</el-menu-item></a>
+                   <!-- <a href="user-group.html"><el-menu-item index="1-5">用户分组</el-menu-item></a>
                     <a href="dataAllocation.html"><el-menu-item index="1-6">数据配置</el-menu-item></a>
-                    <a href="exampleAllocation.html"><el-menu-item index="1-7">实例配置</el-menu-item></a>
+                    <a href="exampleAllocation.html"><el-menu-item index="1-7">实例配置</el-menu-item></a>-->
                 </el-submenu>
             </el-menu>
 
@@ -39,16 +41,6 @@
                 <el-tabs v-model="activeName">
                     <el-tab-pane label="运行明细" name="first">
                         <div class="table-box">
-                            <div class="form-box">
-                                <el-form :inline="true" :model="detailForm" class="demo-form-inline">
-                                    <el-form-item label="流程名称：">
-                                        <el-input v-model="detailForm.processDefinitionId" placeholder=""></el-input>
-                                    </el-form-item>
-                                    <el-form-item label="任务实例：">
-                                        <el-input v-model="detailForm.eg" placeholder=""></el-input>
-                                    </el-form-item>
-                                </el-form>
-                            </div>
                             <div class="center">
                                 <el-table
                                         :data="detailList"
@@ -135,6 +127,8 @@
 <script src="/businessProcessManager/js/jquery.min.js"></script>
 <script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="/businessProcessManager/js/date.js"></script>
+<!--引入url配置文件-->
+<script src="/businessProcessManager/js/config.js"></script>
 <script>
 	var parameter=getQueryString("processInstanceId");
 	var processDefinitionId=getQueryString("processDefinitionId");
@@ -172,7 +166,7 @@
             //分页查询
             handleCurrentChange:function(data){
                 var start=data+1;
-                this.$http.get("http://localhost:9904/history/historic-task-instances?processInstanceId="+parameter+"&start="+start).then(function(data){
+                this.$http.get(url+portP+"history/historic-task-instances?processInstanceId="+parameter+"&start="+start).then(function(data){
                     tab.detailList=data.data.data;
                 },function(response){
                     console.info(response);
@@ -200,7 +194,7 @@
             },
         	//获取历史任务实例
         	getTaskInstances:function(){
-                this.$http.get("http://localhost:9904/history/historic-task-instances?processInstanceId="+parameter).then(function(data){
+                this.$http.get(url+portP+"history/historic-task-instances?processInstanceId="+parameter).then(function(data){
                 	tab.detailList=data.data.data;
                     tab.total = data.data.total;
                 },function(response){

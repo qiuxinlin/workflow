@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "bus_poc_detail")
 public class BusPocDetail implements Serializable {
+    private static final long serialVersionUID = -8736799419914894180L;
     @Id
     @SequenceGenerator(name = "seq_bus_poc_detail",sequenceName = "seq_bus_poc_detail",allocationSize=1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq_bus_poc_detail")

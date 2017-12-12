@@ -17,7 +17,8 @@
   <script src="js/LineBreakMeasurer.js" type="text/javascript" charset="utf-8"></script>
   <script src="js/ProcessDiagramGenerator.js" type="text/javascript" charset="utf-8"></script>
   <script src="js/ProcessDiagramCanvas.js" type="text/javascript" charset="utf-8"></script>
-  
+  <!--引入url配置文件-->
+  <script src="/businessProcessManager/js/config.js"></script>
   <style type="text/css" media="screen">
     
   </style>
@@ -86,23 +87,23 @@ $(document).ready(function(){
         ProcessDiagramGenerator.drawDiagram(processDefiniton.processDefinitionId);
         }
       },
-      rightClick: function(canvas, element, contextObject){
+      /*rightClick: function(canvas, element, contextObject){
         var mouseEvent = this;
         console.log("[RIGHTCLICK] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
-      },
-      over: function(canvas, element, contextObject){
+      },*/
+      /*over: function(canvas, element, contextObject){
         var mouseEvent = this;
-        //console.log("[OVER] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
+        console.log("[OVER] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
 
         // TODO: show tooltip-window with contextObject info
         ProcessDiagramGenerator.showActivityInfo(contextObject);
-      },
-      out: function(canvas, element, contextObject){
+      },*/
+      /*out: function(canvas, element, contextObject){
         var mouseEvent = this;
-        //console.log("[OUT] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
+        console.log("[OUT] mouseEvent: %o, canvas: %o, clicked element: %o, contextObject: %o", mouseEvent, canvas, element, contextObject);
 
         ProcessDiagramGenerator.hideInfo();
-      }
+      }*/
     }
   };
   
@@ -111,9 +112,9 @@ $(document).ready(function(){
   baseUrl = baseUrl + shortenedUrl.substring(0, shortenedUrl.indexOf("/"));
   
   ActivitiRest.options = {
-		processInstanceHighLightsUrl: "http://localhost:9904/process-instance/{processInstanceId}/highlights?callback=?",
-		processDefinitionUrl: "http://localhost:9904/process-definition/{processDefinitionId}/diagram-layout?callback=?",
-		processDefinitionByKeyUrl: "http://localhost:9904/process-definition/{processDefinitionKey}/diagram-layout?callback=?"
+		processInstanceHighLightsUrl: url+portP+"process-instance/{processInstanceId}/highlights?callback=?",
+		processDefinitionUrl: url+portP+"process-definition/{processDefinitionId}/diagram-layout?callback=?",
+		processDefinitionByKeyUrl: url+portP+"process-definition/{processDefinitionKey}/diagram-layout?callback=?"
 	};
   
   if (processDefinitionId) {

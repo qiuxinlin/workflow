@@ -16,6 +16,7 @@ package com.scxys.activiti.rest.service.api.runtime.process;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.neoinfo.pojo.CommRes;
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.http.HttpStatus;
@@ -41,13 +42,14 @@ public class ProcessInstanceResource extends BaseProcessInstanceResource {
   }
   
   @RequestMapping(value="/runtime/process-instances/{processInstanceId}", method = RequestMethod.DELETE)
-  public void deleteProcessInstance(@PathVariable String processInstanceId, 
+  public CommRes deleteProcessInstance(@PathVariable String processInstanceId,
       @RequestParam(value="deleteReason", required=false) String deleteReason, HttpServletResponse response) {
     
     ProcessInstance processInstance = getProcessInstanceFromRequest(processInstanceId);
     
     runtimeService.deleteProcessInstance(processInstance.getId(), deleteReason);
-    response.setStatus(HttpStatus.NO_CONTENT.value());
+    //response.setStatus(HttpStatus.NO_CONTENT.value());
+    return CommRes.success("删除成功");
   }
   
   @RequestMapping(value="/runtime/process-instances/{processInstanceId}", method = RequestMethod.PUT, produces="application/json")
