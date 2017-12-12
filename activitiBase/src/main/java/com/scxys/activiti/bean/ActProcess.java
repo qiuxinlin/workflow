@@ -17,18 +17,19 @@ public class ActProcess implements Serializable{
 	@Id
 	@SequenceGenerator(name = "seq_act_process",sequenceName = "seq_act_process",allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq_act_process")
+	@Column(name = "id_")
 	private Long id;//主键ID
-	@Column
+	@Column(name = "processCode_")
 	private String processCode;
-	@Column
+	@Column(name = "processName_")
 	private String processName;
-	@Column
+	@Column(name = "deploymentId_")
 	private String deploymentId;
-	@Column
+	@Column(name = "flowClassify_")
 	private String flowClassify;
-	@Column
+	@Column(name = "describtion_")
 	private String describtion;
-	@Column
+	@Column(name = "parentCode_")
 	private String parentCode;//上级编码
 	
 	public Long getId() {

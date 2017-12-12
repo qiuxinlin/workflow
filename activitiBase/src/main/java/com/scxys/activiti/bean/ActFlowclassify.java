@@ -18,16 +18,17 @@ public class ActFlowclassify implements Serializable{
 	@Id
 	@SequenceGenerator(name = "seq_act_flowclassify",sequenceName = "seq_act_flowclassify",allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq_act_flowclassify")
+	@Column(name = "id_")
 	private Long id;//主键ID
-	@Column(columnDefinition = "NVARCHAR2")
+	@Column(name = "classifyCode_",columnDefinition = "NVARCHAR2")
 	private String classifyCode;//分类编码
-	@Column
+	@Column(name = "classifyName_")
 	private String classifyName;//分类名称
-	@Column
+	@Column(name = "parentCode_")
 	private String parentCode;//上级编码
-	@Column
+	@Column(name = "fullPath_")
 	private String fullPath;//分类全路径
-	@Column
+	@Column(name = "describtion_")
 	private String describtion;//分类描述
 	public Long getId() {
 		return id;
