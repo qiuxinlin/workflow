@@ -19,10 +19,10 @@ spring:
     database-platform: org.hibernate.dialect.Oracle12cDialect
 
   datasource:
-    url: jdbc:oracle:thin:@192.168.3.71:1521:orcl
-    username: c##activiti
-    password: activiti
-    driverClassName: oracle.jdbc.driver.OracleDriver
+     url: jdbc:oracle:thin:@192.168.10.240:1521:orcl
+     username: system
+     password: Oracle123
+     driverClassName: oracle.jdbc.driver.OracleDriver
   activiti:
     check-process-definitions: false
 

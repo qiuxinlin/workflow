@@ -7,9 +7,9 @@ spring:
     cache: false
     mode: LEGACYHTML5
   datasource:
-    url: jdbc:oracle:thin:@192.168.3.71:1521:orcl
-    username: c##activiti
-    password: activiti
+    url: jdbc:oracle:thin:@192.168.10.240:1521:orcl
+    username: system
+    password: Oracle123
     driverClassName: oracle.jdbc.driver.OracleDriver
   dubbo:
     application:
