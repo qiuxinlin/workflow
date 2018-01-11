@@ -16,7 +16,7 @@ import com.scxys.activiti.service.ActFlowclassifyService;
 * @version 创建时间:2017年7月3日 下午2:05:40 
 * @description 说明:
 */
-/*@Service(version="1.0.0")*/
+@Service(version="1.0.0")
 public class ActFlowclassifyServiceImpl implements ActFlowclassifyService{
 
 	@Autowired
