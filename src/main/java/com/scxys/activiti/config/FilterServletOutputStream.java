@@ -1,4 +1,4 @@
-package com.scxys.activiti.interceptor;
+package com.scxys.activiti.config;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
