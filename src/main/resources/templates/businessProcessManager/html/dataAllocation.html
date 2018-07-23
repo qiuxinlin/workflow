@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据配置</title>
+    <link rel="stylesheet" href="/businessProcessManager/js/ele/index.css">
+    <link rel="stylesheet" href="/businessProcessManager/css/style.css">
+</head>
+<body>
+<header>
+    <img src="/businessProcessManager/images/logo.png" alt="">
+    <span class="com-name">业务流程管理平台</span>
+</header>
+<div>
+    <div class="side" id="side">
+        <div id="menu" class="menu">
+            <el-menu default-active="2" unique-opened class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+                <el-submenu index="1">
+                    <template slot="title"><i class="el-icon-menu"></i>业务流程管理</template>
+                    <a href="process.html"><el-menu-item index="1-1">流程管理</el-menu-item></a>
+                    <a href="process-list.html"><el-menu-item index="1-1">流程定义</el-menu-item></a>
+                    <a href="sortManager.html"><el-menu-item index="1-2">分类管理</el-menu-item></a>
+                    <a href="monitor.html"><el-menu-item index="1-3">运行监控</el-menu-item></a>
+                    <a href="task-entrust.html"><el-menu-item index="1-4">任务委托</el-menu-item></a>
+                    <!--<a href="user-group.html"><el-menu-item index="1-5">用户分组</el-menu-item></a>
+                    <a href="dataAllocation.html"><el-menu-item index="1-6">数据配置</el-menu-item></a>
+                    <a href="exampleAllocation.html"><el-menu-item index="1-7">实例配置</el-menu-item></a>-->
+                </el-submenu>
+            </el-menu>
+
+        </div>
+    </div>
+    <div class="main-wrapper " >
+        <div class="nav-bar">
+            <span class="position-info">您现在的位置：<a>数据配置</a> &gt; <span class="current-position">数据配置</span></span>
+        </div>
+        <div class="content-wrapper" style="top: 50px;">
+            <div id="tree" class="tree-wrapper">
+                <el-tree
+                        :data="treeDatas"
+                        node-key="id"
+                        ref="tree"
+                        highlight-current
+                        lazy
+                        :expand-on-click-node="false"
+                        :load="loadNode"
+                        @node-click="getKey"
+                        :props="defaultProps">
+                </el-tree>
+            </div>
+            <div id="tab" class="run-detail" style="margin-left: 320px">
+                <el-tabs v-model="activeName">
+                    <el-tab-pane label="控制变量" name="first">
+                        <div class="table-box">
+                            <div class="tool" >
+                                <el-button type="primary" @click="add">新增</el-button>
+                            </div>
+                            <div class="center mt20">
+                                <el-table
+                                        :data="variablesList"
+                                        border
+                                        @selection-change="">
+                                    <el-table-column
+                                            type="index"
+                                            width="80"
+                                            label="序号">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="task"
+                                            label="类型"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="name"
+                                            label="变量名称">
+                                    </el-table-column>
+
+                                    <el-table-column
+                                            prop="type"
+                                            label="值类型"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="value"
+                                            label="变量值">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="scope"
+                                            label="应用范围">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="transactTimes"
+                                            label="环节名称">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="transactTimes"
+                                            label="用途">
+                                    </el-table-column>
+
+                                    <el-table-column
+                                            label="操作"
+                                            width="120"
+                                            fixed="right"
+                                    >
+                                        <template scope="scope">
+                                            <el-button @click="edit" type="text" size="small">修改</el-button>
+                                            <el-button type="text" size="small">删除</el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                           <!-- <div class="page-box mt20 text-right">
+                                <el-pagination
+                                        @current-change="handleCurrentChange"
+                                        :page-size="size"
+                                        layout="total, prev, pager, next"
+                                        :total="total">
+                                </el-pagination>
+                            </div>-->
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="KPI指标" name="second">
+                        <div class="table-box">
+                            <div class="tool" id="tool1">
+                                <el-button type="primary" @click="add">新增</el-button>
+                            </div>
+                            <div class="center" style="margin-top: 20px">
+                                <el-table
+                                        :data="variablesList"
+                                        border
+                                        @selection-change="">
+                                    <el-table-column
+                                            type="selection"
+                                            width="60"
+                                    >
+
+                                    </el-table-column>
+                                    <el-table-column
+                                            type="index"
+                                            width="80"
+                                            label="序号">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="task"
+                                            label="指标名称"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="startTime"
+                                            label="目标值">
+                                    </el-table-column>
+
+                                    <el-table-column
+                                            prop="endTime"
+                                            label="实际值"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="transacter"
+                                            label="应用范围"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="transactTimes"
+                                            label="考核权重"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="transactTimes"
+                                            label="采数方式"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="操作"
+                                            width="160"
+                                            fixed="right">
+                                        <template scope="scope">
+                                            <el-button @click="edit" type="text" size="small">修改</el-button>
+                                            <el-button type="text" size="small">删除</el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                            <div class="page-box mt20 text-right">
+                                <el-pagination
+                                        layout="prev, pager, next"
+                                        :total="50">
+                                </el-pagination>
+                            </div>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="业务数据" name="third">
+
+                    </el-tab-pane>
+                    <el-tab-pane label="数据接口" name="fourth">
+
+                    </el-tab-pane>
+                    <el-tab-pane label="URL定义" name="fifth">
+
+                    </el-tab-pane>
+                    <el-tab-pane label="审批表单" name="sixth">
+
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
+        </div>
+        <div class="foot-biu">
+            四川新迎顺信息技术股份有限公司
+        </div>
+    </div>
+</div>
+<div id="dialog">
+
+    <!--新增弹框-->
+    <el-dialog title="新增" :visible.sync="addFormVisible">
+        <el-form :model="addForm" :inline="true" class="demo-form-inline">
+            <el-form-item   label="变量名：" :label-width="formLabe2Width">
+                <el-input v-model="addForm.name"  auto-complete="off"></el-input>
+            </el-form-item>
+          <!--  <el-form-item   label="类型：" :label-width="formLabe2Width">
+                <el-input v-model="addForm.putType" auto-complete="off"></el-input>
+            </el-form-item>-->
+            <el-form-item   label="值类型：" :label-width="formLabe2Width">
+                <el-input v-model="addForm.type" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item   label="变量值：" :label-width="formLabe2Width">
+                <el-input v-model="addForm.value" auto-complete="off"></el-input>
+            </el-form-item>
+            <!--<el-form-item   label="应用范围：" :label-width="formLabe2Width">
+                <template>
+                    <el-radio-group v-model="radio2">
+                        <el-radio :label="3">全流程</el-radio>
+                        <el-radio :label="6">环节任务</el-radio>
+                    </el-radio-group>
+                </template>
+            </el-form-item>
+            <el-form-item  class="long-text"  label="用途说明：" :label-width="formLabelWidth">
+                <el-input type="textarea" autosize v-model="addForm.describe" auto-complete="off"></el-input>
+            </el-form-item>-->
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="addFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addSubmitForm">确 定</el-button>
+        </div>
+    </el-dialog>
+    <!--修改弹框-->
+    <el-dialog title="修改" :visible.sync="editFormVisible">
+        <el-form :model="editForm" :inline="true" class="demo-form-inline">
+            <el-form-item   label="变量名：" :label-width="formLabe2Width">
+                <el-input v-model="editForm.name"  auto-complete="off"></el-input>
+            </el-form-item>
+            <!--<el-form-item   label="类型：" :label-width="formLabe2Width">
+                <el-input v-model="editForm.putType" auto-complete="off"></el-input>
+            </el-form-item>-->
+            <el-form-item   label="值类型：" :label-width="formLabe2Width">
+                <el-input v-model="editForm.type" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item   label="变量值：" :label-width="formLabe2Width">
+                <el-input v-model="editForm.value" auto-complete="off"></el-input>
+            </el-form-item>
+            <!--<el-form-item   label="应用范围：" :label-width="formLabe2Width">
+                <template>
+                    <el-radio-group v-model="radio2">
+                        <el-radio :label="3">全流程</el-radio>
+                        <el-radio :label="6">环节任务</el-radio>
+                    </el-radio-group>
+                </template>
+            </el-form-item>
+            <el-form-item  class="long-text"  label="用途说明：" :label-width="formLabelWidth">
+                <el-input type="textarea" autosize v-model="editForm.describe" auto-complete="off"></el-input>
+            </el-form-item>-->
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="editFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="updateSubmitForm">确 定</el-button>
+        </div>
+    </el-dialog>
+
+</div>
+<!-- 先引入 Vue -->
+<script src="/businessProcessManager/js/ele/vue.js"></script>
+<script src="/businessProcessManager/js/ele/vue-resource.js"></script>
+<script src="/businessProcessManager/js/ele/vue-router.js"></script>
+<!-- 引入组件库 -->
+<script src="/businessProcessManager/js/ele/index.js"></script>
+<script src="/businessProcessManager/js/jquery.min.js"></script>
+<script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<!--引入url配置文件-->
+<script src="/businessProcessManager/js/config.js"></script>
+<script>
+    //
+    var menu = new Vue({
+        el:'#menu',
+        methods: {
+            handleOpen:function(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose:function(key, keyPath) {
+                console.log(key, keyPath);
+            }
+        }
+    });
+
+    var tab = new Vue({
+        el:'#tab',
+        data:{
+            activeName: 'first',
+            formLabelWidth:'85px',
+            oddTaskForm:{
+                name:''
+            },
+            queryForm:{
+                consignor:'',
+                consignorWay:'',
+                startTime:'',
+                endTime:''
+            },
+            variablesList:[],
+            total:0 ,
+            currentPage: 1,
+            size: 10
+        },
+        created:function(){
+            this.getVariables();
+        },
+        methods:{
+            //查询流程实例变量
+            getVariables:function(){
+                this.$http.get(url+portP+"runtime/process-instances/1715/variables").then(function(data){
+                    tab.variablesList=data.data;
+                },function(response){
+                    console.info(response);
+                    if(response){
+                    }
+                })
+            },
+            handleClick:function(tab, event) {
+                console.log(tab, event);
+            },
+            save1:function () {
+                this.$message({
+                    showClose: true,
+                    type: 'warning',
+                    duration:1000000,
+                    message: '您有4个文件需要进行会签！'
+                });
+            },
+            add:function () {//新增
+                dialog.addFormVisible = true;
+            },
+            del:function () {//删除
+
+            },
+            edit:function () {//编辑
+                dialog.editFormVisible = true;
+            },
+            query:function () {//查询
+
+            }
+        }
+    })
+    //    树形
+    var tree = new Vue({
+        el: '#tree',
+        data: {
+            treeDatas:[],
+            defaultProps: {
+                label: 'NAME'
+            },
+
+        },
+        methods: {
+            getKey:function (data,node) {
+                this.$http.get(url+portC+"actProcess/"+data.ID).then(function(data){
+
+                },function(response){
+                    console.info(response);
+                    if(response){
+
+                    }
+                })
+                console.log(data);
+            },
+            loadNode:function(node,addNode){
+                var pid;
+                if(node.id==0){
+                    pid = "-1";
+                }else{
+                    pid = node.data.ID;
+                }
+                this.$http.get(url+portC+"actProcess",{'pid':pid}).then(function(data){
+                    addNode(data.data);
+                },function(response){
+                    console.info(response);
+                    if(response){
+
+                    }
+                })
+            }
+        }
+    });
+    //    弹出框
+    var dialog = new Vue({
+        el: '#dialog',
+        data:{
+            formLabelWidth: '180px',
+            addFormVisible: false,
+            editFormVisible: false,
+            addForm: {
+                name: "",
+                type: "",
+                value:""
+            },
+            editForm: {
+                name: "",
+                type: "",
+                value:""
+            },
+            formLabe2Width: '180px'
+        },
+        methods: {
+            //提交新增
+            addSubmitForm:function () {
+                var that =this;
+                var variable=[];
+                var name=dialog.addForm.name;
+                var type=dialog.addForm.type;
+                var value=dialog.addForm.value;
+                variable.push({"name":name,"type":type,"value":value});
+                this.$confirm('确认提交吗？', '提示', {
+                    type: 'warning'
+                }).then(function () {
+                    console.log(dialog.addForm);
+                    that.$http.put(url+portP+"runtime/process-instances/1715/variables",JSON.stringify(variable)).then(function(data){
+                        this.$message({
+                            message: data.data,
+                            type: 'warning'
+                        });
+                        dialog.addFormVisible = false;
+                        window.location.reload();
+                    },function(response){
+                        console.info(response);
+                    });
+
+                })
+            },
+            updateSubmitForm:function () {
+                var that =this;
+                var variable=[];
+                var name=dialog.editForm.name;
+                var type=dialog.editForm.type;
+                var value=dialog.editForm.value;
+                variable.push({"name":name,"type":type,"value":value});
+                this.$confirm('确认提交吗？', '提示', {
+                    type: 'warning'
+                }).then(function () {
+                    console.log(dialog.addForm);
+                    that.$http.put(url+portP+"runtime/process-instances/1715/variables",JSON.stringify(variable)).then(function(data){
+                        this.$message({
+                            message: data.data,
+                            type: 'warning'
+                        });
+                        dialog.editFormVisible = false;
+                        window.location.reload();
+                    },function(response){
+                        console.info(response);
+                    });
+
+                })
+            }
+        }
+    });
+</script>
+</body>
+</html>

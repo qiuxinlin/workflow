@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模型列表</title>
+    <link rel="stylesheet" href="/businessProcessManager/js/ele/index.css">
+    <link rel="stylesheet" href="/businessProcessManager/css/style.css">
+</head>
+<body>
+<header>
+    <img src="/businessProcessManager/images/logo.png" alt="">
+    <span class="com-name">业务流程管理平台</span>
+</header>
+<div>
+    <div class="side" id="side">
+        <div id="menu" class="menu">
+            <el-menu default-active="2" unique-opened class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+                <el-submenu index="1">
+                    <template slot="title"><i class="el-icon-menu"></i>业务流程管理</template>
+                   <!-- <a href="/businessProcessManager/html/process.html"><el-menu-item index="1-1">流程管理</el-menu-item></a>-->
+                    <a href="/businessProcessManager/html/process-list.html"><el-menu-item index="1-1">流程定义</el-menu-item></a>
+                    <!--<a href="/businessProcessManager/html/sortManager.html"><el-menu-item index="1-2">分类管理</el-menu-item></a>-->
+                    <a href="/businessProcessManager/html/run-task.html"><el-menu-item index="1-3">待办任务</el-menu-item></a>
+                    <a href="/businessProcessManager/html/monitor.html"><el-menu-item index="1-3">运行监控</el-menu-item></a>
+                    <!--<a href="/businessProcessManager/html/task-entrust.html"><el-menu-item index="1-4">任务委托</el-menu-item></a>-->
+                    <a href="/businessProcessManager/html/model-list.html"><el-menu-item index="1-4">模型管理</el-menu-item></a>
+                    <!-- <a href="user-group.html"><el-menu-item index="1-5">用户分组</el-menu-item></a>
+                    <a href="dataAllocation.html"><el-menu-item index="1-6">数据配置</el-menu-item></a>
+                    <a href="exampleAllocation.html"><el-menu-item index="1-7">实例配置</el-menu-item></a>-->
+                </el-submenu>
+            </el-menu>
+
+        </div>
+    </div>
+    <div class="main-wrapper " >
+        <div class="nav-bar">
+            <span class="position-info">您现在的位置：<a>公文管理</a> &gt; <span class="current-position">公文会签</span></span>
+        </div>
+        <div class="content-wrapper" style="top: 50px;">
+            <div id="tab" class="run-detail">
+                <el-tabs v-model="activeName">
+                        <div class="table-box">
+                            <div class="form-box">
+                                <el-form :inline="true" :model="taskForm" class="demo-form-inline">
+                                    <el-form-item label="流程名称：">
+                                        <el-input v-model="Varname" placeholder=""></el-input>
+                                    </el-form-item>
+                                    <el-button type="primary" @click="query">查询</el-button>
+                                    <el-button type="primary" @click="add">新增</el-button>
+                                </el-form>
+                            </div>
+                            <div class="center">
+                                <el-table
+                                        :data="modelList"
+                                        border
+                                        @selection-change="">
+                                    <el-table-column
+                                            type="index"
+                                            width="80"
+                                            label="序号">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="id"
+                                            label="流程模型ID"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="name"
+                                            label="模型名称"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="createTime"
+                                            label="创建日期"
+                                            :formatter="dateFormatCreatTime"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="lastUpdateTime"
+                                            label="更新日期"
+                                            :formatter="dateFormatUpdateTime"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="category"
+                                            label="分类编码"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop=""
+                                            label="操作"
+                                    >
+                                        <template scope="scope">
+                                            <el-button @click="designModel(scope.row)" type="text" size="small">设计</el-button>
+                                            <el-button @click="deleteModel(scope.row)" type="text" size="small">删除</el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                            <div class="page-box mt20 text-right">
+                                <el-pagination
+                                        @current-change="query"
+                                        :page-size="size"
+                                        layout="total, prev, pager, next"
+                                        :total="total">
+                                </el-pagination>
+                            </div>
+                        </div>
+                </el-tabs>
+            </div>
+        </div>
+        <div class="foot-biu">
+             四川新迎顺信息技术股份有限公司
+        </div>
+    </div>
+</div>
+<div id="dialog">
+    <!--新增弹框-->
+    <el-dialog title="新增" :visible.sync="addFormVisible">
+        <el-form :model="addForm" :inline="true" class="demo-form-inline">
+            <el-form-item   label="流程名称：" :label-width="formLabe2Width">
+                <el-input v-model="addForm.processName" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item   label="流程描述：" :label-width="formLabelWidth">
+                <el-input type="textarea" autosize v-model="addForm.describtion"  auto-complete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="addFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addSubmitForm">确 定</el-button>
+        </div>
+    </el-dialog>
+</div>
+<!-- 先引入 Vue -->
+<script src="/businessProcessManager/js/ele/vue.js"></script>
+<script src="/businessProcessManager/js/ele/vue-resource.js"></script>
+<script src="/businessProcessManager/js/ele/vue-router.js"></script>
+<!-- 引入组件库 -->
+<script src="/businessProcessManager/js/ele/index.js"></script>
+<script src="/businessProcessManager/js/jquery.min.js"></script>
+<script src="/businessProcessManager/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<!--引入日期格式化-->
+<script src="/businessProcessManager/js/date.js"></script>
+<!--引入url配置文件-->
+<script src="/businessProcessManager/js/config.js"></script>
+<script>
+    //日期格式化
+    function formatDates(time){
+        return formatDate(new Date(time),'yyyy-MM-dd hh:mm');
+    };
+    var menu = new Vue({
+        el:'#menu',
+        methods: {
+            handleOpen:function(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose:function(key, keyPath) {
+                console.log(key, keyPath);
+            }
+        }
+    });
+    //    弹出框
+    var dialog = new Vue({
+        el: '#dialog',
+        data:{
+            formLabelWidth: '180px',
+            addFormVisible: false,
+            addForm: {
+                processName: "",
+                describtion: ""
+            },
+            formLabe2Width: '180px'
+        },
+        methods: {
+            // 提交新增
+            addSubmitForm:function () {
+                var that =this;
+                var modelId;
+                this.$confirm('确认提交吗？', '提示', {
+                    type: 'warning'
+                }).then(function () {
+                    console.log(dialog.addForm);
+                    that.$http.post(url+portP+"repository/models",{"name":dialog.addForm.processName}).then(function(data){
+                        modelId=data.data.id;
+                        var originalUrl ="/activiti/toDiagram?name="+dialog.addForm.processName+"&description="+dialog.addForm.describtion
+                            +"&modelId="+modelId;
+                        var encodeUrl = encodeURI(originalUrl);
+                        console.info(encodeUrl);
+                        window.location.href=encodeUrl;
+                    });
+                    dialog.addFormVisible = false;
+                })
+            },
+
+        }
+    });
+	//流程定义列表
+    var tab = new Vue({
+        el:'#tab',
+        data:{
+            activeName: 'first',
+            formLabelWidth:'85px',
+            taskForm:{
+              name:''
+            },
+            queryForm:{
+                owner:'',
+                way:'',
+                startTime:'',
+                endTime:''
+            },
+            modelList:[],
+            total:0 ,
+            currentPage: 1,
+            size: 10,
+            Varname:''
+        },
+        created:function(){
+            this.query();
+        },
+        methods:{
+            //新增模型
+            add:function () {
+                dialog.addFormVisible = true;
+            },
+            //格式化创建时间
+            dateFormatCreatTime:function(data,row){
+                if(data.createTime!=null){
+                    return formatDates(data.createTime);
+                }
+            },
+            //格式化更新时间
+            dateFormatUpdateTime:function(data,row){
+                if(data.lastUpdateTime!=null){
+                    return formatDates(data.lastUpdateTime);
+                }
+            },
+            //删除模型
+            deleteModel:function(row) {
+                var self=this;
+                this.$http.delete(url+portP+"repository/models/"+row.id).then(function(data){
+                    self.$message({
+                        message: "删除成功",
+                        type: 'warning'
+                    });
+                    //document.location.reload();
+                    self.query();
+                })
+            },
+            //设计模型
+            designModel:function (row) {
+                window.location.href="/businessProcessManager/html/diagram.html?modelId="+row.id;
+            },
+            //查询模型列表 包括分页查询
+            query:function (data) {
+                var Vstart=0;
+                if(data!=undefined&&!isNaN(data)){
+                    Vstart=(data-1)*10;
+                }
+                if(this.Varname==""){
+                    this.$http.get(url+portP+"repository/models?start="+Vstart).then(function(data){
+                        tab.modelList=data.data.data;
+                        tab.total = data.data.total;
+                    },function(response){
+                        console.info(response);
+                    })
+                }else{
+                    this.$http.get(url+portP+"repository/models?nameLike=%25"+tab.Varname+"%25&start="+Vstart).then(function(data){
+                        tab.modelList=data.data.data;
+                        tab.total = data.data.total;
+                    },function(response){
+                        console.info(response);
+                    })
+                }
+
+            }
+        }
+    })
+</script>
+</body>
+</html>
