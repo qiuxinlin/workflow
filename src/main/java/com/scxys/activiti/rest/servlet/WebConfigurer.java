@@ -26,7 +26,7 @@ import com.scxys.activiti.rest.conf.ApplicationConfiguration;
  * Configuration of web application with Servlet 3.0 APIs.
  */
 
-public class WebConfigurer implements ServletContextListener {
+/*public class WebConfigurer implements ServletContextListener {
 	
   private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
@@ -42,7 +42,7 @@ public class WebConfigurer implements ServletContextListener {
 
     log.debug("Configuring Spring root application context");
     
-    /*AnnotationConfigWebApplicationContext rootContext = null;
+    *//*AnnotationConfigWebApplicationContext rootContext = null;
     
     if (context == null) {
         rootContext = new AnnotationConfigWebApplicationContext();
@@ -57,15 +57,15 @@ public class WebConfigurer implements ServletContextListener {
     EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
 
     initSpring(servletContext, rootContext);
-    initSpringSecurity(servletContext, disps);*/
+    initSpringSecurity(servletContext, disps);*//*
         
     ProcessEngines.init();
     log.debug("Web application fully configured");
   }
 
-  /**
+  *//**
    * Initializes Spring and Spring MVC.
-   */
+   *//*
   private ServletRegistration.Dynamic initSpring(ServletContext servletContext, AnnotationConfigWebApplicationContext rootContext) {
     log.debug("Configuring Spring Web application context");
     AnnotationConfigWebApplicationContext dispatcherServletConfiguration = new AnnotationConfigWebApplicationContext();
@@ -81,9 +81,9 @@ public class WebConfigurer implements ServletContextListener {
     return dispatcherServlet;
   }
 
-  /**
+  *//**
    * Initializes Spring Security.
-   */
+   *//*
   private void initSpringSecurity(ServletContext servletContext, EnumSet<DispatcherType> disps) {
     log.debug("Registering Spring Security Filter");
     FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain", new DelegatingFilterProxy());
@@ -95,10 +95,10 @@ public class WebConfigurer implements ServletContextListener {
   @Override
   public void contextDestroyed(ServletContextEvent sce) {
     log.info("Destroying Web application");
-    /*WebApplicationContext ac = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
+    *//*WebApplicationContext ac = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
     AnnotationConfigWebApplicationContext gwac = (AnnotationConfigWebApplicationContext) ac;
-    gwac.close();*/
+    gwac.close();*//*
     ProcessEngines.destroy();
     log.debug("Web application destroyed");
   }
-}
+}*/

@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scxys.activiti.rest.service.api.PutAwareCommonsMultipartResolver;
 
-@Configuration
+/*@Configuration
 @ComponentScan({"com.scxys.activiti.rest.exception", "com.scxys.activiti.rest.service.api"})
 @EnableAsync
 public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
@@ -81,4 +81,4 @@ public class DispatcherServletConfiguration extends WebMvcConfigurationSupport {
     configurer.favorPathExtension(false);
   }
   
-}
+}*/
