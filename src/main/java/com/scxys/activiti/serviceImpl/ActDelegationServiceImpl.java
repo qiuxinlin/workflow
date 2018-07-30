@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.scxys.activiti.bean.ActDelegation;
 import com.scxys.activiti.dao.ActDelegationDao;
 import com.scxys.activiti.service.ActDelegationService;
+import org.springframework.stereotype.Service;
 
 /** 
 * @author 作者:qiuxinlin 
 * @version 创建时间:2017年7月17日 下午2:18:50 
 * @description 说明:
 */
+@Service
 public class ActDelegationServiceImpl implements ActDelegationService{
 
 	@Autowired

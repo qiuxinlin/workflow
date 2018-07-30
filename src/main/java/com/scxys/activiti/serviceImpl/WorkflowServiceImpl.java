@@ -4,6 +4,7 @@ import com.scxys.activiti.service.WorkflowService;
 import org.activiti.engine.*;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
@@ -26,6 +27,7 @@ import java.util.List;
  * @version 创建时间:2017年3月22日 下午2:12:07
  * @description 说明:
  */
+@Service
 public class WorkflowServiceImpl implements WorkflowService {
 
 	@Autowired
@@ -69,11 +71,11 @@ public class WorkflowServiceImpl implements WorkflowService {
 	public void deployment(String name,String diagramData,String svgData,String category) {
 		//String classpath=WorkflowServiceImpl.class.getResource("/").toString().substring(6);
 		/*本地文件地址*/
-		//String diagramFilepath=classpath+"processes/"+name+".bpmn";
-		//String svgFilepath=classpath+"processes/"+name+".svg";
+		String diagramFilepath="e:/processes/"+name+".bpmn";
+		String svgFilepath="e:/processes/"+name+".svg";
 		/*服务器上文件地址*/
-		String diagramFilepath="/root/workflow/processes/"+name+".bpmn";
-		String svgFilepath="/root/workflow/processes/"+name+".svg";
+		/*String diagramFilepath="/root/workflow/processes/"+name+".bpmn";
+		String svgFilepath="/root/workflow/processes/"+name+".svg";*/
 		PrintStream psDiagram = null;
 		PrintStream psSvg = null;
 		File diagramXml =null;

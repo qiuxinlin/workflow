@@ -1,13 +1,15 @@
 package com.scxys.activiti.controller;
 
 import com.neoinfo.pojo.CommRes;
+import com.scxys.activiti.rest.service.api.runtime.task.TaskBaseResource;
 import com.scxys.activiti.service.ActDelegationService;
 import com.scxys.activiti.service.WorkflowService;
+import org.activiti.engine.ActivitiObjectNotFoundException;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -19,12 +21,12 @@ import java.io.IOException;
 @Controller
 public class WorkflowController {
 
-
-    private
-    WorkflowService workflowService;
-
-    private
-    ActDelegationService delegationService;
+    @Autowired
+    private WorkflowService workflowService;
+    @Autowired
+    private ActDelegationService delegationService;
+    @Autowired
+    protected TaskService taskService;
 
     /**
      * @author 作者: qiuxinlin
