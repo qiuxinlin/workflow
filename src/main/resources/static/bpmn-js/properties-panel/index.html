@@ -151,8 +151,8 @@
                 if (modelId == null || modelId == "") {
                     modelId = getQueryString("modelId");
                 }
-                if (processDefinitionId != null && processDefinitionId != "") {
-                    this.$http.get(url + portP + "repository/process-definitions/" + processDefinitionId).then(function (data) {
+                if (processDefinitionId != null && processDefinitionId != "undefined") {
+                    this.$http.get(url + port + "repository/process-definitions/" + processDefinitionId).then(function (data) {
                         var category = data.data.category;
                         tree.organization = category.split("-")[0];
                         tree.processType = category.split("-")[1];
@@ -161,7 +161,7 @@
                         console.info(response);
                     })
                 } else if (modelId != null && modelId != "") {
-                    this.$http.get(url + portP + "repository/models/" + modelId).then(function (data) {
+                    this.$http.get(url + port + "repository/models/" + modelId).then(function (data) {
                         var category = data.data.category;
                         tree.organization = category.split("-")[0];
                         tree.processType = category.split("-")[1];
