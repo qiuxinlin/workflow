@@ -155,7 +155,7 @@
                     type: 'warning'
                 }).then(function () {
                     console.log(dialog.addForm);
-                    that.$http.post(url+portC+"actFlowclassify",dialog.addForm).then(function(data){
+                    that.$http.post(url+port+"actFlowclassify",dialog.addForm).then(function(data){
                 		this.$message({
                             message: data.data,
                             type: 'warning'
@@ -189,7 +189,7 @@
                     this.$confirm('确认删除编号为'+delData+'的元素吗？', '提示', {
                         type: 'warning'
                     }).then(function () {
-                    	that.$http.delete(url+portC+"actFlowclassify/"+delData).then(function(data){
+                    	that.$http.delete(url+port+"actFlowclassify/"+delData).then(function(data){
                     		this.$message({
                                 message: data.data,
                                 type: 'warning'
@@ -260,7 +260,7 @@
                 this.$refs.tree.setCheckedKeys([]);
             },
             getTree:function(){
-                this.$http.get(url+portC+"actFlowclassify").then(function(data){
+                this.$http.get(url+port+"actFlowclassify").then(function(data){
                 	tree.treeDatas=data.data;
 
                 },function(response){
@@ -298,7 +298,7 @@
                 console.log(tab, event);
             },
             save1:function () {
-            	this.$http.put(url+portC+"actFlowclassify/",form.form1).then(function(data){
+            	this.$http.put(url+port+"actFlowclassify/",form.form1).then(function(data){
             		this.$message({
                         message: data.data,
                         type: 'warning'

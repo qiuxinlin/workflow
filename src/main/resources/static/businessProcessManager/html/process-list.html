@@ -182,7 +182,7 @@
            /* //分页查询
             handleCurrentChange:function(data){
                 var start=(data-1)*10;
-                this.$http.get(url+portP+"repository/process-definitions?sort=deploymentId&order=desc&start="+start).then(function(data){
+                this.$http.get(url+port+"repository/process-definitions?sort=deploymentId&order=desc&start="+start).then(function(data){
                     tab.processList=data.data.data;
                 },function(response){
                     console.info(response);
@@ -193,7 +193,7 @@
             //启动流程
             startProcess:function(row) {
                 /*window.location.href="../../poc/index.html?processDefinitionKey="+row.key;*/
-                this.$http.post(url+portP+"runtime/process-instances",{"processDefinitionKey":row.key}).then(function(data){
+                this.$http.post(url+port+"runtime/process-instances",{"processDefinitionKey":row.key}).then(function(data){
                     var result=data.data.id;
                     var message;
                     if(result!=null){
@@ -210,12 +210,12 @@
             //删除流程
             deleteProcess:function(row) {
                 var self=this;
-                this.$http.get(url+portP+"runtime/process-instances?processDefinitionId="+row.id).then(function(data){
+                this.$http.get(url+port+"runtime/process-instances?processDefinitionId="+row.id).then(function(data){
                    if(data.data.total!=0){
                        this.$confirm("该流程下有"+data.data.total+"个流程实例正在运行，确认删除吗？", "提示", {
                            type: 'warning'
                        }).then(function () {
-                           self.$http.delete(url+portP+"repository/deployments/"+row.deploymentId+"?cascade=true").then(function(data){
+                           self.$http.delete(url+port+"repository/deployments/"+row.deploymentId+"?cascade=true").then(function(data){
                                self.$message({
                                    message: "删除成功",
                                    type: 'warning'
@@ -225,7 +225,7 @@
                            })
                        })
                    }else{
-                       this.$http.delete(url+portP+"repository/deployments/"+row.deploymentId).then(function(data){
+                       this.$http.delete(url+port+"repository/deployments/"+row.deploymentId).then(function(data){
                            self.$message({
                                message: "删除成功",
                                type: 'warning'
@@ -251,14 +251,14 @@
                     Vstart=(data-1)*10;
                 }
                 if(this.Varname==""){
-                    this.$http.get(url+portP+"repository/process-definitions?sort=deploymentId&order=desc&start="+Vstart).then(function(data){
+                    this.$http.get(url+port+"repository/process-definitions?sort=deploymentId&order=desc&start="+Vstart).then(function(data){
                         tab.processList=data.data.data;
                         tab.total = data.data.total;
                     },function(response){
                         console.info(response);
                     })
                 }else{
-                    this.$http.get(url+portP+"repository/process-definitions?nameLike=%25"+tab.Varname+"%25&sort=deploymentId&order=desc&start="+Vstart).then(function(data){
+                    this.$http.get(url+port+"repository/process-definitions?nameLike=%25"+tab.Varname+"%25&sort=deploymentId&order=desc&start="+Vstart).then(function(data){
                         tab.processList=data.data.data;
                         tab.total = data.data.total;
                     },function(response){
@@ -279,7 +279,7 @@
         },
         methods: {
             getKey:function (data,node) {
-                this.$http.get(url+portC+"actProcess/"+data.ID).then(function(data){
+                this.$http.get(url+port+"actProcess/"+data.ID).then(function(data){
 
                 },function(response){
                     console.info(response);
@@ -296,7 +296,7 @@
                 }else{
                     pid = node.data.ID;
                 }
-                this.$http.get(url+portC+"actProcess",{'pid':pid}).then(function(data){
+                this.$http.get(url+port+"actProcess",{'pid':pid}).then(function(data){
                     addNode(data.data);
                 },function(response){
                     console.info(response);

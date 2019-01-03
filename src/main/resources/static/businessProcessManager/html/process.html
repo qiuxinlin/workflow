@@ -178,7 +178,7 @@
                     type: 'warning'
                 }).then(function () {
                     console.log(dialog.addForm);
-                    that.$http.post(url+portP+"repository/models",{"name":dialog.addForm.processName}).then(function(data){
+                    that.$http.post(url+port+"repository/models",{"name":dialog.addForm.processName}).then(function(data){
                 		modelId=data.data.id;
                 		var originalUrl ="/activiti/toDiagram?name="+dialog.addForm.processName+"&description="+dialog.addForm.describtion
                             +"&modelId="+modelId;
@@ -209,7 +209,7 @@
                         type: 'warning'
                     }).then(function () {
                         //删除 do something
-                        that.$http.delete(url+portC+"actProcess/"+delData).then(function(data){
+                        that.$http.delete(url+port+"actProcess/"+delData).then(function(data){
                     		this.$message({
                                 message: data.data,
                                 type: 'warning'
@@ -260,7 +260,7 @@
                 }]);
             },
             getKey:function (data,node) {
-            	   this.$http.get(url+portP+"repository/models/"+data.ID).then(function(data){
+            	   this.$http.get(url+port+"repository/models/"+data.ID).then(function(data){
             		   tabs.form1 = data.data;
             		   tool.delData = data.data.processCode;
                 },function(response){
@@ -284,7 +284,7 @@
             	}else{
             		pid = node.data.ID;
             	}
-                this.$http.get(url+portC+"actProcess",{'pid':pid}).then(function(data){
+                this.$http.get(url+port+"actProcess",{'pid':pid}).then(function(data){
                 	addNode(data.data);
                 },function(response){
                     console.info(response);
@@ -322,7 +322,7 @@
                 console.log(tab, event);
             },
             save1:function () {
-            	this.$http.put(url+portP+"repository/models/"+tabs.form1.id,{"name":tabs.form1
+            	this.$http.put(url+port+"repository/models/"+tabs.form1.id,{"name":tabs.form1
                     .name}).then(function(data){
             		this.$message({
                         message: data.data,

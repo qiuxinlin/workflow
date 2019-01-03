@@ -74,8 +74,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 		/*String diagramFilepath="e:/processes/"+name+".bpmn";
 		String svgFilepath="e:/processes/"+name+".svg";*/
 		/*服务器上文件地址*/
-		String diagramFilepath="/root/nky/bpm/processes/"+name+".bpmn";
-		String svgFilepath="/root/nky/bpm/processes/"+name+".svg";
+		String diagramFilepath="/opt/processes/"+name+".bpmn";
+		String svgFilepath="//opt/processes/"+name+".svg";
 		PrintStream psDiagram = null;
 		PrintStream psSvg = null;
 		File diagramXml =null;

@@ -360,7 +360,7 @@
             //分页查询
             handleCurrentChange:function(data){
                 var start=(data-1)*10;
-                this.$http.get(url+portP+"runtime/process-instances?start="+start).then(function(data){
+                this.$http.get(url+port+"runtime/process-instances?start="+start).then(function(data){
                     tab.processInstances=data.data.data;
                 },function(response){
                     console.info(response);
@@ -380,7 +380,7 @@
             },
         	//获取流程实例表
         	getProcessInstances:function(){
-                this.$http.get(url+portP+"runtime/process-instances").then(function(data){
+                this.$http.get(url+port+"runtime/process-instances").then(function(data){
                 	tab.processInstances=data.data.data;
                     tab.total = data.data.total;
                 },function(response){
@@ -395,12 +395,12 @@
             },
             //运行明细
             cancelEntrust:function(data){
-            	window.location.href=url+portC+"businessProcessManager/html/run-detail.html?processInstanceId="+data.id+"&processDefinitionId="+data.processDefinitionId;
+            	window.location.href=url+port+"businessProcessManager/html/run-detail.html?processInstanceId="+data.id+"&processDefinitionId="+data.processDefinitionId;
             },
             //删除流程实例
             deleteProcessInstace:function(data){
                 var self=this;
-                this.$http.delete(url+portP+"runtime/process-instances/"+data.id).then(function(data){
+                this.$http.delete(url+port+"runtime/process-instances/"+data.id).then(function(data){
                     self.$message({
                         message: data.data.data,
                         type: 'warning'
@@ -412,7 +412,7 @@
             //暂停流程实例
             suspendProcessInstance:function(data){
                 var self=this;
-                this.$http.put(url+portP+"runtime/process-instances/"+data.id,{"action":"suspend"}).then(function(data){
+                this.$http.put(url+port+"runtime/process-instances/"+data.id,{"action":"suspend"}).then(function(data){
                     var message;
                     if(data.data.suspended==true){
                         message= "暂停成功";
@@ -431,7 +431,7 @@
             //激活流程实例
             activateProcessInstance:function(data){
                 var self=this;
-                this.$http.put(url+portP+"runtime/process-instances/"+data.id,{"action":"activate"}).then(function(data){
+                this.$http.put(url+port+"runtime/process-instances/"+data.id,{"action":"activate"}).then(function(data){
                     var message;
                     if(data.data.suspended==false){
                         message= "激活成功";

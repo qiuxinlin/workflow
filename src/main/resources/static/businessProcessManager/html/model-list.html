@@ -180,7 +180,7 @@
                     type: 'warning'
                 }).then(function () {
                     console.log(dialog.addForm);
-                    that.$http.post(url+portP+"repository/models",{"name":dialog.addForm.processName}).then(function(data){
+                    that.$http.post(url+port+"repository/models",{"name":dialog.addForm.processName}).then(function(data){
                         modelId=data.data.id;
                         var originalUrl ="/activiti/toDiagram?name="+dialog.addForm.processName+"&description="+dialog.addForm.describtion
                             +"&modelId="+modelId;
@@ -238,7 +238,7 @@
             //删除模型
             deleteModel:function(row) {
                 var self=this;
-                this.$http.delete(url+portP+"repository/models/"+row.id).then(function(data){
+                this.$http.delete(url+port+"repository/models/"+row.id).then(function(data){
                     self.$message({
                         message: "删除成功",
                         type: 'warning'
@@ -258,14 +258,14 @@
                     Vstart=(data-1)*10;
                 }
                 if(this.Varname==""){
-                    this.$http.get(url+portP+"repository/models?start="+Vstart).then(function(data){
+                    this.$http.get(url+port+"repository/models?start="+Vstart).then(function(data){
                         tab.modelList=data.data.data;
                         tab.total = data.data.total;
                     },function(response){
                         console.info(response);
                     })
                 }else{
-                    this.$http.get(url+portP+"repository/models?nameLike=%25"+tab.Varname+"%25&start="+Vstart).then(function(data){
+                    this.$http.get(url+port+"repository/models?nameLike=%25"+tab.Varname+"%25&start="+Vstart).then(function(data){
                         tab.modelList=data.data.data;
                         tab.total = data.data.total;
                     },function(response){

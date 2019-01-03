@@ -13,12 +13,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    database-platform: org.hibernate.dialect.Oracle12cDialect
+    database-platform: org.hibernate.dialect.MySQL5Dialect
   datasource:
-    url: jdbc:oracle:thin:@192.168.3.77:1521:orcl
-    username: NKY
-    password: nky
-    driverClassName: oracle.jdbc.driver.OracleDriver
+    url: jdbc:mysql://172.16.55.10:13306/activiti?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: admin123456.COM
+    driverClassName: com.mysql.jdbc.Driver
   activiti:
     check-process-definitions: false
 server:

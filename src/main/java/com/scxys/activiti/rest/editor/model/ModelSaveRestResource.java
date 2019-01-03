@@ -17,11 +17,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Map;
 
-import com.neoinfo.pojo.CommRes;
+import com.scxys.activiti.bean.ResponseVO;
 import com.scxys.activiti.editor.constants.ModelDataJsonConstants;
-import net.sf.json.JSONObject;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.Model;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
@@ -57,11 +57,12 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
   
   @RequestMapping(value= "/model/{modelId}/save", method = RequestMethod.PUT, produces = "application/json")
   @ResponseStatus(value = HttpStatus.OK)
-  public CommRes saveModel(@PathVariable String modelId, @RequestBody Map<String,String> map) {
+  public ResponseVO saveModel(@PathVariable String modelId, @RequestBody Map<String,String> map) {
     try {
       
       Model model = repositoryService.getModel(modelId);
       JSONObject json=new JSONObject();
+
       json.put(MODEL_NAME,map.get("name"));
       json.put(MODEL_DESCRIPTION,map.get("description"));
       model.setMetaInfo(json.toString());
@@ -85,7 +86,7 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
       final byte[] result = outStream.toByteArray();
       repositoryService.addModelEditorSourceExtra(model.getId(), result);
       outStream.close();
-      return CommRes.success("保存成功");
+      return ResponseVO.successRes("保存成功");
     } catch (Exception e) {
       LOGGER.error("Error saving model", e);
       throw new ActivitiException("Error saving model", e);

@@ -1,7 +1,7 @@
 package com.scxys.activiti.controller;
 
 
-import com.neoinfo.pojo.CommRes;
+import com.scxys.activiti.bean.ResponseVO;
 import com.scxys.activiti.bean.workflowBean.AssigneeNode;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
@@ -46,7 +46,7 @@ public class BpmnController {
     //获取流程图的每个节点信息
     @ResponseBody
     @RequestMapping(value = "/taskNodeInfo")
-    public CommRes taskNodeInfo(String fileName) {
+    public ResponseVO taskNodeInfo(String fileName) {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -129,10 +129,10 @@ public class BpmnController {
                 }
                 assigneeNodeList.add(assigneeNode);
             }
-            return CommRes.success(assigneeNodeList);
+            return ResponseVO.successRes("success",assigneeNodeList);
         } catch (Exception e) {
             e.printStackTrace();
-           return CommRes.errorRes(HttpStatus.EXPECTATION_FAILED.toString(),"文件解析异常");
+           return ResponseVO.errorRes(HttpStatus.EXPECTATION_FAILED.value(),"文件解析异常");
         }
     }
 

@@ -1,6 +1,6 @@
 package com.scxys.activiti.controller;
 
-import com.neoinfo.pojo.CommRes;
+import com.scxys.activiti.bean.ResponseVO;
 import com.scxys.activiti.rest.service.api.runtime.task.TaskBaseResource;
 import com.scxys.activiti.service.ActDelegationService;
 import com.scxys.activiti.service.WorkflowService;
@@ -66,18 +66,18 @@ public class WorkflowController {
      * @throws IOException
      */
     @RequestMapping(value = "/deployment", method = RequestMethod.POST, produces = "application/json")
-    public CommRes deployment(String name, String diagramData, String svgData, String category) {
+    public ResponseVO deployment(String name, String diagramData, String svgData, String category) {
         if (name == null || name.isEmpty()) {
-            return CommRes.errorRes("400", "部署名称为空");
+            return ResponseVO.errorRes(400, "部署名称为空");
         }
         if (diagramData == null || diagramData.isEmpty()) {
-            return CommRes.errorRes("400", "流程图数据为空");
+            return ResponseVO.errorRes(400, "流程图数据为空");
         }
         if (svgData == null || svgData.isEmpty()) {
-            return CommRes.errorRes("400", "图片数据为空");
+            return ResponseVO.errorRes(400, "图片数据为空");
         }
         workflowService.deployment(name, diagramData, svgData, category);
-        return CommRes.successRes();
+        return ResponseVO.successRes();
     }
 
     /**

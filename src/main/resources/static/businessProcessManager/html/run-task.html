@@ -179,7 +179,7 @@
             /*//分页查询
             handleCurrentChange:function(data){
                 var start=(data-1)*10;
-                this.$http.get(url+portP+"runtime/tasks?sort=createTime&order=desc&start="+start).then(function(data){
+                this.$http.get(url+port+"runtime/tasks?sort=createTime&order=desc&start="+start).then(function(data){
                     tab.runTaskList=data.data.data;
                 },function(response){
                     console.info(response);
@@ -194,14 +194,14 @@
                     Vstart=(data-1)*10;
                 }
                 if(this.Varname==""){
-                    this.$http.get(url+portP+"runtime/tasks?sort=createTime&order=desc&start="+Vstart).then(function(data){
+                    this.$http.get(url+port+"runtime/tasks?sort=createTime&order=desc&start="+Vstart).then(function(data){
                         tab.runTaskList=data.data.data;
                         tab.total = data.data.total;
                     },function(response){
                         console.info(response);
                     });
                 }else{
-                    this.$http.get(url+portP+"runtime/tasks?nameLike=%25"+tab.Varname+"%25&sort=createTime&order=desc&start="+Vstart).then(function(data){
+                    this.$http.get(url+port+"runtime/tasks?nameLike=%25"+tab.Varname+"%25&sort=createTime&order=desc&start="+Vstart).then(function(data){
                         tab.runTaskList=data.data.data;
                         tab.total = data.data.total;
                     },function(response){

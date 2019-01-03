@@ -14,8 +14,6 @@ public class ActDelegation implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "seq_act_delegation",sequenceName = "seq_act_delegation",allocationSize=1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq_act_delegation")
 	@Column(name = "id_")
 	private long id;
 	@Column(name = "owner_")

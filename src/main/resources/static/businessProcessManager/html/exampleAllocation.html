@@ -526,7 +526,7 @@
 
             },
             getKey:function (data,node) {
-                this.$http.get(url+portC+"actProcess/"+data.ID).then(function(data){
+                this.$http.get(url+port+"actProcess/"+data.ID).then(function(data){
 
                 },function(response){
                     console.info(response);
@@ -543,7 +543,7 @@
                 }else{
                     pid = node.data.ID;
                 }
-                this.$http.get(url+portC+"actProcess",{'pid':pid}).then(function(data){
+                this.$http.get(url+port+"actProcess",{'pid':pid}).then(function(data){
                     addNode(data.data);
                 },function(response){
                     console.info(response);
